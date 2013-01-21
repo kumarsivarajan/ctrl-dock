@@ -1,0 +1,10 @@
+ALTER TABLE `scheduled_tasks` DROP `taskposted`;
+
+ALTER TABLE `scheduled_tasks` CHANGE `recurchoice` `recurchoice` ENUM('day','week','date','last day of month') NOT NULL;
+ALTER TABLE `scheduled_tasks` add `scheduled_date` int(10) NULL;
+ALTER TABLE `scheduled_tasks` add `task_posted` int(10) NULL;
+
+UPDATE `scheduled_tasks` SET scheduled_date=(SELECT unix_timestamp(now()));
+
+update isost_ticket set isoverdue=0;
+update isost_ticket set isoverdue=1 where ticketid in (select distinct ticket_id from escalations_log where level=3);

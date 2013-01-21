@@ -1,0 +1,135 @@
+alter table isost_ticket add poa_activity_id int(10) default '0';
+alter table isost_ticket add pending_approval tinyint(1) default '0';
+
+insert  into `rim_feature_master`(`feature_id`,`feature_description`,`feature_comments`) values ('47','Root Cause Analysis - Create',NULL);
+insert  into `rim_feature_master`(`feature_id`,`feature_description`,`feature_comments`) values ('48','Root Cause Analysis - Edit',NULL);
+insert  into `rim_feature_master`(`feature_id`,`feature_description`,`feature_comments`) values ('49','Planned Activities - Create',NULL);
+insert  into `rim_feature_master`(`feature_id`,`feature_description`,`feature_comments`) values ('50','Planned Activities - Edit',NULL);
+insert  into `rim_feature_master`(`feature_id`,`feature_description`,`feature_comments`) values ('51','Root Cause Analysis - View',NULL);
+insert  into `rim_feature_master`(`feature_id`,`feature_description`,`feature_comments`) values ('52','Planned Activities - View',NULL);
+insert  into `rim_group_feature`(`group_id`,`feature_id`) values (1,47);
+insert  into `rim_group_feature`(`group_id`,`feature_id`) values (1,48);
+insert  into `rim_group_feature`(`group_id`,`feature_id`) values (1,49);
+insert  into `rim_group_feature`(`group_id`,`feature_id`) values (1,50);
+insert  into `rim_group_feature`(`group_id`,`feature_id`) values (1,51);
+insert  into `rim_group_feature`(`group_id`,`feature_id`) values (1,52);
+insert  into `rim_group_feature`(`group_id`,`feature_id`) values (2,48);
+insert  into `rim_group_feature`(`group_id`,`feature_id`) values (2,49);
+insert  into `rim_group_feature`(`group_id`,`feature_id`) values (2,50);
+insert  into `rim_group_feature`(`group_id`,`feature_id`) values (2,51);
+insert  into `rim_group_feature`(`group_id`,`feature_id`) values (2,52);
+insert  into `rim_group_feature`(`group_id`,`feature_id`) values (3,51);
+insert  into `rim_group_feature`(`group_id`,`feature_id`) values (3,52);
+
+CREATE TABLE `rca_master` (
+   `activity_id` int(10) not null auto_increment,
+   `project` varchar(255),
+   `action` varchar(50),
+   `action_by` varchar(255),
+   `action_date` int(10),
+   PRIMARY KEY (`activity_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+
+CREATE TABLE `rca_information` (
+   `record_index` int(10) not null auto_increment,
+   `activity_id` int(10),
+   `open_date` int(10),
+   `attended_date` int(10),
+   `closure_date` int(10),
+   `description` varchar(1000),
+   `symptoms` varchar(1000),
+   `impact_analysis` varchar(1000),
+   `ca_root_cause` varchar(1000),
+   `ca_reason` varchar(1000),
+   `ca_action` varchar(1000),
+   `pa_action` varchar(1000),
+   `recommendations` varchar(1000),
+   `observations` varchar(1000),
+   PRIMARY KEY (`record_index`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+
+CREATE TABLE `rca_approval_history` (
+   `record_index` int(10) not null auto_increment,
+   `activity_id` int(10),
+   `approver_name` varchar(255),
+   `approver_email` varchar(255),
+   `approver_key` varchar(255),
+   `action` varchar(50),
+   `action_date` int(10),
+   `action_by` varchar(255),
+   `comments` varchar(255),
+   `item_order` int(10),
+   PRIMARY KEY (`record_index`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+
+
+CREATE TABLE `poa_master` (
+   `activity_id` int(10) not null auto_increment,
+   `project` varchar(255),
+   `action` varchar(50),
+   `action_by` varchar(255),
+   `action_date` int(10),
+   PRIMARY KEY (`activity_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+
+
+CREATE TABLE `poa_information` (
+   `record_index` int(10) not null auto_increment,
+   `activity_id` int(10),
+   `scheduled_start_date` int(10),
+   `scheduled_end_date` int(10),
+   `actual_start_date` int(10),
+   `actual_end_date` int(10),
+   `activity_description` varchar(255),
+   `activity_impact` varchar(255),
+   `activity_services` varchar(1024),
+   `activity_verification` varchar(1024),
+   `location` varchar(255),
+   `action` varchar(50),
+   `action_by` varchar(255),
+   `action_date` varchar(255),
+   `release_notes` varchar(1024),
+   PRIMARY KEY (`record_index`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+
+
+CREATE TABLE `poa_activity_plan` (
+   `record_index` int(10) not null auto_increment,
+   `activity_id` int(10),
+   `task_description` varchar(255),
+   `task_duration` int(10),
+   `task_owner` varchar(255),
+   `item_order` int(10),
+   `action` varchar(50),
+   `action_by` varchar(255),
+   `action_date` int(10),
+   PRIMARY KEY (`record_index`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+
+CREATE TABLE `poa_rollback_plan` (
+   `record_index` int(10) not null auto_increment,
+   `activity_id` int(10),
+   `task_description` varchar(255),
+   `task_duration` int(10),
+   `task_owner` varchar(255),
+   `item_order` int(10),
+   `action` varchar(50),
+   `action_by` varchar(255),
+   `action_date` int(10),
+   PRIMARY KEY (`record_index`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+
+
+CREATE TABLE `poa_approval_history` (
+   `record_index` int(10) not null auto_increment,
+   `activity_id` int(10),
+   `approver_name` varchar(255),
+   `approver_email` varchar(255),
+   `approver_key` varchar(255),
+   `action` varchar(50),
+   `action_date` int(10),
+   `action_by` varchar(255),
+   `comments` varchar(255),
+   `item_order` int(10),
+   PRIMARY KEY (`record_index`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;

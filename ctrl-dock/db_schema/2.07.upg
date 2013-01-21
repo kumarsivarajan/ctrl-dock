@@ -1,0 +1,5 @@
+CREATE TABLE `rim_master_mytickets` (
+  `agency_index` int(10) default NULL,
+  `assigned_to` varchar(255) default NULL,
+  `ticket_count` varchar(255) default NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;

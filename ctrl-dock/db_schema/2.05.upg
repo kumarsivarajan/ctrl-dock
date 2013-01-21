@@ -1,0 +1,22 @@
+insert  into `rim_feature_master`(`feature_id`,`feature_description`,`feature_comments`) values ('46','SOPBOX',NULL);
+
+insert  into `rim_group_feature`(`group_id`,`feature_id`) values (2,46);
+insert  into `rim_group_feature`(`group_id`,`feature_id`) values (3,46);
+
+delete from rim_group_feature where feature_id='33' and group_id='2';
+
+alter table hosts_nw add column alarm_threshold int(10) default '2';
+alter table hosts_nw_snmp add column alarm_threshold int(10) default '2';
+alter table hosts_service add column alarm_threshold int(10) default '2';
+
+alter table isost_department add column `bg_id` int(10) unsigned NOT NULL default '0';
+alter table isost_groups add column `bg_id` int(10) unsigned NOT NULL default '0';
+
+update isost_department set bg_id=1 where dept_id=1;
+update isost_groups set group_name='Information Systems - Staff',bg_id='1' where group_id=1;
+
+update isost_config set ticket_notice_active=1,ticket_alert_active=1,ticket_alert_dept_members=1,message_alert_active=1,message_alert_laststaff=0,message_alert_assigned=1;
+update isost_config set note_alert_active=1,note_alert_laststaff=0,note_alert_assigned=1,overdue_alert_active=0;
+update isost_config set ticket_autoresponder=1,message_autoresponder=1;
+
+

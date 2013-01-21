@@ -1,0 +1,10 @@
+alter table hosts_nw_snmp add `port` int(3) default '161';
+alter table asset add `assigned_type` varchar(50) default 'employee';
+alter table asset add `assigned_agency` varchar(50) default NULL;
+alter table asset add `assigned_bg` varchar(50) default NULL;
+alter table asset add `parent_assetid` varchar(50) default '0';
+alter table assetlogs add `assigned_type` varchar(50) default 'employee';
+alter table assetlogs add `assigned_agency` varchar(50) default NULL;
+alter table assetlogs add `assigned_bg` varchar(50) default NULL;
+alter table assetlogs add `parent_assetid` varchar(50) default '0';
+alter table rim_master add `hosts_perf_status` int(10) default NULL;

@@ -1,0 +1,5 @@
+alter table isost_staff add column `close_tkt_not` tinyint(1) default '0';
+alter table isost_ticket add column `close_onsite` tinyint(1) default '1';
+
+insert  into `rim_feature_master`(`feature_id`,`feature_description`,`feature_comments`) values ('45','Tickets - Admin',NULL);
+insert  into `rim_group_feature`(`group_id`,`feature_id`) values (1,45);

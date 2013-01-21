@@ -1,0 +1,24 @@
+ALTER TABLE `scheduled_tasks` add `recurchoice` ENUM('day','week') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `scheduled_tasks` add `scheduled_day` VARCHAR(10) NULL;
+ALTER TABLE `scheduled_tasks` add `scheduled_hr` VARCHAR(10) NULL;
+ALTER TABLE `scheduled_tasks` add `scheduled_min` VARCHAR(10) NULL;
+ALTER TABLE `scheduled_tasks` add `taskposted` VARCHAR(20) NULL;
+
+update scheduled_tasks set scheduled_day=(select from_unixtime(scheduled_date,'%a')), scheduled_hr=(select from_unixtime(scheduled_date,'%H')), scheduled_min=(select from_unixtime(scheduled_date,'%S'));
+
+ALTER TABLE `scheduled_tasks` DROP `scheduled_date`;
+
+ALTER TABLE asset ADD COLUMN `auditstatus` tinyint(1) NOT NULL default '1';
+ALTER TABLE assetlogs ADD COLUMN `auditstatus` tinyint(1) NOT NULL default '1';
+
+ALTER TABLE `user_master` ADD `grade_id` VARCHAR(10) NULL DEFAULT NULL;
+ALTER TABLE `business_groups` ADD `prefix` VARCHAR(10) NULL DEFAULT NULL;
+
+insert into service_type values ('SVN');
+
+CREATE TABLE `bizgroup_grade_mapping` (
+  `id` int(11) NOT NULL auto_increment,
+  `business_group_index` varchar(255) default NULL,
+  `grade_id` int(2) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;

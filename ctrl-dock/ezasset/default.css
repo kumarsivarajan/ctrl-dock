@@ -1,0 +1,317 @@
+body {
+  font: normal 70% Arial ;
+  text-decoration: none;
+  color: #777;
+  margin: 5px;
+  padding: 0;
+  padding-left: 0px; }
+
+.for_forms {
+  font: normal 100% Arial ;
+  text-decoration: none;
+  color: #777;
+  margin: 5px;
+  padding: 0;
+  }
+
+.main_each {
+  margin: 2px;
+  padding: 5px;
+  border: 1px solid #ccc;
+}
+	
+td.main_each {
+	border: none; 
+	background-image: url(images/grad.png); 
+	background-repeat: repeat-x;}
+
+td.indexheadlines {
+  vertical-align:top;
+  font-size: 120%;
+  color: #555}
+
+td.contenthead {
+  font-weight:bold;
+  vertical-align:top;
+  padding-top:20px;
+  font-size: 120%;
+  color: #555;
+  text-align:left;
+  }
+	
+td.contentsubtitle {
+  font-size: 100%;
+  color: #555;
+  font-weight:bold;}
+
+.navarrows {
+  float: right;
+  padding-right: 5px;
+  padding-left: 5px; }
+
+a { color: #3161A5; text-decoration: none; }
+a:visited { color: #3161A5; }
+a:hover { color: #FF0000; text-decoration: none; }
+
+ul#primary-nav,
+ul#primary-nav ul {
+  margin: 0;
+  padding: 0;
+  width: 165px; /* Width of Menu Items */
+  background: #fff; /* IE6 Bug */
+  font-size: 90%; 
+	position: relative; /* Needed for z-index to be affective - Nick Brown */
+	z-index: 1; /* Ensures that menu displays in front of center section DIVS - Nick Brown */
+}
+
+ul#primary-nav li {
+  position: relative;
+  list-style: none;
+	background: url(images/Shading3.png) repeat-x top left; /* Adds shading to menus - Nick Brown */
+}
+
+ul#primary-nav li a {
+  display: block;
+  text-decoration: none;
+  color: #777;
+  margin: 0px;
+  padding: 5px;
+  padding-right: 0px;
+  border: 1px solid #ccc;
+  }
+
+/* Fix IE. Hide from IE Mac \*/
+* html ul#primary-nav li { float: left; height: 1%; }
+* html ul#primary-nav li a { height: 1%; }
+/* End */
+
+ul#primary-nav ul {
+  position: absolute;
+  display: none;
+  left: 164px; /* Set 1px less than menu width */
+  top: 0;
+}
+
+ul#primary-nav li ul li a { padding: 2px 5px; } /* Sub Menu Styles */
+
+ul#primary-nav li:hover ul ul,
+ul#primary-nav li:hover ul ul ul,
+ul#primary-nav li.over ul ul,
+ul#primary-nav li.over ul ul ul { display: none;} /* Hide sub-menus initially */
+
+ul#primary-nav li:hover ul,
+ul#primary-nav li li:hover ul,
+ul#primary-nav li li li:hover ul,
+ul#primary-nav li.over ul,
+ul#primary-nav li li.over ul,
+ul#primary-nav li li li.over ul {display: block; z-index: 1; position: absolute;} /* The magic */ /* Ensures that menu displays in front of center section DIVS - Nick Brown */
+
+ul#primary-nav li.menuparent:hover,
+ul#primary-nav li.over { background-color: #f9f9f9;}
+
+ul#primary-nav li a:hover { color: #E2144A; }
+
+.menuparent img {
+  border: none;
+  width: 16px;
+  height: 16px;
+  padding-right: 5px;
+  /* may need some top padding as well */
+}
+
+.menuparent span {
+  float: right;
+  cursor: pointer;
+}
+
+td.views_tablehead{
+  padding-right:10px;
+  font-weight:bold;
+  border-bottom: 1px solid #000000;
+  text-align: left;
+}
+
+td.system_tablehead{
+  padding-right:10px;
+  font-weight:bold;
+}
+td.system_tablebody_left{
+  vertical-align:top;
+  padding-right:10px;
+  width: 200px;
+}
+td.system_tablebody_right{
+  vertical-align:top;
+  padding-right:10px;
+}
+
+/* Remove graph IMG border - Nick Brown */
+div#graph img {border: 0px;}
+
+/* Set size & position of icons - Nick Brown */
+img[src="images/down.png"],img[src="images/hourglass-busy.gif"],img[src="images/users_2.png"],img[src="images/feed-icon.png"] 
+{
+	width: 16px;
+	height: 16px;
+	vertical-align: bottom;
+	border: 0px;
+}
+
+/* Center graph section content - Nick Brown  */
+div#AuditedSystems {
+	text-align: center;
+	padding-top:	15px;
+	padding-bottom:	5px;
+}
+
+/* Use larger size for graph section "hourglass" - Nick Brown */
+div#AuditedSystems img[src="images/hourglass-busy.gif"]{
+	width: 32px;
+	height: 32px;
+	vertical-align: bottom;
+	border: 0px;
+}
+
+/* "Drop-shadow" DIV  - Nick Brown */
+div.npb_section_shadow{
+  background: url(images/DropShadow.png) no-repeat bottom right;
+  margin: 10px 0px 0px 8px;
+	width: 99%;
+	max-width: 800px;
+}
+
+/* Section content DIV, uses relative offset to expose shadow from the "drop-shadow" DIV  - Nick Brown */
+div.npb_section_content{
+  border: 1px solid #CCCCCC;
+  position: relative;
+	bottom: 6px;
+	right:	6px;
+  padding: 0px;
+}
+
+/* Section heading DIV formatting - Nick Brown */
+div.npb_section_heading
+{
+	background-color: #FFF3E5;
+	padding: 4px;
+  font-size: 120%;
+	font-weight: normal;
+}
+
+/* Format links in the section heading DIV - Nick Brown */
+div.npb_section_heading a { color: #3E7FBB; text-decoration: none; }
+div.npb_section_heading a:visited { color: #3E7FBB; }
+div.npb_section_heading a:hover { color: #FF0000; text-decoration: none; }
+
+/* Force down arrow IMG to the right of the section heading DIV - Nick Brown */
+div.npb_section_heading img[src="images/down.png"]{
+  position: absolute;
+  right: 5px;
+  padding: 0px;
+}
+
+/* Apply shading to the section data DIVs - Nick Brown */ 
+div.npb_section_data{
+	padding: 4px;
+	background: url(images/Shading3.png) repeat-x top left;
+}
+
+/* Format section data <P> blocks to make them stand out from the data tables - Nick Brown */
+div.npb_section_data p{
+	padding-top: 8px;
+	padding-bottom: 4px;
+	margin: 0px;
+	font-weight:	bold;
+	width: 95%;
+}
+
+/* Display a horizontal line above the section data summary - Nick Brown */
+div.npb_section_data p.npb_section_summary {
+	padding-top: 2px;
+	padding-bottom: 2px;
+	border-top:	1px solid #EEEEEE;
+}
+
+/* Format section content data - Nick Brown */
+div.npb_content_data{
+	letter-spacing:-0.1em; /* Compress text slightly to fit more data within the space - Nick Brown */
+  font-size: 80%; /* Reduce text size to fit more data within the space - Nick Brown */
+	width: 100%;
+	text-align: left;
+	/* Limit height and width so DIV doesn't exceed drop shadow size */
+	/* Height limit also ensures that data doesn't disappear off the page - Nick Brown */
+	max-height: 395px;
+	max-width:	800px;
+	overflow-y:	auto;	/* Display scrollbar when needed - Nick Brown */
+	overflow-x:	hidden;
+}
+
+/* Remove "cellpadding" from data tables - Nick Brown */
+div.npb_content_data table{
+	border-spacing: 0px;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+/* Highlight tables rows (alternately) - Nick Brown */
+tr.npb_highlight_row{
+	background-color: #F4F4F4;
+}
+
+/* Position LDAP logout link top right - Nick Brown */
+a.npb_ldap_logout{
+	position: absolute;
+	right: 10px;
+	top: 6px;
+}
+
+/* Apply shading to right column (search box) - Nick Brown */
+#right_col{	background: url(images/Shading3.png) repeat-x top left;}
+
+#CenterColumn{
+/*	display: block;*/
+/*	width: 95%;*/
+}
+
+/* Format LDAP details page - Nick Brown */
+.ldap_details {
+  margin: 5px;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.ldap_details table {
+  width: 100%;
+}
+
+.ldap_details th {
+	text-align: left;
+  color: #666;
+}
+
+.ldap_details hr {
+	text-align: left;
+  border: 2px solid #FFF3E5;
+}
+
+.ldap_details img {
+	vertical-align: middle;
+	margin: 10px;
+}
+
+div.ldap_details div {
+  font: bold 120% Arial ;
+  text-decoration: none;
+  color: #444;
+}
+
+div.error {
+  margin: 5px;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+div.error img {
+	vertical-align: middle;
+	margin: 10px;
+}

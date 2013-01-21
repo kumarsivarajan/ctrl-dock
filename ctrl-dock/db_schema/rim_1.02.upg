@@ -1,0 +1,18 @@
+CREATE TABLE `audit` (
+  `audit_id` int(11) unsigned NOT NULL auto_increment,
+  `audit_timestamp` varchar(16) default NULL,
+  `audit_username` varchar(20) default NULL,
+  `audit_luser` varchar(20) default NULL,
+  `audit_ssnname` varchar(16) default NULL,
+  `audit_hostname` varchar(16) default NULL,
+  `audit_command` varchar(100) default NULL,
+  `audit_comments` varchar(100) default NULL,
+  `audit_record_type` varchar(25) default NULL,
+  KEY `audit_id` (`audit_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+
+
+ALTER TABLE `asset` ADD COLUMN `assetidentifier` VARCHAR( 25 ) NULL ;
+
+ALTER TABLE `assetlogs` ADD COLUMN `assetidentifier` VARCHAR( 25 ) NULL ;
