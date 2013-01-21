@@ -1,0 +1,36 @@
+#!/bin/bash
+
+HOME=`pwd`
+
+case "$1" in
+ start)
+        if test -f ctrldock.pid
+        then
+                echo "Error starting CTRL-DOCK SSH Terminal Services : Maybe an instance is already running"
+        else
+                echo -n "Starting CTRL-DOCK SSH Terminal Server : "
+		full_path=$HOME/terminal/pwdcheck/get_pwd.php
+		PORT=`php terminal/scripts/get_terminal_port.php`
+                nohup terminal/scripts/anytermd -p $PORT --user root -c "php $full_path %p" > /dev/null &
+                sleep 1
+                ps -aef | grep "anytermd" | grep -v grep | awk '{print $2}' > ctrldock.pid
+                rm -rf nohup.out
+                echo "OK"
+          fi
+        ;;
+     stop)
+        if test -f ctrldock.pid
+        then
+           echo -n "Shutting down CTRL-DOCK SSH Terminal Server : "
+           PID=`grep -m1 '^' ctrldock.pid`
+           kill -9 $PID
+           rm -rf ctrldock.pid
+           echo "OK"
+           sleep 1
+        fi
+        ;;
+    *)
+    echo "Usage: $0 start|stop"
+    exit 1
+esac
+exit 0

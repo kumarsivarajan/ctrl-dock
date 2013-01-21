@@ -1,0 +1,9 @@
+alter table asset add `paymentref` varchar(255) default NULL;
+alter table assetlogs add `paymentref` varchar(255) default NULL;
+alter table agency add payment_terms varchar(255) default NULL;
+alter table agency add bank_info varchar(255) default NULL;
+alter table agency add latitude float(50) default NULL;
+alter table agency add longitude float(50) default NULL;
+alter table escalations add `dept_id` int(10) default NULL;
+alter table escalations add `esc_phone` varchar(50) default NULL;
+update escalations set dept_id='1';

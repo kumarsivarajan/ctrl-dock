@@ -1,0 +1,1 @@
+<?include("config.php");$host_id=$_REQUEST["host_id"];$sql = "delete from hosts_master where host_id='$host_id'";mysql_query($sql);$sql = "delete from hosts_nw where host_id='$host_id'";mysql_query($sql);$sql = "delete from hosts_service where host_id='$host_id'";mysql_query($sql);?><meta http-equiv="Refresh" content="1; URL=index.php">

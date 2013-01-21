@@ -1,0 +1,32 @@
+# Replace the installation path below
+
+APP_PATH="/var/www/html/rim"
+
+#### SCHEDULED JOBS FOR RIMBOX
+# To Fetch emails and pipe as tickets
+*/5 * * * * cd $APP_PATH/eztickets/api/;php cron.php
+
+# Update accounts database
+*/30 * * * * cd $APP_PATH/scripts;php accounts_update.php
+
+# Scheduled Tickets / Tasks
+1 */1 * * * cd $APP_PATH/scripts/;php tasks.php
+
+# Update RIM Information
+*/3 * * * * cd $APP_PATH/scripts/;php rim_master_update.php
+
+# Scan Hosts & Services
+*/5 * * * * cd $APP_PATH/scripts/;php hosts_nw.php
+*/5 * * * * cd $APP_PATH/scripts/;php hosts_svc.php
+*/5 * * * * cd $APP_PATH/scripts/;php hosts_nw_snmp.php
+
+# Escalation Information
+*/3 * * * * cd $APP_PATH/scripts/;php escalations.php
+#### END OF SCHEDULED JOBS FOR RIMBOX
+
+
+
+
+
+
+

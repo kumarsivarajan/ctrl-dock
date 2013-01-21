@@ -1,0 +1,1 @@
+<?include("config.php");$host_id	=$_REQUEST["host_id"];$hostname	=$_REQUEST["hostname"];$port		=$_REQUEST["port"];$sql = "delete from hosts_service where host_id='$host_id' and port='$port'";mysql_query($sql);?><meta http-equiv="Refresh" content="1; URL=host_svc.php?host_id=<?echo $host_id;?>&hostname=<?echo $hostname;?>">

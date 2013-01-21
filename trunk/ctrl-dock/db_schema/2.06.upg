@@ -1,0 +1,10 @@
+CREATE TABLE `sys_uptime_email` (
+ `id` int(11) NOT NULL auto_increment,
+ `email_id` varchar(255) default NULL,
+ `created` datetime NOT NULL default '0000-00-00 00:00:00',
+ `status` enum('active','inactive') NOT NULL default 'active',
+ `host_id` int(11) default NULL,
+ PRIMARY KEY  (`id`)
+)ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+alter table isost_ticket add close_tkt_location varchar(50);

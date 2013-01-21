@@ -1,0 +1,27 @@
+    PLESE ADD THE FOLLOWING CODE TO ALL PROGRAMS IN THE SOFTWARE
+
+    ----------------------------------------------------------
+
+    CTRL-DOCK Remote Infrastructure Software
+    Copyright (C) 2011  AXON NETWORK SOLUTIONS PVT LTD
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the  GNU General Public License as published 
+    by the Free Software Foundation, either version 3 of the License, 
+    or (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License and 
+    along with this program under a folder called LICENSE.
+
+    Certain components of the software are released under the 
+    Creative Commons License which will continue to be available under 
+    the same licensing agreement
+    Please refer to the Creative Commons License in the LICENSE folder.
+
+    For any additional help or information, do get in touch with us at 
+    support@ctrl-dock.org
