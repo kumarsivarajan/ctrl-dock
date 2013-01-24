@@ -15,7 +15,7 @@ include("searchasset.php");
 
 $assetid=$_REQUEST["assetid"];if (strlen($assetid)==0){$assetid="%";}
 $assetcategoryid=$_REQUEST["assetcategoryid"];if (strlen($assetcategoryid)==0){$assetcategoryid="%";}
-$statusid=$_REQUEST["statusid"];if (strlen($statusid)==0){$statusid="1";}
+$statusid=$_REQUEST["statusid"];if (strlen($statusid)==0){$statusid="%";}
 $employee=$_REQUEST["employee"];if (strlen($employee)==0){$employee="%";}
 $hostname=$_REQUEST["hostname"];if (strlen($hostname)==0){$hostname="%";}
 $serialno=$_REQUEST["serialno"];if (strlen($serialno)==0){$serialno="%";}
@@ -46,7 +46,7 @@ if ($employee=="%"){$header_assigned="All";}else{$header_assigned="$employee";}
 <div class='gallery clearfix'>
 <table border="0" cellpadding="0" cellspacing="0" width=100%>
 <tr>
-	<td bgcolor=#F5F5F5 width=100><label><img border=0 src=images/xls.png> <a target=_new href='listassetxls.php?assetid=<?=$assetid?>&assetcategoryid=<?=$assetcategoryid?>&statusid=<?=$statusid?>&employee=<?=$employee?>&hostname=<?=$hostname?>'><font face=Arial size=2><b>EXPORT</a></label></td>
+	<td bgcolor=#F5F5F5 width=100><img border=0 src=images/xls.png> <a target=_new href='listassetxls.php?assetid=<?=$assetid?>&assetcategoryid=<?=$assetcategoryid?>&statusid=<?=$statusid?>&employee=<?=$employee?>&hostname=<?=$hostname?>'><font face=Arial size=1>EXPORT</a></td>
 	<td bgcolor=#F3F3F3 width=120><label>Asset Category : </label></td>
 	<td bgcolor=#F3F3F3 width=120><label><? echo $header_category;?></label></td>
 	<td bgcolor=#E1E1E1 width=100><label>Assigned To : </label></td>
@@ -149,12 +149,12 @@ while ($row = mysql_fetch_row($result)) {
 	
 	$status="IA";
 	if($row[8]=="Active"){$status="A";}
-    echo "<td class=reportdata style='text-align:center'><b>$status</b></td>";
+    echo "<td class=reportdata style='text-align:center' width=16><b>$status</b></td>";
 	
 	$status="O";
 	if($row[14]=="Rental"){$status="R";}
 	if($row[14]=="Lease"){$status="L";}
-	echo "<td class=reportdata style='text-align:center'><b>$status</b></td>";
+	echo "<td class=reportdata style='text-align:center' width=16><b>$status</b></td>";
 	echo "<td class=reportdata style='text-align:center'>";
 	if (strlen($row[11])>0){
 		echo "<a Title='$row[11]'><img border=0 src=images/comments.gif></a>"; 
