@@ -1,7 +1,7 @@
 <?
-include_once("include/config.php");
-include_once("include/css/default.css");
-include_once("include/load_xml.php");
+include_once("../include/config.php");
+include_once("../include/css/default.css");
+include_once("../include/load_xml.php");
 
 
 $base_url="http://";
@@ -57,6 +57,7 @@ if ($query = load_xml($url)){
 
 		if ($count>$license_purchased && $license_purchased>0){$oa_compliance=0;}	
 		}
+		
 	}
 }
 $status="Compliant";
