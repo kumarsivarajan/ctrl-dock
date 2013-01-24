@@ -7,9 +7,13 @@ $assetcategoryid=$_REQUEST["assetcategoryid"];
 $model=mysql_real_escape_string($_REQUEST["model"]);
 $serialno=$_REQUEST["serialno"];
 
-$sql	="select serialno from asset where serialno='$serialno'";
+$sql	="select assetid,serialno from asset where serialno='$serialno'";
 $result = mysql_query($sql);
 $count	= mysql_num_rows($result);
+$row 	= mysql_fetch_row($result);
+$duplicateasset=$row[0];
+$duplicateid=str_pad($row[0], 5, "0", STR_PAD_LEFT);
+
 if ($count>0){$error_code="2";}
 
 
@@ -66,13 +70,16 @@ if (strlen($assetcategoryid)>0 && strlen($model)>0 && strlen($statusid)>0 && $er
 	$result = mysql_query($sql);
 	
 	echo "<h2>The Asset has been added.<br><br><a href=add_asset_1.php>Add another asset</a></h2>";
-	
 }else{
-	echo "<h2>Few mandatory fields were not filled.<br><br> Kindly click <a href=javascript:history.back()>here</a> to go back and correct the errors</h2>";
+	echo "<h2>Few mandatory fields were not filled.<br><br></h2>";
 }
 
 if ($error_code==2){
-	echo "<h2>An asset with the serial number already exists.<br><br> Kindly click <a href=javascript:history.back()>here</a> to go back and correct the errors</h2></h2>";
+	echo "<h2>An asset <a href=edit_asset_1.php?assetid=$duplicateasset>$ASSET_PREFIX-$duplicateid</a> with the serial number mentioned already exists in the system.<br><br></h2>";
+}
+
+if ($error_code >0){
+	echo "<h2>Kindly click <a href=javascript:history.back()>here</a> to go back and correct the errors</h2>";
 }
 
 ?>

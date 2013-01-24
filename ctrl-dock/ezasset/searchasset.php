@@ -30,13 +30,14 @@ include_once("header.php");
 				<td>				
 				<select size=1 name=statusid style="font-size: 8pt; font-family: Arial">
 				<?php
-					echo "<option value=1></option>";
-					echo "<option value=%>All</option>";
-					$sql = "select * from assetstatus order by status"; 	
+					echo "<option value='1'>Active</option>";
+					$sql = "select * from assetstatus where statusid!='1' order by status"; 						
 					$result = mysql_query($sql);
 					while ($row = mysql_fetch_row($result)) {
-							echo "<option value=$row[0]>$row[1]</option>";
+						echo "<option value=$row[0]>$row[1]</option>";
 					}
+					echo "<option value=%>ALL</option>";
+					
 				?>
 				</select>
 				<td colspan=10></td>
