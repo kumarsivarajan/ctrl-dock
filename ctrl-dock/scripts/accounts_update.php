@@ -26,6 +26,7 @@ if($ezRIM==1){
 	
 // Fetch the details of all users who have been provisioned to access this RIMBOX	
 $url=$MASTER_URL."/api/rim_access.php?key=".$MASTER_API_KEY."&agency=".$AGENCY_ID;	
+echo $url;
 if ($query = load_xml($url)){
 	for($i=0;$i<count($query);$i++){
 		$first_name				=$query->user[$i]->first_name;
@@ -56,7 +57,7 @@ if ($query = load_xml($url)){
 			$result = mysql_query($sql);
 				
 			$sql="insert into `rim_user_group` (`group_id`,`username`) values ('$group_id','$username');";
-			$result = mysql_query($sql);		
+			$result = mysql_query($sql);
 			
 		}
 		
@@ -65,6 +66,13 @@ if ($query = load_xml($url)){
 			print "The account $email exists, updating the credentials..\n";
 			$sql="update user_master set official_email='$email',password='$pass',account_status='Active',account_expiry='$expiry' where username='$username'";
 			$result = mysql_query($sql);
+			
+			$sql="delete from rim_user_group where username='$username' and group_id in ('1','2','3')";
+			$result = mysql_query($sql);
+			
+			$sql="insert into `rim_user_group` (`group_id`,`username`) values ('$group_id','$username');";
+			$result = mysql_query($sql);
+			
 		}
 	}	
 	
