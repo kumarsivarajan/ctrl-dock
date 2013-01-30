@@ -26,7 +26,7 @@ if($ezRIM==1){
 	
 // Fetch the details of all users who have been provisioned to access this RIMBOX	
 $url=$MASTER_URL."/api/rim_access.php?key=".$MASTER_API_KEY."&agency=".$AGENCY_ID;	
-echo $url;
+
 if ($query = load_xml($url)){
 	for($i=0;$i<count($query);$i++){
 		$first_name				=$query->user[$i]->first_name;

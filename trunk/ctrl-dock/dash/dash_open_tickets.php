@@ -106,7 +106,7 @@ echo "<tr>";
 
 for ($i=0;$i<count($code_tabs);$i++){
 	$bgcolor=$code_tabs[$i];
-	echo "<td style='text-align: center; background-color: $bgcolor;'></td>";
+	echo "<td style='text-align: center; background-color: $bgcolor;' height=8px></td>";
 }
 echo "</tr>";
 
