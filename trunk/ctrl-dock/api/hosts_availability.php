@@ -93,14 +93,17 @@ if($api_key!=$API_KEY || $api_key==''){
 }else{
 		echo "<node>";
 		
-			$sql="SELECT a.timestamp,a.nw_status FROM hosts_nw_log a, hosts_master b,hosts_nw c WHERE a.host_id=b.host_id AND a.host_id=c.host_id AND b.hostname='$hostname' AND
- b.status='1' AND c.enabled='1' AND a.timestamp>= $start_date AND a.timestamp<= $end_date";
+			$sql="SELECT a.timestamp,a.nw_status FROM hosts_nw_log a, hosts_master b,hosts_nw c ";
+			$sql.=" WHERE a.host_id=b.host_id AND a.host_id=c.host_id AND b.hostname='$hostname' AND";
+			$sql.=" b.status='1' AND c.enabled='1' AND a.timestamp>= $start_date AND a.timestamp<= $end_date order by record_id";
  
 			$result = mysql_query($sql);
 			$downcount_hrs = getdowncount($result);
 			mysql_data_seek($result, 0);
 			$upcount_hrs = getupcount($result);
 			$total = $upcount_hrs + $downcount_hrs;
+	
+			
 			$uptime_percentage	= round(($upcount_hrs/$total)*100, 2);
 			$downtime_percentage = round(($downcount_hrs/$total)*100, 2);
 			echo "<availability>";
