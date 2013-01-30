@@ -24,7 +24,7 @@ include("include/version.php");
 
 <table border="0" cellpadding="0" cellspacing=0  width="100%" height="30">
 <tr>
-	<td class=mainmenu style="width:70%">
+	<td class=mainmenu style="width:78%">
 	&nbsp;
 	
 	<? if ($DASH==1){?>
@@ -94,9 +94,9 @@ include("include/version.php");
 	<a class=menulink target="rimmain" href="settings/settings.php">Settings</a>
 	&nbsp;	
 	<?}?>
-	<a target="rimmain" class=menulink href="http://www.ctrl-dock.org/help" target=_blank>Help</a>&nbsp;
+	<a target="rimmain" class=menulink href="http://www.ctrl-dock.org/help" target=_blank>Help</a>
 	</td>
-	<td class=mainmenu style="text-align:right;width:25%">
+	<td class=mainmenu style="text-align:right;width:22%">
 		<font face=Arial size=1 color="#F3F3F3">logged in as <?echo $User_Full_Name;?></font>
 		&nbsp;
 		<a style="text-decoration: none" target="_top" href="logout.php">
