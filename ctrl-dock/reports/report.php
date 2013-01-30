@@ -26,7 +26,7 @@ if (strlen($start_date)>0 && strlen($end_date)>0){
 	include_once("tkt_by_staff_new.php");
 	include_once("scheduled_activities.php");
 
-	include_once("../dash/dash_sw_compliance.php");
+	include_once("../ezasset/sw_compliance.php");
 	include_once("../dash/dash_asset_summary.php");
 }else{
 	$loc = "Location: "."search.php";
