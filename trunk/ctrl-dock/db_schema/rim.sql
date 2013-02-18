@@ -1608,6 +1608,8 @@ CREATE TABLE `poa_approval_history` (
    PRIMARY KEY (`record_index`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
-
+CREATE TABLE `terminal_login` (
+  `username` varchar(255) default NULL;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 
