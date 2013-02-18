@@ -1,10 +1,6 @@
 <?
 include_once("include/config.php");
 include_once("include/css/default.css");
-$base_url="http://";
-if ($HTTPS==1){$base_url="https://";}
-$base_url.=$_SERVER["SERVER_NAME"]."/".$INSTALL_HOME."pa";
-
 ?>
 <center>
 <table border=0 width=100% cellspacing=1 cellpadding=2 >
@@ -18,9 +14,11 @@ $result = mysql_query($sql);
 $row = mysql_fetch_row($result);
 $official_email=$row[0];
 
-$sql="select a.activity_id,b.project,b.action,b.action_by,b.action_date,a.approver_key";
-$sql.=" from poa_approval_history a, poa_master b";
-$sql.=" where a.activity_id=b.activity_id and a.action='PENDING APPROVAL' and a.approver_email='$official_email' order by a.activity_id DESC";
+$sql="select a.activity_id,a.project,a.action,a.action_by,a.action_date";
+$sql.=" from poa_master a, poa_information b";
+$sql.=" where a.activity_id=b.activity_id";
+$sql.=" and (a.action='PENDING APPROVAL' or a.action='APPROVED') and b.actual_start_date > unix_timestamp(now()) and b.record_index=(select max(record_index) from poa_information where activity_id=b.activity_id) order by a.activity_id DESC";
+
 $result = mysql_query($sql);
 $record_count=mysql_num_rows($result);
 
@@ -39,11 +37,10 @@ if($record_count==0){
 		<td class=reportheader width=40 style='background-color:#999999'>ID</td>		
 		<td class=reportheader style='background-color:#999999'>Project</td>		
 		<td class=reportheader width=120 style='background-color:#999999'>Status</td>		
-		<td class=reportheader width=100 style='background-color:#999999'>Date</td>		
 		<td class=reportheader width=100 style='background-color:#999999'>Scheduled Start</td>		
 		<td class=reportheader width=100 style='background-color:#999999'>Scheduled End</td>		
 		<td class=reportheader width=100 style='background-color:#999999'>Location</td>				
-		<td class=reportheader width=100 style='background-color:#999999'>Manage</td>		
+		<td class=reportheader width=100 style='background-color:#999999' colspan=2> </td>
 </tr>
 <?
 
@@ -61,6 +58,7 @@ while ($row = mysql_fetch_row($result)){
 	$action			=$row[2];
 	$action_date	=date("d M Y H:i",$row[4]);
 	$approver_key	=$row[5];
+	$approver_email =$row[6];
 	$scheduled_start="";
 	$scheduled_end	="";
 	
@@ -80,15 +78,25 @@ while ($row = mysql_fetch_row($result)){
 		$scheduled_end		=date("d M Y H:i",$sub_row[2]);
 	}
 
+	// Fecth Pending Approver's Email ID & Key
+	$sub_sql	= "select approver_email,approver_key from poa_approval_history where activity_id='$activity_id' and action='PENDING APPROVAL'";
+	$sub_result = mysql_query($sub_sql);
+	$sub_row 	= mysql_fetch_row($sub_result);
+	$approver_email	= $sub_row[0];
+	$approver_key	= $sub_row[1];
 	
 	echo "<td class=reportdata style='text-align:center;'>$id</td>";
 	echo "<td class=reportdata>$project</td>";
 	echo "<td class=reportdata>$action</td>";	
-	echo "<td class=reportdata style='text-align:center;'>$action_date</td>";
 	echo "<td class=reportdata style='text-align:center;'>$scheduled_start</td>";
 	echo "<td class=reportdata style='text-align:center;'>$scheduled_end</td>";
-	echo "<td class=reportdata>$location</td>";	
-	echo "<td class=reportdata  style='text-align:center;' width=100><a target=_blank href='pa/pa_view.php?check_email=$official_email&check_key=$approver_key'><font color=#666699><b>VIEW / APPROVE</b></font></a></td>";
+	echo "<td class=reportdata>$location</td>";
+	echo "<td class=reportdata  style='text-align:center;' width=100><a target=_blank href='pa/pa_view.php?activity_id=$activity_id'><font color=#666699><b>VIEW</b></font></a></td>";
+	if($official_email==$approver_email){
+		echo "<td class=reportdata  style='text-align:center;' width=100><a target=_blank href='pa/pa_view.php?check_email=$official_email&check_key=$approver_key'><font color=#666699><b>APPROVE</b></font></a></td>";
+	}else{
+		echo "<td class=reportdata  style='text-align:center;' width=100>&nbsp;</td>";
+	}
 	echo "</tr>";
 	$i++;
 }
