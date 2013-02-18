@@ -108,7 +108,7 @@ while ($row = mysql_fetch_row($result)){
 
 					if ( count($snmpInfo) == 1 ){
 						echo("Unable to query Windows server $hostname for Used Memory Info");
-						exit(1);
+						//exit(1);
 					}
 					$total_mem = 0;
 					$total_mem_used = 0;
