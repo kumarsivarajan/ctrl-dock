@@ -78,23 +78,10 @@ while ($row = mysql_fetch_row($result)){
 		$sub_row = mysql_fetch_row($sub_result);
 		$submit_date=$sub_row[0];
 		
-		$sub_sql="select approver_email from rca_approval_history where activity_id='$activity_id' and action in ('ADDED','DELETED') GROUP BY approver_email HAVING COUNT(approver_email) = 1 order by item_order";
+		$sub_sql="select approver_email from rca_approval_history where activity_id='$activity_id' and action in ('PENDING APPROVAL')";
 		$sub_result = mysql_query($sub_sql);
-		while ($sub_row = mysql_fetch_row($sub_result)){
-				$approver_email		=$sub_row[0];
-		
-				$sub_sql_1="select action,record_index from rca_approval_history where activity_id='$activity_id' and approver_email='$approver_email' and action_date>$submit_date and action in ('APPROVED','REJECTED') order by record_index DESC limit 1";
-				$sub_result_1 = mysql_query($sub_sql_1);
-				$sub_row_1= mysql_fetch_row($sub_result_1);
-				if(strlen($sub_row_1[0])>0){
-					$action				=$sub_row_1[0];
-				}else{
-					$action				="Pending Approval";					
-				}
-				if ($action=="Pending Approval"){break;}
-		}
-		
-
+		$sub_row = mysql_fetch_row($sub_result);
+		$approver_email		=$sub_row[0];
 		
 		echo "<td class=reportdata  style='text-align:center;' width=70><a href='rca_pre_req.php?activity_id=$activity_id&email=$approver_email'><font color=#009900><b>RE-QUEUE</a></td>";
 	}else{

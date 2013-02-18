@@ -218,6 +218,6 @@ while ($row= mysql_fetch_row($result)){
 	</tr>
 <?
 	$i++;
-	}
+}
 ?>
 </table>
