@@ -88,7 +88,7 @@ if($record_count>0){
 	<td class=reportdata width=500><?=$action_date;?></td>
 </tr>
 <tr>
-	<td class=reportdata width=500>Scheduled Down Time</td>
+	<td class=reportdata width=500>Scheduled Maintenance Window</td>
 	<td class=reportdata width=500><?=$s_window;?></td>
 </tr>
 <tr>

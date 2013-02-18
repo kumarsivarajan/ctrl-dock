@@ -447,7 +447,7 @@ $table="poa_approval_history";
 
 <?
 $sql="select record_index,approver_name,approver_email,item_order";
-$sql.=" from poa_approval_history where activity_id='$activity_id' and action in ('ADDED') order by item_order";
+$sql.=" from poa_approval_history where activity_id='$activity_id' and action in ('ADDED','REJECTED') order by item_order";
 $result = mysql_query($sql);
 $record_count=mysql_num_rows($result);
 
@@ -461,7 +461,7 @@ while ($row= mysql_fetch_row($result)){
 	
 	// Fetch the Next Record_Index
 	$sub_sql="select record_index";
-	$sub_sql.=" from poa_approval_history where activity_id='$activity_id' and item_order>'$item_order' and action in ('ADDED') order by item_order LIMIT 1";		
+	$sub_sql.=" from poa_approval_history where activity_id='$activity_id' and item_order>'$item_order' and action in ('ADDED','REJECTED') order by item_order LIMIT 1";		
 	$sub_result = mysql_query($sub_sql);
 	$sub_row= mysql_fetch_row($sub_result);
 	$next_record_index=$sub_row[0];
