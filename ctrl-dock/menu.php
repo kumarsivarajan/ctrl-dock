@@ -10,9 +10,9 @@ include("include/version.php");
 <base target="rimmain">
 </head>
 
-<body topmargin="0" leftmargin="0" bgcolor=#336699>
+<body topmargin="0" leftmargin="0" >
 
-<table width=1024 height=46 border=0 cellspacing=0 cellpadding=0 style="border-collapse: collapse" background="images/bnr1_bg.png">
+<table width=100% height=46 border=0 cellspacing=0 cellpadding=0 style="border-collapse: collapse" background="images/bnr1_bg.png">
 <tr>
 	<td width=5 >&nbsp;</td>
 	<td width=100  valign=middle align=left><img src=images/dock.png border=0></img></td>
@@ -22,9 +22,9 @@ include("include/version.php");
 </tr>
 </table>
 
-<table border="0" cellpadding="0" cellspacing=0  width="100%" height="30">
+<table border="0" cellpadding="0" cellspacing=0  width="100%" height="30" bgcolor=#336699>
 <tr>
-	<td class=mainmenu style="width:78%">
+	<td class=mainmenu style="width:75%">
 	&nbsp;
 	
 	<? if ($DASH==1){?>
@@ -96,11 +96,11 @@ include("include/version.php");
 	<?}?>
 	<a target="rimmain" class=menulink href="http://www.ctrl-dock.org/help" target=_blank>Help</a>
 	</td>
-	<td class=mainmenu style="text-align:right;width:22%">
-		<font face=Arial size=1 color="#F3F3F3">logged in as <?echo $User_Full_Name;?></font>
+	<td class=mainmenu style="text-align:right;width:25%">
+		<font face="Arial Narrow" size=1 color="#F3F3F3">logged in as <?=$User_Full_Name;?> </font>
 		&nbsp;
 		<a style="text-decoration: none" target="_top" href="logout.php">
-		<font color="#F3F3F3" face="Arial" size="1"><b>Logout&nbsp;</font></a>
+		<font color="#F3F3F3" face="Arial" size="2">Logout&nbsp;</font></a>
 	</td>
   </tr>
 </table>
