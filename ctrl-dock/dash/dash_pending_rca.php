@@ -2,9 +2,6 @@
 include_once("include/config.php");
 include_once("include/css/default.css");
 
-$base_url="http://";
-if ($HTTPS==1){$base_url="https://";}
-$base_url.=$_SERVER["SERVER_NAME"]."/".$INSTALL_HOME."rca";
 ?>
 
 <table border=0 width=100% cellspacing=1 cellpadding=2 >
@@ -19,10 +16,11 @@ $result = mysql_query($sql);
 $row = mysql_fetch_row($result);
 $official_email=$row[0];
 
+$sql="select a.activity_id,a.project,a.action,a.action_by,a.action_date";
+$sql.=" from rca_master a, rca_information b";
+$sql.=" where a.activity_id=b.activity_id";
+$sql.=" and (a.action='PENDING APPROVAL') and b.record_index=(select max(record_index) from rca_information where activity_id=b.activity_id) order by a.activity_id DESC";
 
-$sql="select a.activity_id,b.project,b.action,b.action_by,b.action_date,a.approver_key";
-$sql.=" from rca_approval_history a, rca_master b";
-$sql.=" where a.activity_id=b.activity_id and a.action='PENDING APPROVAL' and a.approver_email='$official_email' order by a.activity_id DESC";
 $result = mysql_query($sql);
 $record_count=mysql_num_rows($result);
 
@@ -42,7 +40,7 @@ if($record_count==0){
 		<td class=reportheader style='background-color:#999999'>Summary</td>
 		<td class=reportheader style='background-color:#999999' width=100>Opened On</td>
 		<td class=reportheader style='background-color:#999999' width=150>Status</td>
-		<td class=reportheader style='background-color:#999999' width=150>Manage</td>		
+		<td class=reportheader style='background-color:#999999' width=150 colspan=2> </td>		
 	</tr>
 <?
 
@@ -80,16 +78,26 @@ while ($row = mysql_fetch_row($result)){
 	$sub_result = mysql_query($sub_sql);
 	$sub_row = mysql_fetch_row($sub_result);
 	$submit_date=$sub_row[0];
-		
-	$sub_sql="select approver_email from rca_approval_history where activity_id='$activity_id' and action in ('ADDED','DELETED') GROUP BY approver_email HAVING COUNT(approver_email) = 1 order by item_order";
+	
+    // Fecth Pending Approver's Email ID & Key	
+	$sub_sql="select approver_email,approver_key from rca_approval_history where activity_id='$activity_id' and action='PENDING APPROVAL'";
 	$sub_result = mysql_query($sub_sql);
+	$sub_row = mysql_fetch_row($sub_result);
+	$approver_email	= $sub_row[0];
+	$approver_key	= $sub_row[1];
 	
 
 	echo "<td class=reportdata style='text-align:center;'>$activity_id</td>";
 	echo "<td class=reportdata>$project</td>";
 	echo "<td class=reportdata>$open_date</td>";
-	echo "<td class=reportdata>$action</td>";		
-	echo "<td class=reportdata  style='text-align:center;' width=100><a target=_blank href='rca/rca_view.php?check_email=$official_email&check_key=$approver_key'><font color=#666699><b>VIEW / APPROVE</b></font></a></td>";
+	echo "<td class=reportdata>$action</td>";
+	echo "<td class=reportdata  style='text-align:center;' width=100><a target=_blank href='rca/rca_view.php?activity_id=$activity_id'><font color=#666699><b>VIEW</b></font></a>
+	</td>";
+	if($official_email==$approver_email){
+		echo "<td class=reportdata  style='text-align:center;' width=100><a target=_blank href='rca/rca_view.php?check_email=$official_email&check_key=$approver_key'><font color=#666699><b>APPROVE</b></font></a></td>";
+	}else{
+		echo "<td class=reportdata  style='text-align:center;' width=100>&nbsp;</td>";
+	}
 	echo "<tr>";
 	$i++;
 }
