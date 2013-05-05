@@ -1,7 +1,6 @@
 <?php 
 
-include("config.php");
-include_once("../include/css/default.css");
+
 
 $assetid=$_REQUEST["assetid"];
 $assetcategoryid=$_REQUEST["assetcategoryid"];
@@ -22,10 +21,11 @@ $report_date .=$date[minutes];
 
 $filename="Asset_Report_";
 $filename.=$report_date;
-
 header("Content-Type: application/vnd.ms-excel");
 header("Content-disposition: attachment; filename=$filename.xls\n"); 
 
+include("config.php");
+include_once("../include/css/default.css");
 ?>
 
 <br>
@@ -61,10 +61,12 @@ if ($employee=="%"){$header_assigned="All";}else{$header_assigned=$employee;}
     <td class=reportheader align=center>Asset Tag</td>
 	<td class="reportheader" align=center>Asset Identifier</td>
     <td class="reportheader" align=center>Parent Asset Tag</td>
-	<td class="reportheader" align=center>Document Date</td>
-    <td class="reportheader" align=center>Document No</td>
-    <td class=reportheader align=center>Vendor / Agency</td>
-    <td class=reportheader align=center>Value</td>
+	<td class="reportheader" align=center>Invoice Date</td>
+    <td class="reportheader" align=center>Invoice No</td>
+    <td class="reportheader" align=center>Invoice Value</td>
+	<td class="reportheader" align=center>Purchase Order No</td>
+	<td class="reportheader" align=center>Purchase Order Date</td>
+	<td class="reportheader" align=center>Vendor / Agency</td>
     <td class="reportheader" align=center>Asset Category</td>
     <td class="reportheader" align=center>Model</td>
     <td class="reportheader" align=center>Serial No.</td>
@@ -81,7 +83,7 @@ if ($employee=="%"){$header_assigned="All";}else{$header_assigned=$employee;}
 
 $sql = "select a.assetid,a.invoicedate,a.invoiceno,b.assetcategory,model,serialno,c.name,a.invoiceamount,d.status,e.first_name,e.last_name,";
 $sql.= "a.comments,a.hostname,a.office_index,a.location_desc,a.rentalinfo,a.assetidentifier,";
-$sql.= "a.assigned_type,a.assigned_agency,a.assigned_bg,a.parent_assetid";
+$sql.= "a.assigned_type,a.assigned_agency,a.assigned_bg,a.parent_assetid,po_date,po_num";
 $sql.= " from asset a,assetcategory b,agency c,assetstatus d, user_master e";
 $sql.= " where a.assetcategoryid=b.assetcategoryid and a.agencyid=c.agency_index and a.statusid=d.statusid and a.employee=e.username";
 
@@ -110,11 +112,13 @@ while ($row = mysql_fetch_row($result)) {
 	echo "<td class=reportdata align=center>$parentid</td>";
 	
     if (strlen($row[1])==0){$date='NA';}else{$date=$row[1];}
-    echo "<td class=reportdata align=center>$date</td>";
-    
+    echo "<td class=reportdata align=center>$date</td>";    
 	echo "<td class=reportdata align=center>$row[2]</td>";
+	echo "<td class=reportdata align=center>$row[7]</td>";    
+	echo "<td class=reportdata align=center>$row[21]</td>";
+	echo "<td class=reportdata align=center>$row[22]</td>";    
+	
     echo "<td class=reportdata align=center>$row[6]</td>";
-    echo "<td class=reportdata align=center>$row[7]</td>";    
     echo "<td class=reportdata align=center>$row[3]</td>";
     echo "<td class=reportdata > $row[4]</td>";
     echo "<td class=reportdata > $row[5]</td>";

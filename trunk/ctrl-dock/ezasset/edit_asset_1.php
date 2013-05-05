@@ -37,7 +37,7 @@ $id=str_pad($assetid, 5, "0", STR_PAD_LEFT);
 // rental details added in this sql query
 $sql="select assetcategoryid,model,serialno,agencyid,invoicedate,invoiceno,invoiceamount,statusid,employee,";
 $sql.="hostname,comments,office_index,location_desc,rentalreference,rentalstartdate,rentalenddate,rentalvalue,rentalinfo,";
-$sql.="assetidentifier,ipaddress,auditstatus,assigned_type,assigned_agency,assigned_bg,parent_assetid from asset where assetid='$assetid'";
+$sql.="assetidentifier,ipaddress,auditstatus,assigned_type,assigned_agency,assigned_bg,parent_assetid,po_date,po_num from asset where assetid='$assetid'";
 
 $result = mysql_query($sql);
 while ($current= mysql_fetch_row($result)) {
@@ -67,11 +67,13 @@ while ($current= mysql_fetch_row($result)) {
 		$assigned_agency	=$current[22];
 		$assigned_bg		=$current[23];
 		$parent_assetid		=$current[24];
+		$po_date_detail		=$current[25];
+		$po_number			=$current[26];
 }
 ?>
 <center>
 <br>
-<body onload="assignment('<?=$assigned_type;?>')">
+<body onLoad="assignment('<?=$assigned_type;?>')">
 <table border=0 width=100% cellpadding="2" cellspacing="0" bgcolor=#E5E5E5>
   <tr>
     <td width="90%" style="border-style: none; border-width: medium" align=left colspan=1>
@@ -148,9 +150,9 @@ while ($current= mysql_fetch_row($result)) {
 	<td align=right>
 			<select class="formselect" size=1 name=rentalinfo >
 				<?echo "<option value=$rentalinfo>$rentalinfo</option>";?>
-				<option value="No" selected>No</option>
-				<option value="Rental">Rental</option>
-				<option value="Lease">Lease</option>
+				<option value="No" <?php if($rentalinfo=='No') { ?> selected="selected" <?php } ?>>No</option>
+				<option value="Rental" <?php if($rentalinfo=='Rental') { ?> selected="selected" <?php } ?>>Rental</option>
+				<option value="Lease" <?php if($rentalinfo=='Lease') { ?> selected="selected" <?php } ?>>Lease</option>
 			</select>
 	</td>
 	<tr>
@@ -159,11 +161,11 @@ while ($current= mysql_fetch_row($result)) {
 	</tr>
 	<tr>
 		<td class='tdformlabel'>Contract Start Date</td>
-		<td align=right><input size=20 class=forminputtext name=rentalstartdate id="startdate" readonly onclick="fPopCalendar('startdate')" value="<?=$rentalstartdate;?>"></td>
+		<td align=right><input size=20 class=forminputtext name=rentalstartdate id="startdate" readonly onClick="fPopCalendar('startdate')" value="<?=$rentalstartdate;?>"></td>
 	</tr>
 	<tr>
 		<td class='tdformlabel'>Contract End Date</td>
-		<td align=right><input size=20 class=forminputtext name=rentalenddate id="enddate" readonly onclick="fPopCalendar('enddate')" value="<?=$rentalenddate;?>"></td>
+		<td align=right><input size=20 class=forminputtext name=rentalenddate id="enddate" readonly onClick="fPopCalendar('enddate')" value="<?=$rentalenddate;?>"></td>
 	</tr>
 	<tr>
 		<td class='tdformlabel'>Contract Value</td>
@@ -190,16 +192,26 @@ while ($current= mysql_fetch_row($result)) {
 		</select>
 		</td>
 	</tr>
+	
 	<tr>
-		<td class='tdformlabel'>Date</td>
-		<td align=right><input value='<?=$invoicedate;?>' class=forminputtext name=invoicedate id="data" readonly onclick="fPopCalendar('data')"></td>
+		<td class='tdformlabel'>Purchase Order Date</td>
+		<td align=right><input value='<?=$po_date_detail;?>' class="forminputtext" name="txtpodate" id="podate" readonly onClick="fPopCalendar('podate')"></td>
+	</tr>
+	<tr>
+		<td class='tdformlabel'>Purchase Order No.</td>
+		<td align=right><input size=40 class="forminputtext" name="ponum" value='<?=$po_number?>'></td>
+	</tr>
+	
+	<tr>
+		<td class='tdformlabel'>Invoice Date</td>
+		<td align=right><input value='<?=$invoicedate;?>' class=forminputtext name=invoicedate id="data" readonly onClick="fPopCalendar('data')"></td>
 	</tr>
 	<tr>
 		<td class='tdformlabel'>Invoice No.</td>
 		<td align=right><input size=40 class=forminputtext name=invoiceno value='<?=$invoiceno;?>'></td>
 	</tr>
 	<tr>
-		<td class='tdformlabel'>Value</td>
+		<td class='tdformlabel'>Invoice Value</td>
 		<td align=right><input size=40 class=forminputtext name=invoiceamount value='<?=$invoiceamount;?>'></td>
 	</tr>
 
