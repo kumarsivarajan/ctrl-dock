@@ -41,6 +41,9 @@ $assigned_agency=$_REQUEST['assigned_agency'];
 $assigned_bg=$_REQUEST['assigned_bg'];
 $parent_assetid=$_REQUEST['parent_assetid'];
 
+$podatedet	= $_REQUEST['txtpodate'];
+$ponumber	= $_REQUEST['ponum'];
+
 $modification_by=$_SESSION['username'];
 
 $date=getdate();
@@ -60,7 +63,7 @@ $modification_time .=$date[minutes];
 if (strlen($assetid)>0 && strlen($assetcategoryid)>0 && strlen($model)>0 && strlen($statusid)>0 && $error_code==0){
 	
 	$sql = "update asset set assetcategoryid='$assetcategoryid',statusid='$statusid',agencyid='$agencyid',model='$model',serialno='$serialno',";
-	$sql.="employee='$employee',invoiceno='$invoiceno',invoicedate='$invoicedate',invoiceamount='$invoiceamount',comments='$comments',";
+	$sql.="employee='$employee',po_date='$podatedet',po_num='$ponumber',invoiceno='$invoiceno',invoicedate='$invoicedate',invoiceamount='$invoiceamount',comments='$comments',";
 	$sql.="hostname='$hostname',office_index='$office_index',location_desc='$location_desc',rentalinfo='$rentalinfo',parent_assetid='$parent_assetid',";
 	$sql.="rentalreference='$rentalreference',rentalstartdate='$rentalstartdate', rentalenddate='$rentalenddate',rentalvalue='$rentalvalue',";
 	$sql.="assetidentifier='$assetidentifier',ipaddress='$ipaddress',auditstatus='$auditstatus',assigned_type='$assigned_type',assigned_agency='$assigned_agency',assigned_bg='$assigned_bg'";
@@ -69,8 +72,8 @@ if (strlen($assetid)>0 && strlen($assetcategoryid)>0 && strlen($model)>0 && strl
 	$result = mysql_query($sql);
 
 	$sql = "insert into assetlogs";
-	$sql.=" (assetid,assetcategoryid,statusid,agencyid,model,serialno,employee,invoiceno,invoicedate,invoiceamount,comments,hostname,modification_date,modification_time,modification_by,rentalinfo, rentalreference, rentalstartdate, rentalenddate, rentalvalue,assetidentifier,ipaddress,auditstatus,parent_assetid,assigned_type,assigned_agency,assigned_bg)";
-	$sql.=" values ('$assetid','$assetcategoryid','$statusid','$agencyid','$model','$serialno','$employee','$invoiceno','$invoicedate','$invoiceamount','$comments','$hostname','$modification_date','$modification_time','$modification_by','$rentalinfo','$rentalreference','$rentalstartdate','$rentalenddate','$rentalvalue','$assetidentifier','$ipaddress','$auditstatus','$parent_assetid','$assigned_type','$assigned_agency','$assigned_bg')";
+	$sql.=" (assetid,assetcategoryid,statusid,agencyid,model,serialno,employee,po_date,po_num,invoiceno,invoicedate,invoiceamount,comments,hostname,modification_date,modification_time,modification_by,rentalinfo, rentalreference, rentalstartdate, rentalenddate, rentalvalue,assetidentifier,ipaddress,auditstatus,parent_assetid,assigned_type,assigned_agency,assigned_bg)";
+	$sql.=" values ('$assetid','$assetcategoryid','$statusid','$agencyid','$model','$serialno','$employee','$podatedet','$ponumber','$invoiceno','$invoicedate','$invoiceamount','$comments','$hostname','$modification_date','$modification_time','$modification_by','$rentalinfo','$rentalreference','$rentalstartdate','$rentalenddate','$rentalvalue','$assetidentifier','$ipaddress','$auditstatus','$parent_assetid','$assigned_type','$assigned_agency','$assigned_bg')";
 	$result = mysql_query($sql);
 	
 	echo "<h2>The Asset has been updated successfully</h2>";

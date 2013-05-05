@@ -36,15 +36,19 @@ $statusid=$_REQUEST["statusid"];
 $employee=$_REQUEST["employee"];
 $comments=mysql_real_escape_string($_REQUEST["comments"]);
 $hostname=$_REQUEST["hostname"];
-$ipaddress=$_REQUEST["ipadress"];
+$ipaddress=$_REQUEST["ipaddress"];
+
 $office_index=$_REQUEST["office_index"];
-$location_desc=mysql_real_escape_string($_REQUEST["location_desc"]);
+$location_desc=mysql_real_escape_string($_REQUEST["locaton_desc"]);
 $auditstatus=$_REQUEST["auditstatus"];
 
 $assigned_type=$_REQUEST['assigned_type'];
 $assigned_agency=$_REQUEST['assigned_agency'];
 $assigned_bg=$_REQUEST['assigned_bg'];
 $parent_assetid=$_REQUEST['parent_assetid'];
+
+$po_number	= $_REQUEST['ponum'];
+$po_date	= $_REQUEST['txtpodate'];
 
 
 $modification_by=$_SESSION['username'];
@@ -65,8 +69,8 @@ $modification_time .=$date[minutes];
 if (strlen($assetcategoryid)>0 && strlen($model)>0 && strlen($statusid)>0 && $error_code==0){
 
 // rental details added in sql query
-	$sql ="insert into asset (assetcategoryid,statusid,agencyid,model,serialno,employee,invoiceno,invoicedate,invoiceamount,comments,hostname,office_index,location_desc,rentalinfo,rentalreference,rentalstartdate,rentalenddate,rentalvalue,assetidentifier,ipaddress,auditstatus,parent_assetid,assigned_type,assigned_agency,assigned_bg)";
-	$sql.=" values ('$assetcategoryid','$statusid','$agencyid','$model','$serialno','$employee','$invoiceno','$invoicedate','$invoiceamount','$comments','$hostname','$office_index','$location_desc','$rentalinfo','$rentalreference','$rentalstartdate','$rentalenddate','$rentalvalue','$assetidentifier','$ipaddress','$auditstatus','$parent_assetid','$assigned_type','$assigned_agency','$assigned_bg')";
+	$sql ="insert into asset (assetcategoryid,statusid,agencyid,model,serialno,employee,po_date,po_num,invoiceno,invoicedate,invoiceamount,comments,hostname,office_index,location_desc,rentalinfo,rentalreference,rentalstartdate,rentalenddate,rentalvalue,assetidentifier,ipaddress,auditstatus,parent_assetid,assigned_type,assigned_agency,assigned_bg)";
+	$sql.=" values ('$assetcategoryid','$statusid','$agencyid','$model','$serialno','$employee','$po_date','$po_number','$invoiceno','$invoicedate','$invoiceamount','$comments','$hostname','$office_index','$location_desc','$rentalinfo','$rentalreference','$rentalstartdate','$rentalenddate','$rentalvalue','$assetidentifier','$ipaddress','$auditstatus','$parent_assetid','$assigned_type','$assigned_agency','$assigned_bg')";
 	$result = mysql_query($sql);
 	
 	echo "<h2>The Asset has been added.<br><br><a href=add_asset_1.php>Add another asset</a></h2>";

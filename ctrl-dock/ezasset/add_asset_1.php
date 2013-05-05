@@ -26,7 +26,7 @@ include_once("config.php");
 include_once("searchasset.php");
 if (!check_feature(36)){feature_error();exit;}
 ?>
-<body onload="assignment('<?=$assigned_type;?>')">
+<body onLoad="assignment('<?=$assigned_type;?>')">
 <br>
 <table border=0 width=100% cellpadding="2" cellspacing="0" bgcolor=#E5E5E5>
   <tr>
@@ -112,11 +112,11 @@ if (!check_feature(36)){feature_error();exit;}
 	</tr>
 	<tr>
 		<td class='tdformlabel'>Contract Start Date</td>
-		<td align=right><input size=20 class=forminputtext name=rentalstartdate id="startdate" readonly onclick="fPopCalendar('startdate')"></td>
+		<td align=right><input size=20 class=forminputtext name=rentalstartdate id="startdate" readonly onClick="fPopCalendar('startdate')"></td>
 	</tr>
 	<tr>
 		<td class='tdformlabel'>Contract End Date</td>
-		<td align=right><input size=20 class=forminputtext name=rentalenddate id="enddate" readonly onclick="fPopCalendar('enddate')"></td>
+		<td align=right><input size=20 class=forminputtext name=rentalenddate id="enddate" readonly onClick="fPopCalendar('enddate')"></td>
 	</tr>
 	<tr>
 		<td class='tdformlabel'>Contract Value</td>
@@ -142,15 +142,23 @@ if (!check_feature(36)){feature_error();exit;}
 		</td>
 	</tr>
 	<tr>
-		<td class='tdformlabel'>Date</td>
-		<td align=right><input size=20 class=forminputtext name=invoicedate id="data" readonly onclick="fPopCalendar('data')"></td>
+		<td class='tdformlabel'>Purchase Order Date</td>
+		<td align=right><input size="20" class="forminputtext" name="txtpodate" id="podate" readonly onClick="fPopCalendar('podate')"></td>
+	</tr>
+	<tr>
+		<td class='tdformlabel'>Purchase Order No.</td>
+		<td align=right><input size="40" class="forminputtext" name="ponum"></td>
+	</tr>
+	<tr>
+		<td class='tdformlabel'>Invoice Date</td>
+		<td align=right><input size=20 class=forminputtext name=invoicedate id="data" readonly onClick="fPopCalendar('data')"></td>
 	</tr>
 	<tr>
 		<td class='tdformlabel'>Invoice No.</td>
 		<td align=right><input size=40 class=forminputtext name=invoiceno></td>
 	</tr>
 	<tr>
-		<td class='tdformlabel'>Value</td>
+		<td class='tdformlabel'>Invoice Value</td>
 		<td align=right><input size=40 class=forminputtext name=invoiceamount></td>
 	</tr>
 	
@@ -176,7 +184,7 @@ if (!check_feature(36)){feature_error();exit;}
 	<tr>
 		<td class='tdformlabel'>Assigned Type</td>
 		<td align=right>	
-			<select class="formselect" size=1 name=assigned_type onchange="assignment(this.value)">		
+			<select class="formselect" size=1 name=assigned_type onChange="assignment(this.value)">		
 			<?
 				echo "<option value='employee'>Individual</option>";
 				echo "<option value='agency'>Agency</option>";
