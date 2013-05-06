@@ -34,7 +34,7 @@ include("header.php");
 	<td>
 	<select size=1 name=account_status style="font-size: 8pt; font-family: Arial">
 	<?php
-		echo "<option value=%></option>";
+		echo "<option value=></option>";
 	        $sql = "select account_status from account_status order by account_status"; 	
 		$result = mysql_query($sql);
 		while ($row = mysql_fetch_row($result)) {
@@ -50,7 +50,7 @@ include("header.php");
 	<td>
 	<select size=1 name=account_type style="font-size: 8pt; font-family: Arial">
 	<?php
-		echo "<option value=%></option>";
+		echo "<option value=></option>";
 	        $sql = "select * from account_type order by account_type"; 	
 		$result = mysql_query($sql);
 		while ($row = mysql_fetch_row($result)) {

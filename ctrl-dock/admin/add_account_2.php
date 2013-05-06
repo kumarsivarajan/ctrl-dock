@@ -16,6 +16,7 @@ if ($ACCOUNT_AS_EMAIL==0){
 	$account=trim($_REQUEST["account"]);
 }
 if (strlen($account)<= 0){$error=1;}
+$account=strtolower($account);
 
 
 $sql = "select count(*) from user_master where account='$account'";
@@ -61,8 +62,8 @@ $contact_phone_mobile=$_REQUEST["contact_phone_mobile"];
 $contact_address=mysql_real_escape_string($_REQUEST["contact_address"]);
 $permanent_address=mysql_real_escape_string($_REQUEST["permanent_address"]);
 
-$personal_email=$_REQUEST["personal_email"];
-$account_status=$_REQUEST["account_status"];
+$personal_email=trim($_REQUEST["personal_email"]);
+$account_status=trim($_REQUEST["account_status"]);
 
 // Check for validity of the account expiry date
 $account_expiry=$_REQUEST["account_expiry"];

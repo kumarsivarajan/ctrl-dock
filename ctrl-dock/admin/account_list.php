@@ -36,11 +36,19 @@ $account_type=$_REQUEST['account_type'];
     	$limit = 20;
     	$startpoint = ($page * $limit) - $limit;
 	
-$sql = "select first_name,last_name,staff_number,account_type,account_status,c.business_group,b.country,a.account_expiry,a.username from user_master a,office_locations b, business_groups c where a.office_index=b.office_index and a.business_group_index=c.business_group_index";
-$sql = $sql . " and b.country like '$country' and a.account_status like '$account_status' and a.account_type like '$account_type' and a.staff_number like '$staff_number' and a.username like '$alphabet%' and a.username like '%$account%'";
-$sql = $sql . " order by a.first_name LIMIT ".$startpoint.",".$limit;
-$result = mysql_query($sql);
-$record_count=mysql_num_rows($result);
+		$sql = "select first_name,last_name,staff_number,account_type,account_status,c.business_group,b.country,a.account_expiry,a.username from user_master a,office_locations b, business_groups c where a.office_index=b.office_index and a.business_group_index=c.business_group_index";
+		if(strlen($account_type) > 0){
+				$sql.=" and a.account_type like '$account_type%'";
+		}
+		if(strlen($account_status) > 0){
+				$sql.=" and a.account_status like '$account_status%'";
+		}
+
+		$sql.=" and b.country like '$country' and a.staff_number like '$staff_number' and a.username like '$alphabet%' and a.username like '%$account%'";
+		$sql.=" order by a.first_name LIMIT ".$startpoint.",".$limit;
+
+		$result = mysql_query($sql);
+		$record_count=mysql_num_rows($result);
 
 ?>
 		

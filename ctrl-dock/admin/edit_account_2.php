@@ -38,8 +38,8 @@ $contact_phone_mobile=$_REQUEST["contact_phone_mobile"];
 $contact_address=mysql_real_escape_string($_REQUEST["contact_address"]);
 $permanent_address=mysql_real_escape_string($_REQUEST["permanent_address"]);
 
-$personal_email=$_REQUEST["personal_email"];
-$official_email=$_REQUEST["official_email"];
+$personal_email=trim($_REQUEST["personal_email"]);
+$official_email=trim($_REQUEST["official_email"]);
 
 $account_status=$_REQUEST["account_status"];
 
