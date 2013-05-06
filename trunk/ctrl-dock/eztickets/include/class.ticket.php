@@ -64,7 +64,7 @@ class Ticket{
               ' LEFT JOIN '.TOPIC_TABLE.' topic ON ticket.topic_id=topic.topic_id '.
               ' LEFT JOIN '.TICKET_LOCK_TABLE.' tlock ON ticket.ticket_id=tlock.ticket_id AND tlock.expire>NOW() '.
               ' WHERE ticket.ticket_id='.db_input($id); 
-        //echo $sql;
+        $sql;
         if(($res=db_query($sql)) && db_num_rows($res)):
             $row=db_fetch_array($res);
             $this->id       =$row['ticket_id'];
@@ -456,6 +456,21 @@ class Ticket{
 		}
 		
 		$sql= 'UPDATE '.TICKET_TABLE.' SET status='.db_input('closed').',isoverdue=0,duedate=NULL,updated=NOW(),closed=NOW() WHERE ticket_id='.$ticket_id;	  
+        return (db_query($sql) && db_affected_rows())?true:false;
+    }
+	
+	// set the pending approval status
+	function setpa(){
+        
+        $sql= 'UPDATE '.TICKET_TABLE.' SET pending_approval=1'.
+              ' WHERE ticket_id='.db_input($this->getId());
+        return (db_query($sql) && db_affected_rows())?true:false;
+    }
+	
+	// unset the pending approval status
+	function unsetpa(){
+        $sql= 'UPDATE '.TICKET_TABLE.' SET pending_approval=0'.
+              ' WHERE ticket_id='.db_input($this->getId());
         return (db_query($sql) && db_affected_rows())?true:false;
     }
 	
@@ -1458,7 +1473,8 @@ class Ticket{
         if($var['duedate'] && !strcasecmp($origin,'staff'))
              $sql.=',duedate='.db_input(date('Y-m-d G:i',Misc::dbtime($var['duedate'].' '.$var['time'])));
 
-        //echo $sql;
+        echo $sql;
+		//exit;
         $ticket=null;
         //return $ticket;
         if(db_query($sql) && ($id=db_insert_id())){
@@ -1525,6 +1541,7 @@ class Ticket{
 
                 $sql='SELECT ticket_alert_subj,ticket_alert_body FROM '.EMAIL_TEMPLATE_TABLE.
                     ' WHERE cfg_id='.db_input($cfg->getId()).' AND tpl_id='.db_input($tplId);
+				
                 if(($resp=db_query($sql)) && db_num_rows($resp) && list($subj,$body)=db_fetch_row($resp)){
 
                     $body=$ticket->replaceTemplateVars($body);
