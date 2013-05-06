@@ -1,5 +1,11 @@
 <?php
 //Note that ticket is initiated in tickets.php.
+//echo "<pre>";
+//print_r($ticket);
+
+$tid = $_REQUEST['id'];
+
+
 if(!defined('OSTSCPINC') || !@$thisuser->isStaff() || !is_object($ticket) ) die('Invalid path');
 if(!$ticket->getId() or (!$thisuser->canAccessDept($ticket->getDeptId()) and $thisuser->getId()!=$ticket->getStaffId())) die('Access Denied');
 
@@ -49,6 +55,31 @@ $sql="select ticket_type from isost_ticket_type where ticket_type_id = $ticketty
 $result=mysql_query($sql);
 $row=mysql_fetch_array($result);
 $tickettype=$row[0];
+
+$sql="select pending_approval from isost_ticket where ticket_id=$id";
+$result=mysql_query($sql);
+$row=mysql_fetch_array($result);
+$pending_approval=$row[0];
+
+
+$ticket_status=$ticket->getStatus();
+if($ticket_status=="open"){
+	if($pending_approval==1){
+				$pending_approval="Pending Approval";
+			}else{
+				$requested_by=$_SESSION['_staff']['userID'];
+				$sub_sql="select firstname,lastname from isost_staff where username='$requested_by'";
+				$sub_result = mysql_query( $sub_sql );
+				$sub_row = mysql_fetch_row($sub_result);
+				$requested_by=$sub_row[0]." ".$sub_row[1];				
+				
+				$url="javascript:window.open('../scp/req_ticket_approval_1.php?ticket_id=$id&requested_by=$requested_by','TICKET APPROVAL REQUIRED','height=300,width=400,location=no,menubar=no,status=no,toolbar=no')";
+				$pending_approval='<a href="'.$url.'"><b>Request Approval</b></a>';	
+			}
+		}else{
+			$pending_approval="";
+		}
+
 	
 ?>
 <script type="text/javascript">
@@ -86,12 +117,12 @@ function ShowInternalLocation(){
 					if($row[0]==0){
 					?>
 						<a href=javascript:void(window.open('../../rca/rca_create_1.php?ticket_id=<?=$ticket->getExtId()?>','InitiateRCA','height=200,width=500'))>Initiate RCA</a>
-					<?}
+					<? }
 					
 					if($row[0]>0){
 					?>
 						<a href='../../rca/rca_edit_1.php?activity_id=<?=$ticket->getExtId()?>'>Edit RCA</a>
-			<?}?>
+			<? } ?>
         </td>
     </tr>
     <tr><td colspan=2 class="msg" style="height:40px">Subject : <?=Format::htmlchars($ticket->getSubject())?></td></tr>
@@ -134,7 +165,7 @@ function ShowInternalLocation(){
 		<table align="center" class="ticketinfo" cellspacing="1" cellpadding="3" width="100%" border=0>
 			<tr>
 				<th>Status</th>
-				<td><?=$ticket->getStatus()?><?if($ticket->getLocation()!=""){
+				<td><?=$ticket->getStatus()?>&nbsp;&nbsp;<?=$pending_approval?>&nbsp;&nbsp;<? if($ticket->getLocation()!=""){
 												print "(".$ticket->getLocation().")";
 											     }
 							      ?>
@@ -257,18 +288,23 @@ if($thisuser->canManageTickets() || $thisuser->isManager()){ ?>
                 <option value="">Select Action</option>
                 <option value="change_priority" <?=$info['do']=='change_priority'?'selected':''?> >Change Priority</option>
                 <?if(!$ticket->isoverdue()){ ?>
-                <option value="overdue" <?=$info['do']=='overdue'?'selected':''?> >Mark Overdue</option>
+                <!--<option value="overdue" <?=$info['do']=='overdue'?'selected':''?> >Mark Overdue</option>-->
                 <?}?>
                 <?if($ticket->isAssigned()){ ?>
                 <option value="release" <?=$info['do']=='release'?'selected':''?> >Release (unassign)</option>
                 <?}?>
                 
                 <?if($thisuser->canCloseTickets()){
-					//if you can close a ticket...reopening it is given.
-					?>
-				    <option value="reopen" <?=$info['do']=='reopen'?'selected':''?> >Reopen Ticket</option>
-					<?
-                }?>
+                    if($ticket->isOpen()){?>
+						<?if($pending_approval=="Pending Approval"){?>
+						 <option value="unsetpa">Mark as Approval Recieved</option>
+						 <?}else{?>
+						 <option value="setpa" >Mark as Approval Pending</option>
+						 <?}?>
+					<?}else{?>
+						<option value="reopen" <?=$info['do']=='reopen'?'selected':''?> >Reopen Ticket</option>
+					<?}?>
+                <?}?>
                 <?if($thisuser->canDeleteTickets()){ //oooh...fear the deleters! ?>
                 <option value="delete" >Delete Ticket</option>
                 <?}?>
@@ -376,6 +412,7 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
                         <input type="hidden" name="ticket_id" value="<?=$id?>">
                         <input type="hidden" name="msg_id" value="<?=$msgid?>">
                         <input type="hidden" name="a" value="reply">
+						 
                         <div><font class="error">&nbsp;<?=$errors['response']?></font></div>
 			<div><font class="error">&nbsp;<?=$errors['location']?></font></div>
                         <div>

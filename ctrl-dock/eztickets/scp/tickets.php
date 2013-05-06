@@ -323,6 +323,36 @@ if($_POST && !$errors):
                         }
                     }
                     break;
+				case 'setpa':
+                    //if they can close...then assume they can request for approval.
+                    if(!$thisuser->isadmin() && !$thisuser->canCloseTickets()){
+                         $errors['err']='Perm. Denied. You are not allowed to set the status to pending approval';
+                    }else{
+                        if($ticket->setpa()){
+                            $msg='Ticket is pending external approval';
+                            $note='Ticket is pending external approval';
+                            $note.=' requested by '.$thisuser->getName();
+                            $ticket->logActivity('Ticket Pending Approval',$note);
+                        }else{
+                            $errors['err']='Problems setting status to pending approval. Try again';
+                        }
+                    }
+                break;
+				case 'unsetpa':
+                    //if they can close...then assume they can request for approval.
+                    if(!$thisuser->isadmin() && !$thisuser->canCloseTickets()){
+                         $errors['err']='Perm. Denied. You are not allowed to set the status to pending approval';
+                    }else{
+                        if($ticket->unsetpa()){
+                            $msg='Ticket has the approval';
+                            $note='Ticket has the approval';
+                            $note.=' as recorded by '.$thisuser->getName();
+                            $ticket->logActivity('Ticket has the approval',$note);
+                        }else{
+                            $errors['err']='Problems setting status to approved. Try again';
+                        }
+                    }
+                break;
                 case 'reopen':
                     //if they can close...then assume they can reopen.
                     if(!$thisuser->isadmin() && !$thisuser->canCloseTickets()){
