@@ -293,7 +293,7 @@ function functionrecur(str)
 						$display = date('d-m-Y',$row[2]);
 					}
 				?>
-				<td align=right><input class=formnputtext style='width:102' name=schedule_date id="schedule_date" value="<?php echo $display;?>" onclick="fPopCalendar('schedule_date')" readonly></td>
+				<td align=right><input class=formnputtext  name=schedule_date id="schedule_date" value="<?php echo $display;?>" style="font-size: 9pt; font-family: Arial; width:165px;" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF></td>
 			</tr>
 			
 <tr>

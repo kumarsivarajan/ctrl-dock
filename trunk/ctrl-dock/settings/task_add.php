@@ -272,7 +272,7 @@ function functionrecur(str)
 <br>
 			<tr>
 				<td class='tdformlabel'><b>&nbsp;Schedule Date</font></b></td>
-				<td align=right><input class=formnputtext style='width:102' name=schedule_date id="schedule_date" onclick="fPopCalendar('schedule_date')" readonly></td>
+				<td align=right><input class=formnputtext name=schedule_date id="schedule_date" style="font-size: 9pt; font-family: Arial; width:165px;" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF></td>
 			</tr>
 
 <tr>

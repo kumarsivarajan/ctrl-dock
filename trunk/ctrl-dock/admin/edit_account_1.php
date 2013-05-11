@@ -195,7 +195,7 @@ if ($row[14]=="Obsolete"){
 </tr>
 	<td class='tdformlabel'>Valid Till</td>
 	<? if (strlen($row[15])>0){$expiry=date("d-m-Y",$row[15]);}else{$expiry="";}?>
-	<td  align=right><input value="<? echo $expiry; ?>" style="font-size: 8pt; font-family: Arial; width: 75px;" name=account_expiry id="account_expiry" onclick="fPopCalendar('account_expiry')"></td>
+	<td  align=right><input value="<? echo $expiry; ?>" style="font-size: 8pt; font-family: Arial; width:165px;" name=account_expiry id="account_expiry" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF></td>
 </tr>
 
 <input name="account" size=40 type=hidden value="<? echo $row[0]; ?>">

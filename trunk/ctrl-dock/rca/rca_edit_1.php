@@ -92,7 +92,7 @@ if($record_count>0){
 <tr>
 	<td class=reportdata width=500>Incident Date / Time</td>
 	<td>
-		<input style="width: 80px;" class=forminputtext name=open_date id="open_date" value="<?=$open_date;?>" onclick="fPopCalendar('open_date')">
+		<input class=forminputtext name=open_date id="open_date" value="<?=$open_date;?>" style="font-size: 9pt; font-family: Arial; width:165px;" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF>
 		<select size=1 class=formselect name="open_time_hh">
 		<option value='<?=$open_time_hh;?>'><?=$open_time_hh;?></option>
 			<?
@@ -116,7 +116,7 @@ if($record_count>0){
 <tr>
 	<td class=reportdata width=500>Attended Date / Time</td>
 	<td>
-		<input style="width: 80px;" class=forminputtext name=attended_date id="attended_date" value="<?=$attended_date;?>" onclick="fPopCalendar('attended_date')">
+		<input class=forminputtext name=attended_date id="attended_date" value="<?=$attended_date;?>" style="font-size: 9pt; font-family: Arial; width:165px;" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF>
 		<select size=1 class=formselect name="attended_time_hh">
 		<option value='<?=$attended_time_hh;?>'><?=$attended_time_hh;?></option>
 			<?
@@ -140,7 +140,7 @@ if($record_count>0){
 <tr>
 	<td class=reportdata width=500>Closure Date / Time</td>
 	<td>
-		<input style="width: 80px;" class=forminputtext name=closure_date id="closure_date" value="<?=$closure_date;?>" onclick="fPopCalendar('closure_date')">
+		<input class=forminputtext name=closure_date id="closure_date" value="<?=$closure_date;?>" style="font-size: 9pt; font-family: Arial; width:165px;" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF>
 		<select size=1 class=formselect name="closure_time_hh">
 		<option value='<?=$closure_time_hh;?>'><?=$closure_time_hh;?></option>
 			<?

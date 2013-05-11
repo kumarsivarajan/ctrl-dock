@@ -1,3 +1,3 @@
-<script type="text/javascript" src="../include/js/calendar.js"></script>
-<link rel="stylesheet" title="CSS StyleSheet" href="../include/css/calendar.css" type="text/css" media="all" />
+<script src="../include/js/jquery.min.js" type="text/javascript"></script>
+<script src="../include/js/cal.js" type="text/javascript"></script>
 <center>

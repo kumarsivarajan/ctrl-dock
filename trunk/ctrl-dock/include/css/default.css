@@ -70,14 +70,14 @@ fieldset  {
     margin-bottom: 3px;  
 }
 .formselect  {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: normal;
     font-family: Arial;
     color: #000000;
     background-color: #FFFFFF;
     border: solid 1px #DFDFDF;
-    margin-top: 3px;  
-    height: 11px;
+    margin-top: 1px;  
+    height: 20px;
     margin-bottom: 1px; 
 }
 .auditselect {
@@ -89,14 +89,14 @@ fieldset  {
 	bottom:4px;
 }
 .forminputtext   {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: normal;
     font-family: Arial;
 	color: #000000;
 	background-color: #FFFFFF;
 	border: solid 1px #DFDFDF;
-	height: 18px;
-	margin-top: 3px;  
+	height: 20px;
+	margin-top: 1px;  
 	margin-bottom: 1px;
 }
 .formtextarea  {
@@ -107,17 +107,6 @@ fieldset  {
     background-color: #FFFFFF;
     border: solid 1px #DFDFDF;
     margin-top: 3px;  
-    margin-bottom: 1px; 
-}
-.formselect  {
-    font-size: 11px;
-    font-weight: normal;
-    font-family: Arial;
-    color: #000000;
-    background-color: #FFFFFF;
-    border: solid 1px #DFDFDF;
-    margin-top: 3px;  
-    height: 15px;
     margin-bottom: 1px; 
 }
 .accountheader  {
@@ -199,6 +188,13 @@ label {
     font-family: Arial;
 	color: #000000;
 	text-align: left;
+	
+}
+/*#ping_history {
+	z-index:-99999999;
+}*/
+#fc {
+	z-index:99999999;
 }
 
 </style>

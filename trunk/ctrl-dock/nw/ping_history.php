@@ -2,9 +2,9 @@
 include("config.php"); 
 
 $hostname	=$_REQUEST["hostname"];
-$records	=$_REQUEST["records"];
-if(strlen($records)<=0){$records=60;}
-
+$timedetail	=$_REQUEST["timedetail"];
+$fromdate	=$_REQUEST["fromdate"];
+$todate		=$_REQUEST["todate"];
 
 $sql	="select host_id from hosts_master where hostname='$hostname'";
 $result = mysql_query($sql);
@@ -17,15 +17,17 @@ $host_id=$row[0];
 </table>
 <table class="reporttable" width=500>
 <td class='reportdata' style='text-align:center;' colspan=6>
-<form method=POST action=ping_history.php?hostname=<?=$hostname;?> id=refresh>
-	Display Last <input name="records" size="3" value=<?=$records;?> class='forminputtext' onBlur=document.forms["refresh"].submit(); > Records
-</form>
 </td>
 </tr>
 <tr><td colspan=6>
 <?
+$sql="select timestamp,nw_status,min,avg,max from hosts_nw_log where host_id='$host_id'";
+if(strlen($timedetail)>0){
+	$sql.= " and timestamp >= '$timedetail' order by record_id desc";
+}else{
+	$sql.= " and timestamp BETWEEN '$fromdate' and '$todate' order by record_id desc";
+}
 
-$sql = "select timestamp,nw_status,min,avg,max from hosts_nw_log where host_id='$host_id' order by record_id desc LIMIT $records";
 $result = mysql_query($sql);
 $record_count=mysql_num_rows($result);
 

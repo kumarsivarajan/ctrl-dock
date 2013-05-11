@@ -1,4 +1,5 @@
-<?include_once("../auth.php");
+<? include_once("../auth.php");
+session_start();
 include_once("../include/config.php");
 include_once("../include/system_config.php");
 include_once("../include/css/default.css");
@@ -8,6 +9,8 @@ $base_url="http://";
 if ($HTTPS==1){$base_url="https://";}
 $base_url.=$_SERVER["SERVER_NAME"]."/".$INSTALL_HOME;
 $username=$_SESSION['username'];
+
+
 ?>
 <center>
 <table border=0 width=100% cellpadding="2" cellspacing="0" bgcolor=#E5E5E5 >
@@ -38,6 +41,7 @@ $host_list = load_xml($url);
 if(count($host_list)>0){
 	for($i=0;$i<count($host_list);$i++){		
 			$hostname=$host_list->host[$i]->hostname;
+			
 			if(strlen($hostname)>0){
 			$platform=$host_list->host[$i]->platform;
 			$description=$host_list->host[$i]->description;
@@ -76,6 +80,10 @@ if(count($host_list)>0){
 			echo "<td class='reportdata'>".$description."</td>";
 			echo "<td class='reportdata'>".$hostname."</td>";
 			echo "<td class='reportdata' style='text-align: center;'>".$platform."</td>";
+			
+			/*$_SESSION['hostname'] == '$hostname';
+			echo "<pre>";
+			print_r($_SESSION['hostname']);*/
 			
 			if ($network==1){$bgcolor="#65C60D";$text="UP";}
 			if ($network==0){$bgcolor="#FF0000";$text="DOWN";}
@@ -124,7 +132,7 @@ if(count($host_list)>0){
 				}
 			}
 			echo "<td class='reportdata' style='text-align: center;background-color: #A9A9A9;' width=20>
-			<a href='../nw/show_host_details.php?hostname=$hostname'><img border=0 src='../images/history.gif'></a></td>";
+			<a href='../nw/show_host_details.php?hostname=$hostname&desc=$description'><img border=0 src='../images/history.gif'></a></td>";
 			echo "</tr>";
 		}
 	}

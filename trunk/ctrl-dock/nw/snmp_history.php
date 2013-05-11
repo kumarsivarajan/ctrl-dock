@@ -2,8 +2,9 @@
 include("config.php"); 
 
 $hostname	=$_REQUEST["hostname"];
-$records	=$_REQUEST["records"];
-if(strlen($records)<=0){$records=20;}
+$timedetail	=$_REQUEST["timedetail"];
+$fromdate	=$_REQUEST["fromdate"];
+$todate		=$_REQUEST["todate"];
 
 
 $sql	="select host_id from hosts_master where hostname='$hostname'";
@@ -16,11 +17,6 @@ $host_id=$row[0];
 <tr><td class='reportdata' colspan=5><b>SNMP Statistics : <?echo $hostname;?></b></td></tr>
 </table>
 <table class="reporttable" width=550 cellpadding=2>
-<td class='reportdata' style='text-align:center;' colspan=5>
-<form method=POST action=snmp_history.php?hostname=<?echo $hostname;?> id=refresh>
-	Display Last <input name="records" size="3" value=<?=$records;?> class='forminputtext' onBlur=document.forms["refresh"].submit(); > Records
-</form>
-</td>
 </tr>
 <tr>
 	<td class="reportheader" width=90 colspan=2>Date & Time</td>	
@@ -31,7 +27,13 @@ $host_id=$row[0];
 	<td class="reportheader" width=85>Disk Utilization</td>
 </tr>
 <?
-$sql = "select timestamp,nw_snmp_cpu_status,nw_snmp_mem_status,cpu_user,cpu_system,cpu_idle,mem_utilization,nw_snmp_dsk_status,disk_utilization from hosts_nw_snmp_log where host_id='$host_id' order by record_id desc LIMIT $records";
+$sql = "select timestamp,nw_snmp_cpu_status,nw_snmp_mem_status,cpu_user,cpu_system,cpu_idle,mem_utilization,nw_snmp_dsk_status,disk_utilization from hosts_nw_snmp_log where host_id='$host_id'";
+if(strlen($timedetail)>0){
+	$sql.= "and timestamp >= '$timedetail' order by record_id desc";
+}else{
+	$sql.= "and timestamp BETWEEN '$fromdate' and '$todate' order by record_id desc";
+}
+
 $result = mysql_query($sql);
 $i=0;
 $row_color="#FFFFFF";
