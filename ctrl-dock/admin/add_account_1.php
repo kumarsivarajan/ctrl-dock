@@ -167,7 +167,7 @@ include("header.php");
 <tr>
 </tr>
 	<td class='tdformlabel'>Valid Till</td>
-	<td  align=right><input class=formnputtext name=account_expiry id="account_expiry" onclick="fPopCalendar('account_expiry')"></td>
+	<td  align=right><input class=formnputtext name=account_expiry id="account_expiry" style="font-size: 8pt; font-family: Arial; width:165px;" id="account_expiry" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF></td>
 </tr>
 <input name="account_type" size=40 type=hidden value="employee">
 

@@ -97,7 +97,7 @@ if($record_count>0){
 <tr>
 	<td class=reportdata width=500>Scheduled Start Date / Time</td>
 	<td class=reportdata width=500>
-		<input style="width: 80px;" class=forminputtext name=s_from_date id="s_from_date" value="<?=$s_from_date;?>" onclick="fPopCalendar('s_from_date')">
+		<input class=forminputtext name=s_from_date id="s_from_date" value="<?=$s_from_date;?>" style="font-size: 9pt; font-family: Arial; width:165px;" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF>
 		<select size=1 class=formselect name="s_from_time_hh">
 		<option value='<?=$s_from_time_hh;?>'><?=$s_from_time_hh;?></option>
 			<?
@@ -121,7 +121,7 @@ if($record_count>0){
 <tr>
 	<td class=reportdata width=500>Scheduled End Date / Time</td>
 	<td class=reportdata width=500>
-		<input style="width: 80px;" class=forminputtext name=s_to_date id="s_to_date" value="<?=$s_end_date;?>" onclick="fPopCalendar('s_to_date')">
+		<input class=forminputtext name=s_to_date id="s_to_date" value="<?=$s_end_date;?>" style="font-size: 9pt; font-family: Arial; width:165px;" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF>
 		<select size=1 class=formselect name="s_to_time_hh">
 		<option value='<?=$s_end_time_hh;?>'><?=$s_end_time_hh;?></option>
 			<?
@@ -145,7 +145,7 @@ if($record_count>0){
 <tr>
 	<td class=reportdata width=500>Actual Start Date / Time</td>
 	<td class=reportdata width=500>
-		<input style="width: 80px;" class=forminputtext name=a_from_date id="a_from_date" value="<?=$a_from_date;?>" onclick="fPopCalendar('a_from_date')">
+		<input class=forminputtext name=a_from_date id="a_from_date" value="<?=$a_from_date;?>" style="font-size: 9pt; font-family: Arial; width:165px;" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF>
 		<select size=1 class=formselect name="a_from_time_hh">
 		<option value='<?=$a_from_time_hh;?>'><?=$a_from_time_hh;?></option>
 			<?
@@ -169,7 +169,7 @@ if($record_count>0){
 <tr>
 	<td class=reportdata width=500>Actual End Date / Time</td>
 	<td class=reportdata width=500>
-		<input style="width: 80px;" class=forminputtext name=a_to_date id="a_to_date" value="<?=$a_end_date;?>" onclick="fPopCalendar('a_to_date')">
+		<input class=forminputtext name=a_to_date id="a_to_date" value="<?=$a_end_date;?>" style="font-size: 9pt; font-family: Arial; width:165px;" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF>
 		<select size=1 class=formselect name="a_to_time_hh">
 		<option value='<?=$a_end_time_hh;?>'><?=$a_end_time_hh;?></option>
 			<?

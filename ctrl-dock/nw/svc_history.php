@@ -2,8 +2,10 @@
 include("config.php"); 
 
 $hostname	=$_REQUEST["hostname"];
-$records	=$_REQUEST["records"];
-if(strlen($records)<=0){$records=10;}
+$timedetail	=$_REQUEST["timedetail"];
+$fromdate	=$_REQUEST["fromdate"];
+$todate		=$_REQUEST["todate"];
+
 
 
 $sql	="select host_id from hosts_master where hostname='$hostname'";
@@ -16,11 +18,6 @@ $host_id=$row[0];
 <tr><td class='reportdata' colspan=5><b>Service Availability : <?=$hostname;?></b></td></tr>
 </table>
 <table class="reporttable" width=450>
-<td class='reportdata' style='text-align:center;' colspan=3>
-<form method=POST action=svc_history.php?hostname=<?=$hostname;?> id=refresh>
-	Display Last <input name="records" size="3" value=<?echo $records;?> class='forminputtext' onBlur=document.forms["refresh"].submit(); > Records
-</form>
-</td>
 </tr>
 
 <?
@@ -34,7 +31,13 @@ while ($row = mysql_fetch_row($result)){
 	$graph_data	=array();
 	$summary	=array();
 	
-	$sub_sql = "SELECT a.timestamp,a.svc_status FROM hosts_service_log a WHERE a.host_id='$host_id'AND a.port='$port' order by record_id desc LIMIT $records";
+	$sub_sql = "SELECT a.timestamp,a.svc_status FROM hosts_service_log a WHERE a.host_id='$host_id'AND a.port='$port'";
+	if(strlen($timedetail)>0){
+		$sub_sql.= " and timestamp >= '$timedetail' order by record_id desc";
+	}else{
+		$sub_sql.= " and timestamp BETWEEN '$fromdate' and '$todate' order by record_id desc";
+	}
+
 	$sub_result = mysql_query($sub_sql);
 	$record_count=mysql_num_rows($sub_result);
 

@@ -161,11 +161,11 @@ while ($current= mysql_fetch_row($result)) {
 	</tr>
 	<tr>
 		<td class='tdformlabel'>Contract Start Date</td>
-		<td align=right><input size=20 class=forminputtext name=rentalstartdate id="startdate" readonly onClick="fPopCalendar('startdate')" value="<?=$rentalstartdate;?>"></td>
+		<td align=right><input class=forminputtext name=rentalstartdate id="startdate" style="font-size: 9pt; font-family: Arial; width:165px;" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF value="<?=$rentalstartdate;?>"></td>
 	</tr>
 	<tr>
 		<td class='tdformlabel'>Contract End Date</td>
-		<td align=right><input size=20 class=forminputtext name=rentalenddate id="enddate" readonly onClick="fPopCalendar('enddate')" value="<?=$rentalenddate;?>"></td>
+		<td align=right><input class=forminputtext name=rentalenddate id="enddate" style="font-size: 9pt; font-family: Arial; width:165px;" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF value="<?=$rentalenddate;?>"></td>
 	</tr>
 	<tr>
 		<td class='tdformlabel'>Contract Value</td>
@@ -195,7 +195,7 @@ while ($current= mysql_fetch_row($result)) {
 	
 	<tr>
 		<td class='tdformlabel'>Purchase Order Date</td>
-		<td align=right><input value='<?=$po_date_detail;?>' class="forminputtext" name="txtpodate" id="podate" readonly onClick="fPopCalendar('podate')"></td>
+		<td align=right><input value='<?=$po_date_detail;?>' class="forminputtext" name="txtpodate" id="podate" style="font-size: 9pt; font-family: Arial; width:165px;" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF></td>
 	</tr>
 	<tr>
 		<td class='tdformlabel'>Purchase Order No.</td>
@@ -204,7 +204,7 @@ while ($current= mysql_fetch_row($result)) {
 	
 	<tr>
 		<td class='tdformlabel'>Invoice Date</td>
-		<td align=right><input value='<?=$invoicedate;?>' class=forminputtext name=invoicedate id="data" readonly onClick="fPopCalendar('data')"></td>
+		<td align=right><input value='<?=$invoicedate;?>' class=forminputtext name=invoicedate id="data" style="font-size: 9pt; font-family: Arial; width:165px;" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF></td>
 	</tr>
 	<tr>
 		<td class='tdformlabel'>Invoice No.</td>
