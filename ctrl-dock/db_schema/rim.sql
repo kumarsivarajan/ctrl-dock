@@ -234,6 +234,8 @@ CREATE TABLE `asset` (
   `assigned_bg` varchar(50) default NULL,
   `parent_assetid` varchar(50) default '0',
   `paymentref` varchar(255) default NULL,
+  `po_date` varchar(30) default '',
+  `po_num` varchar(30) default '',
   PRIMARY KEY  (`assetid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
 
@@ -1607,6 +1609,19 @@ CREATE TABLE `poa_approval_history` (
    `item_order` int(10),
    PRIMARY KEY (`record_index`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+
+CREATE TABLE `isost_ticket_approval` (
+  `approval_id` int(11) NOT NULL auto_increment,
+  `ticket_id` int(11) default NULL,
+  `request_date` int(10) default NULL,
+  `requested_by` varchar(255) default NULL,
+  `approval_by` varchar(255) default NULL,
+  `approval_date` int(10) default NULL,
+  `approval_comments` varchar(255) default NULL,
+  `approval_key` varchar(255) default NULL,
+  `approval_status` varchar(20) default 'PENDING',
+  PRIMARY KEY  (`approval_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
 CREATE TABLE `terminal_login` (
   `username` varchar(255) default NULL
