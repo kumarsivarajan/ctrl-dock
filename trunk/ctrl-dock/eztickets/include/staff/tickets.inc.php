@@ -779,11 +779,9 @@ function selectBoxval(tval)
 <table width="100%" border="0" cellspacing=0 cellpadding=0 align="center">
 		<tr>
 			<td width="80%" class="msg" >&nbsp;<b><?=$showing?>&nbsp;&nbsp;&nbsp;<?=$results_type?></b></td>
-			<td width="80%" class="msg" >&nbsp;<b><? if($results_type == 'Open Tickets') { ?><a href="exporttickets.php?xls=1&status=open">Export Open Tickets</a> <? } elseif($results_type == 'Closed Tickets') { ?><a href="exporttickets.php?xls=1&status=closed">Export Closed Tickets</a><? } ?></b></td>
 			<td nowrap style="text-align:right;padding-right:5px;">
-				<a href="">
-				<img src="images/refresh.gif" alt="Refresh" border=0 align="absmiddle"></a>
-				| <a href="javascript:void(0)" onclick="manualMerge()" > <img src='images/mergemanual.gif' align="absmiddle"></a>
+				<a href=""><img src="images/refresh.gif" alt="Refresh" border=0 align="absmiddle"></a>
+				<a href="javascript:void(0)" onclick="manualMerge()" > <img src='images/mergemanual.gif' align="absmiddle"></a>
 			</td >
 		</tr>
 </table>

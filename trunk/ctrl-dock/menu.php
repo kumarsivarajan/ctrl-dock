@@ -24,7 +24,7 @@ include("include/version.php");
 
 <table border="0" cellpadding="0" cellspacing=0  width="100%" height="30" bgcolor=#336699>
 <tr>
-	<td class=mainmenu style="width:75%">
+	<td class=mainmenu>
 	&nbsp;
 	
 	<? if ($DASH==1){?>
@@ -67,7 +67,7 @@ include("include/version.php");
 	&nbsp;
 	<?}?>
 	<? if (check_feature(44)){?>
-	<a class=menulink target="rimmain" href="reports/search.php">Reports</a>
+	<a class=menulink target="rimmain" href="reports/index.php">Reports</a>
 	&nbsp;
 	<?}?>
 	<? if (check_feature(46)){?>
@@ -96,8 +96,8 @@ include("include/version.php");
 	<?}?>
 	<a target="rimmain" class=menulink href="http://www.ctrl-dock.org/help" target=_blank>Help</a>
 	</td>
-	<td class=mainmenu style="text-align:right;width:25%">
-		<font face="Arial Narrow" size=1 color="#F3F3F3">logged in as <?=$User_Full_Name;?> </font>
+	<td class=mainmenu style="text-align:right;width:200px;">
+		<font face="Arial Narrow" size=1 color="#F3F3F3"><b>User :  <?=$User_Full_Name;?></b></font>
 		&nbsp;
 		<a style="text-decoration: none" target="_top" href="logout.php">
 		<font color="#F3F3F3" face="Arial" size="2">Logout&nbsp;</font></a>
