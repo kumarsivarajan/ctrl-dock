@@ -13,20 +13,13 @@ include("header.php");
 
 <tr><td bgcolor=#666666 colspan=2><font face=Arial size=2 color=White><b>&nbsp;Account Information</b></td></tr>
 <tr>
-	<td class='tdformlabel'>Type of Account</td>
-	<td align=right>
-		<select size=1 name=account_type class='formselect'>
-			<?php
-			    $sql = "select * from account_type";	
-				$result = mysql_query($sql);
-				while ($row = mysql_fetch_row($result)) {
-		        		echo "<option value='$row[0]'>$row[1]</option>";
-				}
-			?>
-		</select>
-	</td>
+	<td class='tdformlabel'>First Name</td>
+	<td align=right><input name="first_name" size="40" class='forminputtext'></td>
 </tr>
-
+<tr>
+	<td class='tdformlabel'>Last Name</td>
+	<td align=right><input name="last_name" size="40" class='forminputtext'></td>
+</tr>
 <tr>
 	<td class='tdformlabel'>Official E-Mail<?if ($ACCOUNT_AS_EMAIL==1){echo "- <i> This will be Username to login";}?></td>
 	<td align=right><input name="official_email" size="40" class='forminputtext'></td>
@@ -50,6 +43,20 @@ include("header.php");
 
 
 <tr><td bgcolor=#666666 colspan=2><font face=Arial size=2 color=White><b>&nbsp;Additional Information</b></td></tr>
+<tr>
+	<td class='tdformlabel'>Type of Account</td>
+	<td align=right>
+		<select size=1 name=account_type class='formselect'>
+			<?php
+			    $sql = "select * from account_type";	
+				$result = mysql_query($sql);
+				while ($row = mysql_fetch_row($result)) {
+		        		echo "<option value='$row[0]'>$row[1]</option>";
+				}
+			?>
+		</select>
+	</td>
+</tr>
 <tr>
         <td class='tdformlabel'>Name of Agency (if applicable)</td>
         <td align=right>
@@ -87,14 +94,7 @@ include("header.php");
 	</td>
 </tr>
 
-<tr>
-	<td class='tdformlabel'>First Name</td>
-	<td align=right><input name="first_name" size="40" class='forminputtext'></td>
-</tr>
-<tr>
-	<td class='tdformlabel'>Last Name</td>
-	<td align=right><input name="last_name" size="40" class='forminputtext'></td>
-</tr>
+
 <tr><td bgcolor=#666666 colspan=2><font face=Arial size=2 color=White></td></tr>
 
 

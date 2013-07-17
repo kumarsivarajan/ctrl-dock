@@ -24,6 +24,29 @@ if ($row[14]=="Obsolete"){
 <table border=0 cellpadding=2 cellspacing=0 width=100%>
 
 <tr><td bgcolor=#666666 colspan=2><font face=Arial size=2 color=White><b>&nbsp;Account Information</b></td></tr>
+
+
+<tr>
+	<td class='tdformlabel'>First Name</td>
+	<td align=right><input name="first_name"  value="<? echo $row[3]; ?>" size="40" class='forminputtext'></td>
+</tr>
+<tr>
+	<td class='tdformlabel'>Last Name</td>
+	<td align=right><input name="last_name"  value="<? echo $row[4]; ?>" size="40" class='forminputtext'></td>
+</tr>
+<tr>
+	<td class='tdformlabel'>Password</td>
+	<td align=right><input name="password1" type=password size="40" class='forminputtext'></td>
+</tr>
+<tr>
+	<td class='tdformlabel'>Verify Password</td>
+	<td align=right><input name="password2" type=password size="40" class='forminputtext'></td>
+</tr>
+<tr><td bgcolor=#666666 colspan=2><font face=Arial size=2 color=White></td></tr>
+
+
+
+<tr><td bgcolor=#666666 colspan=2><font face=Arial size=2 color=White><b>&nbsp;Staff Information</b></td></tr>
 <tr>
 	<td class='tdformlabel'>Account Type</td>
         <td align=right>
@@ -64,21 +87,7 @@ if ($row[14]=="Obsolete"){
 	        </td>
 	</tr>
 	<? } ?>
-
 </tr>
-<tr>
-	<td class='tdformlabel'>Password</td>
-	<td align=right><input name="password1" type=password size="40" class='forminputtext'></td>
-</tr>
-<tr>
-	<td class='tdformlabel'>Verify Password</td>
-	<td align=right><input name="password2" type=password size="40" class='forminputtext'></td>
-</tr>
-<tr><td bgcolor=#666666 colspan=2><font face=Arial size=2 color=White></td></tr>
-
-
-
-<tr><td bgcolor=#666666 colspan=2><font face=Arial size=2 color=White><b>&nbsp;Staff Information</b></td></tr>
 <tr>
 	<td class='tdformlabel'>Staff No.</td>
 	<td align=right><input name="staff_number"  value="<? echo $row[2]; ?>" size="10" class='forminputtext'></td>
@@ -104,17 +113,7 @@ if ($row[14]=="Obsolete"){
 	        </td>
 </tr>
 
-<tr>
-	<td class='tdformlabel'>First Name</td>
-	<td align=right><input name="first_name"  value="<? echo $row[3]; ?>" size="40" class='forminputtext'></td>
-</tr>
-<tr>
-	<td class='tdformlabel'>Last Name</td>
-	<td align=right><input name="last_name"  value="<? echo $row[4]; ?>" size="40" class='forminputtext'></td>
-</tr>
 <tr><td bgcolor=#666666 colspan=2><font face=Arial size=2 color=White></td></tr>
-
-
 
 <tr><td bgcolor=#666666 colspan=2><font face=Arial size=2 color=White><b>&nbsp;Contact Details - Address</b></td></tr>
 <tr>

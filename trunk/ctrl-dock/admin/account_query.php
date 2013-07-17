@@ -6,7 +6,6 @@ include("header.php");
 ?>
 <table border=0 width=100% cellpadding="2" cellspacing="0" bgcolor=#C0C0C0>
 <tr>
-
 <form method="POST" action="account_list.php">
 	<td><font face=Arial size=1 color=white><b>&nbsp; USERNAME</b></td>
 	<td><input type=text name=account size=10 style="font-family: Arial; font-size: 8pt;"></td>
@@ -74,3 +73,4 @@ include("header.php");
 		</td>
 	</tr>
 </table>
+

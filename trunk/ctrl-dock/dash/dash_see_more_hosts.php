@@ -18,6 +18,9 @@ $username=$_SESSION['username'];
     <td width="90%" style="border-style: none; border-width: medium" align=left colspan=1>
 	<font face=Arial size=2 color=#CC0000><b>HOST MONITORING</b></font>
 	</td>
+	<td width=10% class='reportdata' style='text-align:right;'>
+		<a href=../dash.php>BACK</a>
+	</td>
 	</tr>
 </table>
 <br>
@@ -76,7 +79,7 @@ if(count($host_list)>0){
 				}
 			}
 			
-			echo "<tr bgcolor=#EEEEEE onClick=\"document.location='../nw/show_host_details.php?hostname=$hostname'\">";
+			echo "<tr bgcolor=#EEEEEE onClick=\"document.location='../nw/show_host_details.php?hostname=$hostname&desc=$description&txttime=6'\">";
 			echo "<td class='reportdata'>".$description."</td>";
 			echo "<td class='reportdata'>".$hostname."</td>";
 			echo "<td class='reportdata' style='text-align: center;'>".$platform."</td>";
@@ -132,7 +135,7 @@ if(count($host_list)>0){
 				}
 			}
 			echo "<td class='reportdata' style='text-align: center;background-color: #A9A9A9;' width=20>
-			<a href='../nw/show_host_details.php?hostname=$hostname&desc=$description'><img border=0 src='../images/history.gif'></a></td>";
+			<a href='../nw/show_host_details.php?hostname=$hostname&desc=$description&txttime=6'><img border=0 src='../images/history.gif'></a></td>";
 			echo "</tr>";
 		}
 	}
