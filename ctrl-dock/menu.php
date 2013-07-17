@@ -10,21 +10,15 @@ include("include/version.php");
 <base target="rimmain">
 </head>
 
-<body topmargin="0" leftmargin="0" >
+<body topmargin="0" leftmargin="0" bgcolor=#336699>
 
-<table width=100% height=46 border=0 cellspacing=0 cellpadding=0 style="border-collapse: collapse" background="images/bnr1_bg.png">
+<table border="0" cellpadding="0" cellspacing=0  width="100%" height="40">
 <tr>
-	<td width=5 >&nbsp;</td>
-	<td width=100  valign=middle align=left><img src=images/dock.png border=0></img></td>
-	<td align=left valign=bottom><font face="Arial" size=1 color=#1F4A76><?=$VERSION;?>&nbsp;</td>
-	<td width=100  valign=middle align=right><img src=images/logo.png border=0></img></td>
-	<td width=5 >&nbsp;</td>
-</tr>
-</table>
-
-<table border="0" cellpadding="0" cellspacing=0  width="100%" height="30" bgcolor=#336699>
-<tr>
-	<td class=mainmenu>
+	<td rowspan=2 valign=middle width=120 height=40 >
+	<a target=_blank href=http://www.ctrl-dock.org><img border=0 src=images/logo.png></img></a>
+	</td>
+	
+	<td class=mainmenu style="text-align:right;width:100%;"><b>
 	&nbsp;
 	
 	<? if ($DASH==1){?>
@@ -89,18 +83,21 @@ include("include/version.php");
 	<a class=menulink target="rimmain" href="pa/index.php">PA</a>
 	&nbsp;
 	<?}?>
-
+	
 	<? if (check_feature(41)){?>
-	<a class=menulink target="rimmain" href="settings/settings.php">Settings</a>
-	&nbsp;	
+		<a class=menulink  target="rimmain"  href="settings/settings.php">Settings</a>
+		&nbsp;	
 	<?}?>
+	
 	<a target="rimmain" class=menulink href="http://www.ctrl-dock.org/help" target=_blank>Help</a>
-	</td>
-	<td class=mainmenu style="text-align:right;width:200px;">
-		<font face="Arial Narrow" size=1 color="#F3F3F3"><b>User :  <?=$User_Full_Name;?></b></font>
+	&nbsp;	
+	</tr>
+	<tr>
+	<td class=mainmenu style="text-align:right;line-height:12px;" bgcolor=#336699>
+		<font class=menulink style="font-size:10px;">logged in as <?=$User_Full_Name;?></font>
 		&nbsp;
-		<a style="text-decoration: none" target="_top" href="logout.php">
-		<font color="#F3F3F3" face="Arial" size="2">Logout&nbsp;</font></a>
+		<a class=menulink style="text-decoration: none;font-size:10px;" target="_top" href="logout.php"><b>LOGOUT</b></a>
+		&nbsp;	
 	</td>
   </tr>
 </table>

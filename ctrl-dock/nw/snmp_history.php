@@ -13,18 +13,18 @@ $row	= mysql_fetch_row($result);
 $host_id=$row[0];
 ?>
 <title>SNMP Statistics: <?=$hostname;?></title>
-<table class="reporttable" width=550 border=0>
+<table class="reporttable" width=710 border=0>
 <tr><td class='reportdata' colspan=5><b>SNMP Statistics : <?echo $hostname;?></b></td></tr>
 </table>
-<table class="reporttable" width=550 cellpadding=2>
+<table class="reporttable" width=710 cellpadding=2>
 </tr>
 <tr>
-	<td class="reportheader" width=90 colspan=2>Date & Time</td>	
-	<td class="reportheader" width=65>CPU User</td>
-	<td class="reportheader" width=65>CPU System</td>
-	<td class="reportheader" width=65>CPU Idle</td>
-	<td class="reportheader" width=105>Memory Utilization</td>
-	<td class="reportheader" width=85>Disk Utilization</td>
+	<td class="reportheader" width=200 colspan=2>Date & Time</td>	
+	<td class="reportheader" width=100>CPU User</td>
+	<td class="reportheader" width=100>CPU System</td>
+	<td class="reportheader" width=100>CPU Idle</td>
+	<td class="reportheader" width=110>Memory Utilization</td>
+	<td class="reportheader" width=100>Disk Utilization</td>
 </tr>
 <?
 $sql = "select timestamp,nw_snmp_cpu_status,nw_snmp_mem_status,cpu_user,cpu_system,cpu_idle,mem_utilization,nw_snmp_dsk_status,disk_utilization from hosts_nw_snmp_log where host_id='$host_id'";

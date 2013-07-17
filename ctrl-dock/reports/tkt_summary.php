@@ -164,7 +164,7 @@ $t_low_count		=$t_low_count+$low_count;
 
 <?
 
-$sql="select ticket_id,ticket_type_id,priority_id,UNIX_TIMESTAMP(created) as created,name,email,helptopic,topic_id,subject,asset_id,status,UNIX_TIMESTAMP(closed) as closed,staff_id";
+$sql="select ticket_id,ticket_type_id,priority_id,UNIX_TIMESTAMP(created) as created,name,email,helptopic,topic_id,subject,asset_id,status,UNIX_TIMESTAMP(closed) as closed,staff_id,close_tkt_location";
 $sql.=" from isost_ticket where UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date and track_id!=999999";
 
 if($dept_id>0){
@@ -192,6 +192,10 @@ $result = mysql_query($sql);
 			P : problem &nbsp;&nbsp;
 			S : service request&nbsp;&nbsp;
 			C : change request&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			OS : on-site&nbsp;&nbsp;
+			R : remote&nbsp;&nbsp;
+			
 			</td>
 		</tr>
 </table>
@@ -234,7 +238,9 @@ while($row = mysql_fetch_row($result)){
 	$status				=$row[10];
 	$closed_on			=$row[11];
 	$staff_id			=$row[12];
-
+	$closed_location	=$row[13];
+	if ($closed_location=="remotely"){$closed_location="R";}
+	if ($closed_location=="locally"){$closed_location="OS";}
 	
 	if($status=="open"){
 		$closed_on="-";
@@ -317,7 +323,7 @@ while($row = mysql_fetch_row($result)){
 	<?}?>
 	<td class="reportdata"><?=$helptopic?></td>
 	<td class="reportdata"><?=$subject?></td>
-	<td class="reportdata"><?=$status?></td>
+	<td class="reportdata"><?=$status?> <?=$closed_location;?></td>
 	<td class="reportdata"><?=$staff_name?></td>
 	<td class="reportdata"><?=date('d.M G:i',$closed_on);?></td>
 	<td class="reportdata"><?=$age;?></td>

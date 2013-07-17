@@ -210,7 +210,10 @@ include("header.php");
 </form>
 <tr><td bgcolor=#666666 colspan=2><font face=Arial size=2 color=White><b>&nbsp;Branding : Upload Logo</b></td></tr>
 <tr>
-		<td class='tdformlabel'>Use a logo with a transparent background (.png) format only (ideal width : 100px, height:42px)</td>
+		<td class='tdformlabel'>
+		Prefered Logo Format & Size (.png with width : 120px height:40px) 
+		<br>
+		Logo Background Hex Code #5C5C5C</td>
 		<td align=right>
 		<form enctype="multipart/form-data" method="POST" action="upload_logo.php">
 			<input type="hidden" name="MAX_FILE_SIZE" value="10000000000">
