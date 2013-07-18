@@ -1,0 +1,12 @@
+Unbound 1.2
+Theme for GetSimple
+
+1.1
+This version includes three template files:
+1coltabs.php
+2coltabs.php
+3coltabs.php
+which will only work with the Simple Input Tabs Plugin installed. This plugin enables easy editing of multiple content areas.
+
+1.2
+Corrected a couple of validation errors.

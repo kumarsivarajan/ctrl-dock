@@ -1,0 +1,1 @@
+<?include_once("header.php");?><?	$auth_id=$_REQUEST["auth_id"];	$sql = "delete from expense_authorization where auth_id='$auth_id'";	    $result = mysql_query($sql);?><meta http-equiv="Refresh" content="0; URL=authorization.php">
