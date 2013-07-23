@@ -6,7 +6,7 @@ if (!check_feature(1)){feature_error();exit;}
 <table border=0 width=100% cellpadding="0" cellspacing="0" >
 <tr>
 	<td align=left><h2>STAFF INFORMATION</h2></td>
-	<td align=right><a href=add_account_1.php><font face="Arial" color="#336699" size="1"><b>ADD STAfF ACCOUNT</b></font></td>
+	<td align=right><a href=add_account_1.php><font face="Arial" color="#336699" size="1"><b>ADD STAFF ACCOUNT</b></font></td>
 </tr>
 </table>
 
