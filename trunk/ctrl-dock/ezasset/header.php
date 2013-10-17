@@ -9,11 +9,11 @@
 		<font color="#000000" face="Arial" size="1"> | 
 		<a class=reportdata style="text-decoration: none" href="add_asset_1.php"><b>ADD</b></a>
 		<font color="#000000" face="Arial" size="1"> | 
-		<a class=reportdata style="text-decoration: none" href="list.php?view=all_systems"><b>AUDITED LIST</b></a>	
+		<a class=reportdata style="text-decoration: none" href="../OA2/index.php/main/list_devices/1"><b>AUDITED LIST</b></a>	
 		<font color="#000000" face="Arial" size="1"> | 
-		<a class=reportdata style="text-decoration: none" href="list.php?view=statistic_model"><b>HARDWARE</b></a>
+		<a class=reportdata style="text-decoration: none" href="add_sw_1.php"><b>MANAGE SOFTWARE LICENSES</b></a>
 		<font color="#000000" face="Arial" size="1"> | 
-		<a class=reportdata style="text-decoration: none" href="list.php?view=statistic_keys"><b>SOFTWARE</b></a>
+		<a class=reportdata style="text-decoration: none" href="sw_compliance.php"><b>LICENSE COMPLIANCE</b></a>
 		&nbsp;
 	</td>
    </tr>

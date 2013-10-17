@@ -203,7 +203,12 @@ function prepcalendar(hd,cm,cy) {
 			
 			getObj('v'+parseInt(d)).innerHTML=d-cd;	
 			//calvalarr[d]=''+(cm-(-1))+'/'+(d-cd)+'/'+cy;
-			calvalarr[d]=''+(d-cd)+'-'+(cm-(-1))+'-'+cy;
+			//calvalarr[d]=''+(d-cd)+'-'+(cm-(-1))+'-'+cy;
+			dd=d-cd;
+			if(dd<10) {	dd='0'+dd;}
+			mm=cm-(-1);
+			if(mm<10) {	mm='0'+mm;}
+			calvalarr[d]=''+(dd)+'-'+(mm)+'-'+cy;
 		}
 		else {
 			getObj('v'+d).innerHTML='&nbsp;';

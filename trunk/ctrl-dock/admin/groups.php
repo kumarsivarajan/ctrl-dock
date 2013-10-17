@@ -13,6 +13,13 @@ if ($group!='' && $action=="edit"){
   $result = mysql_query($sql);
 }
 
+if ($group!='' && $action=="add"){
+  $sql = "insert into groups (group_name,group_description) values ('$group','$group_desc')";
+  $result = mysql_query($sql);
+}
+
+
+
 if ($action=="delete"){
   if (!check_feature(11)){feature_error();exit;}
   
@@ -42,7 +49,11 @@ include("header.php");
 
 	<?if($action=='edit'){
 		?><form method="POST" action="groups.php?action=<?echo $action;?>&id=<? echo $id;?>"><?
-	}?>
+	}else{?>
+		<form method="POST" action="groups.php?action=<?echo $action;?>">
+	<?}?>
+	
+	
 	
 	<center>
 	<table border=0 width=100% cellpadding=0 cellspacing=1 bgcolor=#F7F7F7>	
@@ -55,7 +66,7 @@ include("header.php");
 	</tr>
 	<tr>
 	<td colspan=2 align=center>		
-		<br><input type=submit value="Update Group" name="Submit"  class='forminputbutton'>
+		<br><input type=submit value="Add / Update Group" name="Submit"  class='forminputbutton'>
 	</td>
 	</tr>
 	</form>
