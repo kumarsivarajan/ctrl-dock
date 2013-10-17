@@ -1,5 +1,6 @@
 <?
 include_once("config.php");
+include_once("searchasset.php");
 
 $base_url="http://";
 if ($HTTPS==1){$base_url="https://";}
@@ -33,9 +34,8 @@ $inactive_host_list=array();
 $inactive_host_count=0;
 if ($query = load_xml($url)){	
 	for($i=0;$i<count($query);$i++){
-		$id=$query->software[$i]->id;
-		if(strlen($id)>0){
 		$title=$query->software[$i]->title;
+		if(strlen($title)>0){
 		$license_purchased=$query->software[$i]->license_purchased;
 		$software_used=$query->software[$i]->software_used;
 		$slno=$i+1;
@@ -48,7 +48,8 @@ if ($query = load_xml($url)){
 			echo "<td class='reportdata' style='text-align: center;' width=60>$license_purchased</td>";
 		}
 		
-		$sub_url_1=$base_url."/api/oa_list_hosts_by_sw.php?key=$API_KEY&id=$id";
+		$sub_url_1=$base_url."api/oa_list_hosts_by_sw.php?key=$API_KEY&title=$title";
+		
 		$active_count=0;
 		$inactive_count=0;
 		
@@ -59,7 +60,7 @@ if ($query = load_xml($url)){
 			for($j=0;$j<count($sub_query_1);$j++){
 				$hostname=$sub_query_1->host[$j]->hostname;
 				
-				$sub_url_2=$base_url."/api/ast_information.php?key=$API_KEY&hostname=$hostname";
+				$sub_url_2=$base_url."api/ast_information.php?key=$API_KEY&hostname=$hostname";
 				$sub_query_2 = load_xml($sub_url_2);
 				$status=$sub_query_2->asset[0]->status;
 				if($status=="Active"){
@@ -91,6 +92,10 @@ if ($query = load_xml($url)){
 		}
 	}
 }
+echo "<tr bgcolor=#F0F0F0>";
+echo "<td class='reportdata' style='color:#111111' colspan=7>Click on the Active / In-Active counts to get a list of hosts which have installations of a specific software</td>";
+echo "</tr>";
+
 
 $inactive_host_list=array_unique($inactive_host_list);
 $inactive_count=count($inactive_host_list);
@@ -102,11 +107,76 @@ if ($inactive_count>0){
 		$inactive_host=$inactive_host_list[$i];
 		if(strlen($inactive_host)>0){
 			echo "<a target=_blank href=ez_sys_info.php?system_name=$inactive_host>$inactive_host</a>&nbsp;";
-			echo "<a target=_blank href=ez_asset_bl.php?system_name=$inactive_host><img src=../images/asset_bl.png title='Black-list Asset' border=0 width=12px height=12px></a>&nbsp;&nbsp;";
+			//echo "<a target=_blank href=ez_asset_bl.php?system_name=$inactive_host><img src=../images/asset_bl.png title='Black-list Asset' border=0 width=12px height=12px></a>&nbsp;&nbsp;";
 		}
 	}
 	echo "</td></tr>";
 }
 echo "</table>";
 // End of software compliance summary
+
+
+// To display systems not audited for "n" days
+?>
+<table class="reporttable" width=100% cellspacing=1 cellpadding=2>
+<tr>
+	<td class='reportdata' style='color:red' width=100%><b>Systems not Audited in Last <?echo $AUDIT_EXPIRY;?> days</td>
+</tr>
+</table>
+
+<table class="reporttable" width=100% cellspacing=1 cellpadding=2>
+<tr>
+	<td class="reportheader">Asset Tag</td>
+	<td class="reportheader">Hostname</td>	
+	<td class="reportheader">Assigned To</td>	
+	<td class="reportheader">Last Audited</td>
+</td>
+</tr>
+<?
+
+// Generate current unix time stamp
+$today=mktime(23,59,0,date('m'),date('d'),date('Y'));
+
+$url=$base_url."/api/ast_list_active_hosts.php?key=$API_KEY";
+$slno=0;
+if ($query = load_xml($url)){
+	for($i=0;$i<count($query);$i++){
+		
+		$tag=$query->asset[$i]->tag;
+		$hostname=$query->asset[$i]->hostname;
+		$assignedto=$query->asset[$i]->assignedto;
+		
+		$sub_url_1=$base_url."/api/oa_audit_information.php?key=$API_KEY&hostname=$hostname";
+		$sub_query_1 = load_xml($sub_url_1);		
+		$last_audited=$sub_query_1->host[0]->last_audited;
+		if (strlen($last_audited)>0){
+			$last_audited=$last_audited*1;
+			$print_date=date('d M Y',$last_audited);			
+		}else{
+			$print_date="Never Audited";
+		}
+		$diff=($today-$last_audited)/86400;
+		$diff=round($diff,0);
+		
+		
+		if ($diff>$AUDIT_EXPIRY){ 
+			$slno=$slno+1;
+			
+			echo "<tr bgcolor=#F0F0F0>";
+			if (strlen($tag)==1){$id="0000".$tag;}
+			if (strlen($tag)==2){$id="000".$tag;}
+			if (strlen($tag)==3){$id="00".$tag;}
+			if (strlen($tag)==4){$id="0".$tag;}
+			if (strlen($tag)==5){$id="".$tag;}
+			
+			echo "<td class='reportdata' width=70 ><a href=edit_asset_1.php?assetid=$tag>$ASSET_PREFIX-$id</a></td>";
+			echo "<td class='reportdata'> $hostname</td>";
+			echo "<td class='reportdata'> $assignedto</td>";						
+			echo "<td class='reportdata' style='text-align: center;'>$print_date</td>";
+		}	
+	}
+}
+echo "<tr><td class=reportdata colspan=4 style='text-align: left;'>TOTAL : $slno</td></tr>";
+echo "</table>";
+
 ?>

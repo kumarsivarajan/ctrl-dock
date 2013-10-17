@@ -9,21 +9,21 @@ if ($HTTPS==1){$base_url="https://";}
 $base_url.=$_SERVER["SERVER_NAME"]."/".$INSTALL_HOME;
 
 // To display software compliance summary
-
+$oa_compliance=1;
 $url=$base_url."/api/oa_sw_register.php?key=$API_KEY";
 $inactive_host_list=array();
 $inactive_host_count=0;
-$oa_compliance="1";
 if ($query = load_xml($url)){	
 	for($i=0;$i<count($query);$i++){
-		$id=$query->software[$i]->id;
-		if(strlen($id)>0){
 		$title=$query->software[$i]->title;
+		if(strlen($title)>0){
 		$license_purchased=$query->software[$i]->license_purchased;
 		$software_used=$query->software[$i]->software_used;
 		$slno=$i+1;
+
 		
-		$sub_url_1=$base_url."/api/oa_list_hosts_by_sw.php?key=$API_KEY&id=$id";
+		$sub_url_1=$base_url."api/oa_list_hosts_by_sw.php?key=$API_KEY&title=$title";
+		
 		$active_count=0;
 		$inactive_count=0;
 		
@@ -34,7 +34,7 @@ if ($query = load_xml($url)){
 			for($j=0;$j<count($sub_query_1);$j++){
 				$hostname=$sub_query_1->host[$j]->hostname;
 				
-				$sub_url_2=$base_url."/api/ast_information.php?key=$API_KEY&hostname=$hostname";
+				$sub_url_2=$base_url."api/ast_information.php?key=$API_KEY&hostname=$hostname";
 				$sub_query_2 = load_xml($sub_url_2);
 				$status=$sub_query_2->asset[0]->status;
 				if($status=="Active"){
@@ -52,12 +52,12 @@ if ($query = load_xml($url)){
 		$status_color="black";
 		if ($count>$license_purchased){$count_print="(".$count.")";$status_color="red";} else{$count_print=$count;}
 		
-		if($license_purchased<0){$status_color="black";}
+		if($license_purchased<0){$status_color="black";}		
 		
-
-		if ($count>$license_purchased && $license_purchased>0){$oa_compliance=0;}	
+		$status="Compliant";
+		$status_color="green";
+		if ($count>$license_purchased){$oa_compliance=0;}
 		}
-		
 	}
 }
 $status="Compliant";

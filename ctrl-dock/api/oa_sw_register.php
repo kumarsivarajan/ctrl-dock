@@ -26,17 +26,21 @@ function showxml($result, $num_rows){
 if($num_rows>0){
 			echo "<node>";
 			while($row = mysql_fetch_array($result)){
-				$software_id	=$row['software_reg_id'];
-				$software_title	=$row['software_title'];
-				$software_used  =$row['number_used'];
-				$sub_result = mysql_query("SELECT SUM(license_purchase_number) AS license_purchased FROM software_licenses, software_register WHERE license_software_id = software_reg_id AND software_reg_id = '$software_id'");
+				$software_title	=$row['key_name'];
+				
+				$sub_result = mysql_query("SELECT SUM(quantity) AS license_purchased FROM sw_licenses WHERE package_name='$software_title'");
 				$sub_row = mysql_fetch_array($sub_result);
+				$license_purchased=$sub_row['license_purchased'];
+				
+				$sub_result = mysql_query("SELECT COUNT(key_name) as license_used FROM sys_sw_software_key WHERE key_name='$software_title'");
+				$sub_row = mysql_fetch_array($sub_result);
+				$license_used=$sub_row['license_used'];
+				
 			
 				echo "<software>";
-					echo "<id>".$software_id."</id>";
 					echo "<title><![CDATA[".$software_title."]]></title>"; 
-					echo "<license_purchased>".$sub_row['license_purchased']."</license_purchased>";
-					echo "<software_used>".$software_used."</software_used>";
+					echo "<license_purchased>".$license_purchased."</license_purchased>";
+					echo "<software_used>".$license_used."</software_used>";
 				echo "</software>";
 			}
 			echo "</node>";
@@ -57,12 +61,8 @@ $num_rows		= '';
 if($api_key!=$API_KEY || $api_key==''){
 	invalid();
 }else{
-		$sql = "SELECT software_reg_id, software_title, count(software.software_name) AS number_used FROM ";
-		$sql .= "software_register, software, system WHERE ";
-		$sql .= "software_title = software_name AND ";
-		$sql .= "software_uuid = system_uuid AND ";
-		$sql .= "software_timestamp = system_timestamp ";
-		$sql .= "GROUP BY software_title";
+		$sql="SELECT distinct key_name from sys_sw_software_key order by key_name";
+
 		$result = mysql_query($sql);		
 		$num_rows = mysql_num_rows($result);
 		showxml($result, $num_rows);

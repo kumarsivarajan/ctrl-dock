@@ -5,7 +5,7 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
 
 // This API is list all the hosts by the software installed
-// oa_list_hosts_by_sw.php?key=abcd&id=6
+// oa_list_hosts_by_sw.php?key=abcd&title=Microsoft Office Enterprise 2007
 
 function invalid(){
 	echo "<node>";
@@ -26,8 +26,7 @@ if($num_rows>0){
 			echo "<node>";
 			while($row = mysql_fetch_array($result)){		
 				echo "<host>";
-					echo "<uuid>".$row['software_uuid']."</uuid>";
-					echo "<hostname>".$row['system_name']."</hostname>";
+					echo "<hostname>".$row['hostname']."</hostname>";
 				echo "</host>";
 			}
 			echo "</node>";
@@ -42,14 +41,14 @@ require_once('../include/config.php');
 require_once('../include/dboa.php');
 
 $api_key		= strip_tags($_REQUEST['key']);
-$id				= strip_tags($_REQUEST['id']);
+$title			= strip_tags($_REQUEST['title']);
 
 $num_rows		= '';
 // validate api key
 if($api_key!=$API_KEY || $api_key==''){
 	invalid();
 }else{
-		$sql = "SELECT distinct system_name,software_uuid FROM software,system,software_register WHERE software_name=software_title AND software_uuid=system_uuid AND software_reg_id='$id'";
+		$sql = "SELECT distinct a.hostname from system a,sys_sw_software_key b where a.system_id=b.system_id and b.key_name='$title'";
 		$result = mysql_query($sql);	
 		$num_rows = mysql_num_rows($result);
 		showxml($result, $num_rows);

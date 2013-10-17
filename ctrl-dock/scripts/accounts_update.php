@@ -169,7 +169,8 @@ while ($row = mysql_fetch_row($result)){
 		// If the user account exists, update the credentials
 		echo "Account $row[0] exists in Ticketing System, updating credentials\n";
 		if($MD5_ENABLE==0){$enc_password=md5($row[1]);}else{$enc_password=$row[1];}
-		$sub_sql="update `isost_staff` set passwd='$enc_password',isactive='1',email='$row[4]',isadmin='0' where  username='$row[0]'";
+		echo "$group_id\n";
+		$sub_sql="update `isost_staff` set passwd='$enc_password',isactive='1',email='$row[4]',isadmin='0',dept_id='$dept_id',group_id='$group_id' where  username='$row[0]'";
 		$sub_result = mysql_query($sub_sql);
 	}
 }

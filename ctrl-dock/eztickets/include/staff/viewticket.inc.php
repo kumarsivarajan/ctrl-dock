@@ -605,7 +605,7 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
                                 <option value="0" selected="selected">-Select Staff Member.-</option>
                                 <?
                                 //TODO: make sure the user's group is also active....DO a join.
-                                $sql=' SELECT staff_id,CONCAT_WS(" ",firstname,lastname) as name FROM '.STAFF_TABLE.
+                                $sql=' SELECT staff_id,CONCAT_WS(" ",lastname,firstname) as name FROM '.STAFF_TABLE.
                                      ' WHERE isactive=1 AND onvacation=0 ';
                                 if($ticket->isAssigned()) 
                                     $sql.=' AND staff_id!='.db_input($ticket->getStaffId());

@@ -137,7 +137,10 @@ while ($current= mysql_fetch_row($result)) {
 </tr>
 <tr>
 	<td class='tdformlabel'>Hostname</td>
-	<td align=right><input name="hostname" size="40" class='forminputtext' value='<?=$hostname?>'></td>
+	<td align=right>
+	<input name="hostname" size="40" class='forminputtext' value='<?=$hostname?>'>
+	<input type=hidden name="current_hostname" size="40" class='forminputtext' value='<?=$hostname?>'>
+	</td>
 </tr>
 <tr>
 	<td class='tdformlabel'>IP Address</td>
@@ -337,7 +340,7 @@ while ($current= mysql_fetch_row($result)) {
 		<td class='tdformlabel'>Audit this asset?</td>
 		<td align=right><input type='radio' name='auditstatus' value='1' <?php if($auditstatus == 1) { ?>checked<?php } ?>><font class='auditselect'>Yes</font></input><input type='radio' name='auditstatus' value='0' <?php if($auditstatus == 0) { ?>checked<?php } ?>><font class='auditselect' >No</font></input></td>
 	</tr>
-
+	
 	<tr><td colspan=2 align=center><input type="submit" value="Submit" name="Submit" class="forminputbutton"></td></tr>
 
 </form>
