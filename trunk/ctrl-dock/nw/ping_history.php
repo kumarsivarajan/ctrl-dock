@@ -80,6 +80,7 @@ for($i=0;$i<=count($graph_data)-1;$i++){
 
 	if ($status==1){$bgcolor="#00CC00";$text="UP";}
 	if ($status==0){$bgcolor="#FF0000";$text="DOWN";}
+	if ($status==2){$bgcolor="#FCBD00";$text="FLAPPING";}
 	
 	
 ?>

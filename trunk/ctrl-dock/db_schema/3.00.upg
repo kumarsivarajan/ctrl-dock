@@ -1,0 +1,2 @@
+alter table hosts_nw add flap_timeout int(10) default '500';
+alter table hosts_nw add flap_threshold tinyint(1) default '5';
