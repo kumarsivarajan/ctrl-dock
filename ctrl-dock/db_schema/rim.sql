@@ -1107,8 +1107,10 @@ CREATE TABLE `hosts_nw` (
   `count` int(2) default NULL,
   `timeout` int(2) default NULL,
   `enabled` int(1) default '1',
-  `alarm_threshold` int(10) default '2'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `alarm_threshold` int(10) default '2',
+  `flap_timeout` int (2) default '500',
+  `flap_threshold` int (10) default '5'
+  ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 /*Table structure for table `hosts_nw_log` */
 

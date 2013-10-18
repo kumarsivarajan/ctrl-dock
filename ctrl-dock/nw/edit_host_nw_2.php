@@ -8,12 +8,14 @@ $count		=$_REQUEST["count"];	if(strlen($count)==0){$count=4;}
 $timeout	=$_REQUEST["timeout"];	if(strlen($timeout)==0){$timeout=4;}
 $enabled	=$_REQUEST["enabled"];
 $alarm_threshold	=$_REQUEST["alarm_threshold"];
+$flap_timeout=$_REQUEST["flap_timeout"];
+$flap_threshold=$_REQUEST["flap_threshold"];
 
 if ($host_id!=""){
   $sql = "delete from hosts_nw where host_id='$host_id'";
   mysql_query($sql);
   
-  $sql = "insert into hosts_nw (host_id,count,timeout,enabled,alarm_threshold) values ('$host_id','$count','$timeout','$enabled','$alarm_threshold')";
+  $sql = "insert into hosts_nw (host_id,count,timeout,enabled,alarm_threshold,flap_timeout,flap_threshold) values ('$host_id','$count','$timeout','$enabled','$alarm_threshold','$flap_timeout','$flap_threshold')";
   mysql_query($sql);
 
 ?>
