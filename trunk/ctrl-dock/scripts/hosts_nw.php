@@ -67,8 +67,8 @@ while ($row = mysql_fetch_row($result)){
 	
 	// If link is up, check for flapping of link
 	if ($nw_status==2){
-		$flap_threshold=$flap_threshold+1;
-		$sub_sql="select avg,nw_status from hosts_nw_log where host_id='$host_id' order by record_id DESC LIMIT $flap_threshold";
+		$limit=$flap_threshold+1;
+		$sub_sql="select avg,nw_status from hosts_nw_log where host_id='$host_id' order by record_id DESC LIMIT $limit";
 		$sub_result = mysql_query($sub_sql);
 		$flap=0;
 		while ($sub_row = mysql_fetch_row($sub_result)){
@@ -77,7 +77,7 @@ while ($row = mysql_fetch_row($result)){
 		}
 		
 		// If the Flap threshold is breached, then send an alert.
-		if ($flap == $flap_threshold && $last_status==1){
+		if ($flap >= $flap_threshold && $last_status==1){
 			$timestamp_human=date("d-M-Y H:i:s",$timestamp);
 			$message  = "ALERT $hostname NETWORK IS FLAPPING $timestamp_human";
 			$subject=$message;
