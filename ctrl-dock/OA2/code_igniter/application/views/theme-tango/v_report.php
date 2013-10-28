@@ -37,6 +37,7 @@ foreach($columns as $column) {
 		} else {
 			$style = '';
 		}
+		if ($column->column_name=="Tags") {$column->column_name="";}
 		echo "\t\t\t<th style=\"text-align: $column->column_align; $style\">" . $column->column_name . "</th>\n";
 	}
 }
@@ -86,7 +87,7 @@ foreach($query as $row) {
 				switch($column_variable_name)
 				{
 				case "tag":
-					echo "\t\t\t<td align=\"center\"><a class=\"TagPopupTrigger\" rel=\"" . $row->system_id . "\" href=\"#\"><img src=\"" . $image_path . "16_link.png\" style='border-width:0px;' title=\"\" alt=\"\" /></a></td>\n";
+					echo "\t\t\t<td align=\"center\"><a href='../../../../ezasset/del_system.php?id=$row->system_id'>Delete</a></td>\n";
 				break;
 
 				default:
