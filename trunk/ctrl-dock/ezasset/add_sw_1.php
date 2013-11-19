@@ -8,7 +8,7 @@ $asset_db            =$DATABASE_NAME."_oa";
 
 
 ?>
-<body onLoad="assignment('<?=$assigned_type;?>')">
+<body>
 <br>
 <table border=0 width=100% cellpadding="2" cellspacing="0" bgcolor=#E5E5E5>
   <tr>
@@ -25,7 +25,7 @@ $asset_db            =$DATABASE_NAME."_oa";
 <table border=0 cellpadding=2 cellspacing=0 width=100%>
 <tr><td bgcolor=#666666 colspan=2><font face=Arial size=2 color=White><b>Add a Software License</b></td></tr>
 <tr>
-	<td class='tdformlabel'>Software Package</td>
+	<td class='tdformlabel'>Software Package with Keys found</td>
 	<td align=right>	
 		<select class="formselect" size=1 name=package_name>
 		<?
@@ -33,11 +33,21 @@ $asset_db            =$DATABASE_NAME."_oa";
 			$sql = "select distinct key_name from sys_sw_software_key order by key_name"; 	
 			$result = mysql_query($sql);
 			while ($row = mysql_fetch_row($result)) {
-					echo "<option value='$row[0]'>$row[0]</option>";
+					$software_title=html_entity_decode($row[0]);
+					echo "<option value='$row[0]'>$software_title</option>";
 			}
 		?>
+		<option value="other">Others; Please Specify</option>
 		</select>
 	</td>
+</tr>
+<tr>
+		<td class='tdformlabel'>If the software is not listed above, but found during an 
+		<a target=_blank href='../OA2/index.php/report/software_licensing/1'>audit</A>
+		<br>
+		<font style='text-weight:normal;'>Software could be a pattern beginning with a string to capture variants of the software
+		</td>
+		<td align=right><input name="other_package" size="40" class='forminputtext'></td>
 </tr>
 <tr>
 	<td class='tdformlabel'>Procurement_Source</td>
@@ -72,7 +82,11 @@ $asset_db            =$DATABASE_NAME."_oa";
 </tr>
 <tr>
 	<td class='tdformlabel'>Quantity</td>
-	<td align=right><input name="quantity" size="40" class='forminputtext'></td>
+	<td align=right>
+	<input name="quantity" size="5" class='forminputtext' value=0>
+	<br>
+	<font face=Arial size=1>Set to '0' to track usage without licenses<font>
+	</td>
 </tr>
 <tr>
 		<td class='tdformlabel'>Comments</td>
@@ -91,6 +105,7 @@ $asset_db            =$DATABASE_NAME."_oa";
 	<td class="reportheader">License Type</td> 	
 	<td class="reportheader">Qty</td> 	
 	<td class="reportheader">Comments</td>
+	<td class="reportheader">Edit</td>	
 	<td class="reportheader">Del</td>	
 </tr>
 <?
@@ -110,7 +125,8 @@ while ($row = mysql_fetch_row($result)) {
 	echo "<td class=reportdata>$row[6]</td>";
 	echo "<td class=reportdata>$row[5]</td>";
 	echo "<td class=reportdata>$row[7]</td>";
-	echo "<td class=reportdata style='text-align:center'><a href='del_sw.php?id=$row[0]' Title='Delete Software License'><img border=0 src=images/delete.png></a></td>";
+	echo "<td class=reportdata style='text-align:center'><a href='edit_sw_1.php?id=$row[0]' Title='Edit Software License Information'><img border=0 src=images/edit.png></a></td>";
+	echo "<td class=reportdata style='text-align:center'><a href='del_sw.php?id=$row[0]&package=$row[1]&pass=1' Title='Delete Software License'><img border=0 src=images/delete.png></a></td>";
 	echo "</tr>";
 }
 ?>

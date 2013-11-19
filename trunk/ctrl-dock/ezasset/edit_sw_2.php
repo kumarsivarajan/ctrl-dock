@@ -4,11 +4,7 @@
 $asset_db            =$DATABASE_NAME."_oa";
 
 
-$error_code=0;
-$package_name=$_REQUEST["package_name"];
-if($package_name=="other"){$package_name=$_REQUEST["other_package"];}
-
-if(strlen($package_name)<=0){$error_code=1;}
+$id=$_REQUEST["id"];
 
 $procurement_source=$_REQUEST["procurement_source"];
 $procurement_date=$_REQUEST["procurement_date"];
@@ -19,11 +15,10 @@ $comments=$_REQUEST["comments"];
 
 if ($error_code==0){
 	mysql_select_db($asset_db, $link);
-	$sql ="insert into sw_licenses (package_name,procurement_source,procurement_date,procurement_vendor,license_type,quantity,comments)";
-	$sql.=" values ('$package_name','$procurement_source','$procurement_date','$procurement_vendor','$license_type','$quantity','$comments')";
+	$sql ="update sw_licenses set procurement_source='$procurement_source',procurement_date='$procurement_date',";
+	$sql.="procurement_vendor='$procurement_vendor',license_type='$license_type',quantity='$quantity',comments='$comments' where package_id='$id'";
 	$result = mysql_query($sql);
-	
-	echo "<h2>The License has been added. Please wait</h2>";
+	echo "<h2>The License has been edited. Please wait</h2>";
 }else{
 	echo "<h2>Few mandatory fields were not filled.<br><br></h2>";
 }
