@@ -16,6 +16,8 @@ $check_key		=$_REQUEST["check_key"];
 
 $sql="select a.activity_id,a.approver_name,b.action_date from poa_approval_history a,poa_master b ";
 $sql.="where a.approver_email='$check_email' and a.approver_key='$check_key' and a.activity_id=b.activity_id";
+$sql.=" and a.action='PENDING APPROVAL'";
+
 $result 	= mysql_query($sql);
 $result_count=mysql_num_rows($result);
 

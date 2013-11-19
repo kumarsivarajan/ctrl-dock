@@ -11,7 +11,7 @@
 		<font color="#000000" face="Arial" size="1"> | 
 		<a class=reportdata style="text-decoration: none" href="../OA2/index.php/main/list_devices/1"><b>AUDITED LIST</b></a>	
 		<font color="#000000" face="Arial" size="1"> | 
-		<a class=reportdata style="text-decoration: none" href="add_sw_1.php"><b>MANAGE SOFTWARE LICENSES</b></a>
+		<a class=reportdata style="text-decoration: none" href="add_sw_1.php"><b>LICENSES MANAGEMENT</b></a>
 		<font color="#000000" face="Arial" size="1"> | 
 		<a class=reportdata style="text-decoration: none" href="sw_compliance.php"><b>LICENSE COMPLIANCE</b></a>
 		&nbsp;

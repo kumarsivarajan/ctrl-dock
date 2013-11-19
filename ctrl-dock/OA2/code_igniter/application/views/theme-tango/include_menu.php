@@ -27,14 +27,16 @@
 	if (isset($group_id)){
 		//echo "<li><a href='" . base_url() . "index.php/main/list_devices/" . $group_id . "'>" . mb_strtoupper(__('Reports')) . "</a>\n";
 		//echo "<ul>\n";
-		echo "<li style=\"width:200px;\"><a href='" . base_url() . "index.php/main/list_devices/" . $group_id . "'>List All Hosts</a></li>\n";
-		foreach ($menu as $report):
+		//echo "<li style=\"width:200px;\"><a href='" . base_url() . "index.php/main/list_devices/" . $group_id . "'>List All Hosts</a></li>\n";
+		/*foreach ($menu as $report):
 			if ($report->report_id > '') {
 				echo "<li style=\"width:200px;\"><a href='" . base_url() . "index.php/report/show_report/" . $report->report_id . "/" . $group_id . "'>" .  __($report->report_name) . "</a></li>\n";
 			} else {
 				echo "<li style=\"width:200px;\"><a href='" . base_url() . "index.php/report/" . strtolower(str_replace(" ", "_", $report->report_name)) . "/" . $group_id . "'>" .  __($report->report_name) . "</a></li>\n";
 			}
+		
 		endforeach;
+		*/
 		//echo "</ul>\n";
 	//echo "</li>\n";
 	} ?>
@@ -93,16 +95,7 @@
 	<?php if (isset($export_report)) { ?>
 		<?php if (isset($group_id)) { ?>
 			<?php if (($config->non_admin_search == 'y') or ($user_admin == 'y')) { ?>
-				<li style="float: right; position: relative; top:-2px; padding-right: 4px;">
-					<form name="search_form" action="<?php echo base_url()?>index.php/main/search/<?php echo $group_id; ?>/" method="post">
-						<table>
-							<tr>
-								<td><input type="text" name="search"/></td>
-								<td><input type="submit" value="Search" /></td>
-							</tr>
-						</table>
-					</form>
-				</li>
+				
 			<?php } ?>
 		<?php } ?>
 	<?php

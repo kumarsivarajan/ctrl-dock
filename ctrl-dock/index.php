@@ -51,6 +51,6 @@
 <font face="Arial" size="1" color="#BBBBBB">
 <a href="http://www.ctrl-dock.org" style="text-decoration: none">
 <span>
-<font face="Arial" size="1" color="#BBBBBB">powered by ctrl-dock ver. <?=$VERSION;?></font></a>
+<font face="Arial" size="1" color="#BBBBBB">ctrl-dock ver. <?=$VERSION;?></font></a>
 <font face="Arial" size="1" color="#BBBBBB">
 </center>
