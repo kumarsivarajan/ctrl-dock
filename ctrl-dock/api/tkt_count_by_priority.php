@@ -32,13 +32,13 @@ if($num_rows>0){
 			while($row = mysql_fetch_array($result)){
 				$priority_id=$row['priority_id'];
 				$priority_desc=$row['priority_desc'];
-				$sub_result = mysql_query("SELECT * from isost_ticket where priority_id='$priority_id' and status like '$status' and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date");
+				$sub_result = mysql_query("SELECT * from isost_ticket where priority_id='$priority_id' and status like '$status' and track_id!=999999 and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date");
 
 				$sub_row = mysql_fetch_array($sub_result);
 				$count = mysql_num_rows($sub_result);
 				
 				// Fetch the recordset to calculate average closure time
-				$sub_sql="SELECT ticket_id,UNIX_TIMESTAMP(created),UNIX_TIMESTAMP(closed) from isost_ticket where priority_id='$priority_id' and status like '$status' and closed IS NOT NULL and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";				
+				$sub_sql="SELECT ticket_id,UNIX_TIMESTAMP(created),UNIX_TIMESTAMP(closed) from isost_ticket where priority_id='$priority_id' and status like '$status' and track_id!=999999 and closed IS NOT NULL and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";				
 				//echo $sub_sql."<br>";
 				$sub_result = mysql_query($sub_sql);
 				
@@ -58,7 +58,7 @@ if($num_rows>0){
 					
 					// Fetch information for Response Time
 					
-					$sub_sql_1		="SELECT UNIX_TIMESTAMP(created) from isost_ticket_response where ticket_id='$ticket_id' and UNIX_TIMESTAMP(created) > $created  order by response_id LIMIT 1";
+					$sub_sql_1		="SELECT UNIX_TIMESTAMP(created) from isost_ticket_response where ticket_id='$ticket_id' and track_id!=999999 and UNIX_TIMESTAMP(created) > $created  order by response_id LIMIT 1";
 					
 					$sub_result_1 	= mysql_query($sub_sql_1);
 					if(mysql_num_rows($sub_result_1)>0){
@@ -72,14 +72,14 @@ if($num_rows>0){
 				}
 				
 				//Fetch No. of Open Tickets
-				$open_tickets_sql="SELECT count(status) from isost_ticket where status='open' and priority_id='$priority_id' and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";				
+				$open_tickets_sql="SELECT count(status) from isost_ticket where status='open' and priority_id='$priority_id' and track_id!=999999 and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";				
 				$open_tickets_result = mysql_query($open_tickets_sql);
 				while ($sub_row = mysql_fetch_row($open_tickets_result)){
 					$open_tickets_total = $sub_row[0];
 				}
 				
 				//SLA 
-				$sla_sql="SELECT count(isoverdue) from isost_ticket where isoverdue=1 and priority_id='$priority_id' and status='open' and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";				
+				$sla_sql="SELECT count(isoverdue) from isost_ticket where isoverdue=1 and priority_id='$priority_id' and status='open' and track_id!=999999  and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";				
 
 				$sla_result = mysql_query($sla_sql);
 				while ($sub_row = mysql_fetch_row($sla_result)){

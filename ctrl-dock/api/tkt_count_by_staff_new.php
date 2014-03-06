@@ -29,8 +29,8 @@ global $status,$start_date,$end_date;
 if($num_rows>0){
 			echo "<node>";
 			while($row = mysql_fetch_array($result)){
-				$staff_name=$row[0];
-				$staff_id = $row[1];
+				$staff_name=$row[1];
+				$staff_id = $row[0];		
 				
 				$staff_sql = "select first_name, last_name from user_master where username='$staff_name'";
 				$staff_result = mysql_query($staff_sql);
@@ -43,14 +43,14 @@ if($num_rows>0){
                                 $sub_sql=sprintf("SELECT count(ticket_id) 
 						  FROM isost_ticket 
 						  WHERE UNIX_TIMESTAMP(created) >= %d and UNIX_TIMESTAMP(created) <= %d 
-						  and staff_id = %d and status=2 and close_tkt_location = '%s'",$start_date,$end_date,$staff_id,$local);
+						  and track_id!=999999 and staff_id = %d and status=2 and close_tkt_location = '%s'",$start_date,$end_date,$staff_id,$local);
                                 $sub_result = mysql_query($sub_sql);
                                 $sub_result = mysql_fetch_row($sub_result);
                                 $close_locally_count = $sub_result[0];
 				$sub_sql=sprintf("SELECT count(ticket_id)
                                                   FROM isost_ticket
                                                   WHERE UNIX_TIMESTAMP(created) >= %d and UNIX_TIMESTAMP(created) <= %d
-                                                  and staff_id = %d and status=2 and close_tkt_location = '%s'",$start_date,$end_date,$staff_id,$remote);
+                                                  and track_id!=999999 and staff_id = %d and status=2 and close_tkt_location = '%s'",$start_date,$end_date,$staff_id,$remote);
 	
                                 $sub_result = mysql_query($sub_sql);
                                 $sub_result = mysql_fetch_row($sub_result);
@@ -64,13 +64,13 @@ if($num_rows>0){
 				$closed_count = $sub_result[0];
 				*/
 				//Open Tickets
-				$sub_sql="SELECT count(ticket_id) FROM isost_ticket WHERE UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date and staff_id = $staff_id and status=1";
+				$sub_sql="SELECT count(ticket_id) FROM isost_ticket WHERE UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date and track_id!=999999 and staff_id = $staff_id and status=1";
 				$sub_result = mysql_query($sub_sql);
 				$sub_result = mysql_fetch_row($sub_result);
 				$open_count = $sub_result[0];				
 				
 				// Fetch the recordset to calculate average closure time
-				$sub_sql="SELECT a.ticket_id,UNIX_TIMESTAMP(a.created),UNIX_TIMESTAMP(a.closed) from isost_ticket a where a.status=2 and UNIX_TIMESTAMP(a.created) >= $start_date and UNIX_TIMESTAMP(a.created) <= $end_date and a.staff_id = $staff_id";
+				$sub_sql="SELECT a.ticket_id,UNIX_TIMESTAMP(a.created),UNIX_TIMESTAMP(a.closed) from isost_ticket a where a.status=2 and track_id!=999999 and UNIX_TIMESTAMP(a.created) >= $start_date and UNIX_TIMESTAMP(a.created) <= $end_date and a.staff_id = $staff_id";
 				
 				$sub_result = mysql_query($sub_sql);
 				$record_count=mysql_num_rows($sub_result);
@@ -89,7 +89,7 @@ if($num_rows>0){
 					
 					// Fetch information for Response Time
 					
-					$sub_sql_1		="SELECT UNIX_TIMESTAMP(created) from isost_ticket_response where ticket_id='$ticket_id' and UNIX_TIMESTAMP(created) > $created  order by response_id LIMIT 1";
+					$sub_sql_1		="SELECT UNIX_TIMESTAMP(created) from isost_ticket_response where ticket_id='$ticket_id' and track_id!=999999 and UNIX_TIMESTAMP(created) > $created  order by response_id LIMIT 1";
 					$sub_result_1 	= mysql_query($sub_sql_1);
 					
 					if(mysql_num_rows($sub_result_1)>0){
@@ -112,7 +112,7 @@ if($num_rows>0){
 				
 				// SLA Breached Count
 				//$sla_sql="SELECT count(a.isoverdue) FROM isost_ticket a, isost_ticket_note b where a.isoverdue=1 and a.status=1 and UNIX_TIMESTAMP(a.created) >= $start_date and UNIX_TIMESTAMP(a.created) <= $end_date and a.ticket_id=b.ticket_id and b.staff_id = $staff_id";				
-				$sla_sql="SELECT count(isoverdue) FROM isost_ticket where isoverdue=1 and status=1 and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date and staff_id = $staff_id";
+				$sla_sql="SELECT count(isoverdue) FROM isost_ticket where isoverdue=1 and track_id!=999999 and status=1 and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date and staff_id = $staff_id";
 				$sla_result = mysql_query($sla_sql);				
 				$sla_breached='';
 				while($sub_row = mysql_fetch_array($sla_result)){				
@@ -133,13 +133,13 @@ if($num_rows>0){
 			}
 			// Fetch the count for unassigned tickets
 			//Open Tickets
-				$sub_sql="SELECT count(ticket_id) FROM isost_ticket WHERE UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date and staff_id = 0 and status=1";
+				$sub_sql="SELECT count(ticket_id) FROM isost_ticket WHERE UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date and track_id!=999999 and staff_id = 0 and status=1";
 				$sub_result = mysql_query($sub_sql);
 				$sub_result = mysql_fetch_row($sub_result);
 				$open_count = $sub_result[0];				
 				
 				// Fetch the recordset to calculate average closure time
-				$sub_sql="SELECT a.ticket_id,UNIX_TIMESTAMP(a.created),UNIX_TIMESTAMP(a.closed) from isost_ticket a where a.status=2 and UNIX_TIMESTAMP(a.created) >= $start_date and UNIX_TIMESTAMP(a.created) <= $end_date and a.staff_id = 0";
+				$sub_sql="SELECT a.ticket_id,UNIX_TIMESTAMP(a.created),UNIX_TIMESTAMP(a.closed) from isost_ticket a where a.status=2 and UNIX_TIMESTAMP(a.created) >= $start_date and UNIX_TIMESTAMP(a.created) <= $end_date and track_id!=999999 and a.staff_id = 0";
 				
 				$sub_result = mysql_query($sub_sql);
 				$record_count=mysql_num_rows($sub_result);
@@ -181,7 +181,7 @@ if($num_rows>0){
 				
 				// SLA Breached Count
 				//$sla_sql="SELECT count(a.isoverdue) FROM isost_ticket a, isost_ticket_note b where a.isoverdue=1 and a.status=1 and UNIX_TIMESTAMP(a.created) >= $start_date and UNIX_TIMESTAMP(a.created) <= $end_date and a.ticket_id=b.ticket_id and b.staff_id = 0";				
-				$sla_sql="SELECT count(isoverdue) FROM isost_ticket where isoverdue=1 and status=1 and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date and staff_id = 0";
+				$sla_sql="SELECT count(isoverdue) FROM isost_ticket where isoverdue=1 and status=1 and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date and track_id!=999999 and staff_id = 0";
 				$sla_result = mysql_query($sla_sql);				
 				$sla_breached='';
 				while($sub_row = mysql_fetch_array($sla_result)){				
@@ -229,7 +229,8 @@ if($api_key!=$API_KEY || $api_key==''){
 	invalid();
 }else{
 		//$sql="SELECT ticket_id,staff_id,status,isoverdue FROM isost_ticket WHERE UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date AND source!='system' ORDER BY ticket_id";
-		$sql = "SELECT username,staff_id from isost_staff where username != 'administrator'";
+		//$sql = "SELECT username,staff_id from isost_staff where username != 'administrator'";
+		$sql = "select distinct a.staff_id,b.username from isost_ticket a, isost_staff b where a.track_id!=999999 and UNIX_TIMESTAMP(a.created) >= 1385836200 and UNIX_TIMESTAMP(a.created) <= 1388514599 and b.username != 'administrator' and a.staff_id=b.staff_id";
 		$result = mysql_query($sql);		
 		$num_rows = mysql_num_rows($result);
 		showxml($result, $num_rows);

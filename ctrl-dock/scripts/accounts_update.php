@@ -23,78 +23,78 @@ function disable_account($username){
 
 // Update against Master RIM Server
 if($ezRIM==1){
-	
-// Fetch the details of all users who have been provisioned to access this RIMBOX	
-$url=$MASTER_URL."/api/rim_access.php?key=".$MASTER_API_KEY."&agency=".$AGENCY_ID;	
-if ($query = load_xml($url)){
-	for($i=0;$i<count($query);$i++){
-		$first_name				=$query->user[$i]->first_name;
-		$last_name				=$query->user[$i]->last_name;
-		$email					=$query->user[$i]->email;
-		$expiry					=$query->user[$i]->expiry;		
-		$superadmin				=$query->user[$i]->superadmin;
-		$username				=$query->user[$i]->username;
+	// Fetch the details of all users who have been provisioned to access this RIMBOX	
+	$url=$MASTER_URL."/api/rim_access.php?key=".$MASTER_API_KEY."&agency=".$AGENCY_ID;	
+	echo $url;
+	if ($query = load_xml($url)){
+		for($i=0;$i<count($query);$i++){
+			$first_name				=$query->user[$i]->first_name;
+			$last_name				=$query->user[$i]->last_name;
+			$email					=$query->user[$i]->email;
+			$expiry					=$query->user[$i]->expiry;		
+			$superadmin				=$query->user[$i]->superadmin;
+			$username				=$query->user[$i]->username;
 
-		if ($username!="administrator"){$username=$email;}
-		
-		$group_id=2;$ost_admin=0;if($superadmin==1){$group_id=1;$ost_admin=1;}
-		
-		$pass 					=$query->user[$i]->pass;
-		$pass					=decryptpass($pass);
-		if ($MD5_ENABLE==1){ $pass=md5($pass); }	
-		
-		// Check if User exists in local instance
-		$sql	="select username,password from user_master where username='$username'";
-		$result = mysql_query($sql);
-		$exists	= mysql_num_rows($result);
-		
-		// If the account does not exist, add to the user_master table and the administrator profile
-		if ($exists==0){
-			print "The account $email does not exist, creating now ..\n";
-
-			$sql="insert into user_master  (username,password,staff_number,first_name,last_name,contact_phone_office,contact_phone_residence,contact_phone_mobile,contact_address,permanent_address,office_index,official_email,personal_email,account_type,account_status,account_expiry,account_created_on,account_created_by,agency_index,business_group_index) values ('$username','$enc_pass','ADMIN','$first_name','$last_name',NULL,NULL,NULL,NULL,NULL,1,'$email',NULL,'service_account','Active','',NULL,NULL,1,1)";
-			$result = mysql_query($sql);
-				
-			$sql="insert into `rim_user_group` (`group_id`,`username`) values ('$group_id','$username');";
-			$result = mysql_query($sql);
+			if ($username!="administrator"){$username=$email;}
 			
-		}
-		
-		// If the account exists, update the credentials
-		if($exists>0){
-			print "The account $email exists, updating the credentials..\n";
-			$sql="update user_master set official_email='$email',password='$pass',account_status='Active',account_expiry='$expiry' where username='$username'";
+			$group_id=2;$ost_admin=0;if($superadmin==1){$group_id=1;$ost_admin=1;}
+			
+			$pass 					=$query->user[$i]->pass;
+			$pass					=decryptpass($pass);
+			if ($MD5_ENABLE==1){ $pass=md5($pass); }	
+			
+			// Check if User exists in local instance
+			$sql	="select username,password from user_master where username='$username'";
 			$result = mysql_query($sql);
+			$exists	= mysql_num_rows($result);
+			
+			// If the account does not exist, add to the user_master table and the administrator profile
+			if ($exists==0){
+				print "The account $email does not exist, creating now ..\n";
+
+				$sql="insert into user_master  (username,password,staff_number,first_name,last_name,contact_phone_office,contact_phone_residence,contact_phone_mobile,contact_address,permanent_address,office_index,official_email,personal_email,account_type,account_status,account_expiry,account_created_on,account_created_by,agency_index,business_group_index) values ('$username','$enc_pass','ADMIN','$first_name','$last_name',NULL,NULL,NULL,NULL,NULL,1,'$email',NULL,'service_account','Active','',NULL,NULL,1,1)";
+				$result = mysql_query($sql);
 					
-			if($superadmin==1){
-				$sql="delete from rim_user_group where username='$username' and group_id = '1'";
+				$sql="insert into `rim_user_group` (`group_id`,`username`) values ('$group_id','$username');";
 				$result = mysql_query($sql);
 				
-				$sql="insert into `rim_user_group` (`group_id`,`username`) values ('1','$username');";
+			}
+			
+			// If the account exists, update the credentials
+			if($exists>0){
+				print "The account $email exists, updating the credentials..\n";
+				$sql="update user_master set official_email='$email',password='$pass',account_status='Active',account_expiry='$expiry' where username='$username'";
 				$result = mysql_query($sql);
+						
+				if($superadmin==1){
+					$sql="delete from rim_user_group where username='$username' and group_id = '1'";
+					$result = mysql_query($sql);
+					
+					$sql="insert into `rim_user_group` (`group_id`,`username`) values ('1','$username');";
+					$result = mysql_query($sql);
+				}
+			}
+		}	
+		
+		//Disable the accounts that are not listed in the master_list
+		
+		// Fetch the list of accounts in the local instance which are active
+		$sql="select username from user_master where account_status='Active' and username!='administrator' order by username";
+		$result = mysql_query($sql);
+
+		while ($row = mysql_fetch_row($result)){
+			$username=$row[0];
+			$match=0;
+			for($i=0;$i<count($query);$i++){
+				$email=$query->user[$i]->email;			
+				if($username==$email){$match=1;}
+			}
+			
+			if($match==0){
+				disable_account($username);
 			}
 		}
-	}	
-	
-	//Disable the accounts that are not listed in the master_list
-	
-	// Fetch the list of accounts in the local instance which are active
-	$sql="select username from user_master where account_status='Active' and account_type='service_account' and username!='administrator' order by username";
-	$result = mysql_query($sql);
-
-	while ($row = mysql_fetch_row($result)){
-		$username=$row[0];
-		$match=0;
-		for($i=0;$i<count($query);$i++){
-			$email=$query->user[$i]->email;			
-			if($username==$email){$match=1;}
-		}
-		
-		if($match==0){
-			disable_account($username);
-		}
 	}
-}
 }
 	
 	
@@ -112,6 +112,17 @@ while ($row = mysql_fetch_row($result)){
 		disable_account($username);
 	}
 }
+
+// Disable accounts which have been disabled or made obsolete directly in the local instance
+
+$sql="select username from user_master where account_status in ('Obsolete','Disabled')";
+$result = mysql_query($sql);
+
+while ($row = mysql_fetch_row($result)){
+	$username		=$row[0];
+	disable_account($username);
+}
+
 
 // Update Ticketing System Groups & Departments
 $sql="select business_group_index,business_group from business_groups where business_group_index not in (select bg_id from isost_department)";
@@ -169,7 +180,7 @@ while ($row = mysql_fetch_row($result)){
 		// If the user account exists, update the credentials
 		echo "Account $row[0] exists in Ticketing System, updating credentials\n";
 		if($MD5_ENABLE==0){$enc_password=md5($row[1]);}else{$enc_password=$row[1];}
-		echo "$group_id\n";
+		
 		$sub_sql="update `isost_staff` set passwd='$enc_password',isactive='1',email='$row[4]',isadmin='0',dept_id='$dept_id',group_id='$group_id' where  username='$row[0]'";
 		$sub_result = mysql_query($sub_sql);
 	}

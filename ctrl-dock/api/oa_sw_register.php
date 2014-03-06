@@ -1,8 +1,8 @@
 <?php
-
+if(1){
 header('Content-Type:text/xml');
 echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
-
+}
 
 // This API is used to list all the softwares in the software register along with the number of licenses that have been purchased for each of them.
 // oa_sw_register.php?key=abcd
@@ -30,7 +30,9 @@ global $API_KEY;
 if($num_rows>0){
 			while($row = mysql_fetch_array($result)){
 				$key_name	= $row['key_name'];
+				
 				$software_title=html_entity_decode($key_name);
+				
 				
 				$license_purchased=0;$license_used=0;
 				
@@ -87,8 +89,10 @@ if($num_rows>0){
 
 			while($row = mysql_fetch_array($result)){
 				$package_name	= $row['package_name'];
+				$package_name_new = str_replace('&','&#038;',$row['package_name_new']);
 				$package_name	=html_entity_decode($package_name);
-		
+				$package_name_new	=html_entity_decode($package_name_new);
+				
 				$license_purchased=0;$license_used=0;
 				
 				$sub_result = mysql_query("SELECT SUM(quantity) AS license_purchased FROM sw_licenses WHERE package_name='$package_name'");
@@ -123,7 +127,7 @@ if($num_rows>0){
 				
 				
 				echo "<software>";
-					echo "<title>".$package_name."</title>";
+					echo "<title>".$package_name_new."</title>";
 					echo "<license_purchased>".$license_purchased."</license_purchased>";
 					echo "<software_used>".$license_used."</software_used>";
 					echo "<type>OTHER</type>";
@@ -156,12 +160,13 @@ if($api_key!=$API_KEY || $api_key==''){
 }else{
 		echo "<node>";
 		$sql="SELECT distinct key_name from sys_sw_software_key order by key_name";
-		mysql_query("SET NAMES `utf8`");
+		mysql_query("SET NAMES `utf8`"); 
 		$result = mysql_query($sql);		
 		$num_rows = mysql_num_rows($result);
 		sw_key_based($result, $num_rows);
 		
-		$sql="SELECT distinct package_name from sw_licenses where package_name not in (SELECT distinct key_name from sys_sw_software_key order by key_name) order by package_name";
+		$sql="SELECT distinct (package_name), replace(package_name,'&','&#038;') as package_name_new from sw_licenses where package_name not in (SELECT distinct key_name from sys_sw_software_key order by key_name) order by package_name";
+		mysql_query("SET NAMES `utf8`");
 		$result = mysql_query($sql);		
 		$num_rows = mysql_num_rows($result);
 		sw_others($result, $num_rows);
