@@ -346,6 +346,7 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
             <?
             }?>
             </select>
+				
         </td>
         <td>Status is:</td><td>
     
@@ -355,6 +356,10 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
             <option value="overdue" <?=!strcasecmp($_REQUEST['status'],'overdue')?'selected':''?>>Overdue</option>
             <option value="closed" <?=!strcasecmp($_REQUEST['status'],'Closed')?'selected':''?>>Closed</option>
         </select>
+		<select name="hide_merged_tkts">
+				<option value=1 selected>Hide Merged Tickets</option>
+				<option value=0>Show Merged Tickets</option>
+		</select>	
         </td>
      </tr>
 	 <tr>
@@ -451,7 +456,7 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
         <select name="limit">
         <?
          $sel=$_REQUEST['limit']?$_REQUEST['limit']:15;
-         for ($x = 5; $x <= 25; $x += 5) {?>
+         for ($x = 25; $x <= 300; $x += 25) {?>
             <option  value="<?=$x?>" <?=($sel==$x )?'selected':''?>><?=$x?></option>
         <?}?>
         </select>

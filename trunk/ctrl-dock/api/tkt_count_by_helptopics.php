@@ -37,13 +37,13 @@ if($num_rows>0){
 				$topic_id=$row['topic_id'];
 				$topic=$row['topic'];
 				
-				$sub_result = mysql_query("SELECT * from isost_ticket where topic_id='$topic_id' and status like '$status' and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date");
+				$sub_result = mysql_query("SELECT * from isost_ticket where topic_id='$topic_id' and status like '$status' and track_id!=999999 and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date");
 					
 				$sub_row = mysql_fetch_array($sub_result);
 				$count = mysql_num_rows($sub_result);
 				
 				// Fetch the recordset to calculate average closure time
-				$sub_sql="SELECT ticket_id,UNIX_TIMESTAMP(created),UNIX_TIMESTAMP(closed) from isost_ticket where topic_id='$topic_id' and status like '$status' and closed IS NOT NULL and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";
+				$sub_sql="SELECT ticket_id,UNIX_TIMESTAMP(created),UNIX_TIMESTAMP(closed) from isost_ticket where topic_id='$topic_id' and status like '$status'  and track_id!=999999 and closed IS NOT NULL and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";
 				
 				$sub_result = mysql_query($sub_sql);
 				$record_count=mysql_num_rows($sub_result);
@@ -81,7 +81,7 @@ if($num_rows>0){
 				$avg_response=round($total_response_time/$record_count,1);	
 				
 				// Open tickets
-				$open_ticket_sql="SELECT count(topic_id) FROM isost_ticket where topic_id='$topic_id' and status='open' and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";				
+				$open_ticket_sql="SELECT count(topic_id) FROM isost_ticket where topic_id='$topic_id' and status='open' and  track_id=1 and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";				
 				$open_ticket_result = mysql_query($open_ticket_sql);				
 				$open_ticket='';
 				while($sub_row = mysql_fetch_array($open_ticket_result)){				
@@ -89,7 +89,7 @@ if($num_rows>0){
 				}
 				
 				// SLA Breached
-				$sla_sql="SELECT count(isoverdue) FROM isost_ticket where topic_id='$topic_id' and isoverdue=1 and status='open' and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";				
+				$sla_sql="SELECT count(isoverdue) FROM isost_ticket where topic_id='$topic_id' and isoverdue=1 and status='open'  and track_id!=999999 and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";				
 				$sla_result = mysql_query($sla_sql);				
 				$sla_breached='';
 				while($sub_row = mysql_fetch_array($sla_result)){				
@@ -107,11 +107,11 @@ if($num_rows>0){
 			}
 			
 			// Fetch the count for uncategorized tickets
-			$sub_result = mysql_query("SELECT * from isost_ticket where topic_id='0' and status like '$status' and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date");
+			$sub_result = mysql_query("SELECT * from isost_ticket where topic_id='0' and status like '$status'  and track_id!=999999 and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date");
 			$sub_row = mysql_fetch_array($sub_result);
 			$count = mysql_num_rows($sub_result);
 			
-			$open_ticket_sql="SELECT count(topic_id) FROM isost_ticket where topic_id='0' and status='open' and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";				
+			$open_ticket_sql="SELECT count(topic_id) FROM isost_ticket where topic_id='0' and status='open'  and track_id!=999999 and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";				
 				$open_ticket_result = mysql_query($open_ticket_sql);				
 				$open_ticket='';
 				while($sub_row = mysql_fetch_array($open_ticket_result)){				
@@ -120,7 +120,7 @@ if($num_rows>0){
 				
 			//sla
 		
-				$sla_sql="SELECT count(isoverdue) FROM isost_ticket where topic_id=0 and isoverdue=1 and status='open' and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";				
+				$sla_sql="SELECT count(isoverdue) FROM isost_ticket where topic_id=0 and isoverdue=1 and status='open'  and track_id!=999999 and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";				
 				$sla_result = mysql_query($sla_sql);				
 				$sla_breached='';
 				while($sub_row = mysql_fetch_array($sla_result)){				
@@ -128,7 +128,7 @@ if($num_rows>0){
 				}
 			
 			// Fetch the recordset to calculate average closure time
-			$sub_sql="SELECT ticket_id,UNIX_TIMESTAMP(created),UNIX_TIMESTAMP(closed) from isost_ticket where topic_id='0' and status like '$status' and closed IS NOT NULL and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";
+			$sub_sql="SELECT ticket_id,UNIX_TIMESTAMP(created),UNIX_TIMESTAMP(closed) from isost_ticket where topic_id='0' and status like '$status'  and track_id!=999999 and closed IS NOT NULL and UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date";
 				
 			$sub_result = mysql_query($sub_sql);
 			
@@ -147,7 +147,7 @@ if($num_rows>0){
 				
 				// Fetch information for Response Time
 					
-					$sub_sql_1		="SELECT UNIX_TIMESTAMP(created) from isost_ticket_response where ticket_id='$ticket_id' and UNIX_TIMESTAMP(created) > $created  order by response_id LIMIT 1";
+					$sub_sql_1		="SELECT UNIX_TIMESTAMP(created) from isost_ticket_response where ticket_id='$ticket_id'  and track_id!=999999 and UNIX_TIMESTAMP(created) > $created  order by response_id LIMIT 1";
 					$sub_result_1 	= mysql_query($sub_sql_1);
 					
 					if(mysql_num_rows($sub_result_1)>0){

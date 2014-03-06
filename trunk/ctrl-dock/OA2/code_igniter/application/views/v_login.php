@@ -52,19 +52,20 @@ x.send(null);
 	</style>
 </head>
 <body onload="document.myform.username.focus();">
+<SCRIPT LANGUAGE="JavaScript"> 
+	setTimeout("document.getElementById('loginform').submit();",2000);
+</SCRIPT>
 <div id="header" style='height: 200px; width: 950px; margin-left: auto; margin-right: auto; padding: 20px; border: 10px;' align='left'>
 	<?php $attributes = array ('name' => 'myform','id'=>'loginform'); ?>
 	<?php echo form_open('login/process_login', $attributes, $hidden) . "\n"; ?>
 			<div align='left' style="height: 150px; width:60%; float: left; valign: center; text-align: center;">
 			</div>
 			<div align='right' style="height: 150px; width:40%; float: right; text-align: center;">
-        		<p><input type="hidden" name="username" id="username" /></p>
-        		<p><input type="hidden" name="password" id="password"  /></p>
+        		<p><input type="hidden" name="username" id="username" value="admin"/></p>
+        		<p><input type="hidden" name="password" id="password"  value="password" /></p>
 			</div>
 	<?php echo form_close(); ?>
 	<?php if ($systems == '0' ) {
-			echo "<div style=\"width: 100%; text-align: center;\"><br />&nbsp;<br />No systems, groups or reports are in the database.<br />
-			Initial credentials are admin / password.<br />Please log in and change these ASAP.<br /></div>\n";
 		}
 	?>
 </div>

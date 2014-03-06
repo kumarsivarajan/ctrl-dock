@@ -9,7 +9,7 @@ $assetcategoryid=$_REQUEST["assetcategoryid"];
 $model=mysql_real_escape_string($_REQUEST["model"]);
 $serialno=$_REQUEST["serialno"];
 if (strlen($serialno)>0){
-	$sql	="select serialno from asset where serialno='$serialno' and assetid!='$assetid'";
+	$sql	="select serialno from asset where serialno='$serialno' and assetid!='$assetid' and serialno not in ('NA','N.A.','N.A','N A')";
 	$result = mysql_query($sql);
 	$count	= mysql_num_rows($result);
 	if ($count>0){$error_code="2";}
