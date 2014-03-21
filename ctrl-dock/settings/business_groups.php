@@ -1,6 +1,6 @@
 <?
 include("config.php"); 
-if (!check_feature(20)){feature_error();exit;}
+if (!check_feature(12)){feature_error();exit;}
 ?>
 
 <?
@@ -10,19 +10,19 @@ $action=$_REQUEST["action"];
 if ($action==''){$action="add";}
 
 if ($business_group_name!='' && $action=="add"){
-  if (!check_feature(21)){feature_error();exit;}
+  if (!check_feature(13)){feature_error();exit;}
   $sql = "insert into business_groups (business_group) values('$business_group_name')";
   $result = mysql_query($sql);	  
 }
 
 if ($business_group_name!='' && $action=="edit"){
-  if (!check_feature(22)){feature_error();exit;}
+  if (!check_feature(14)){feature_error();exit;}
   $sql = "update business_groups set business_group='$business_group_name' where business_group_index=$id";
   $result = mysql_query($sql);
 }
 
 if ($id!=1 && $action=="delete"){
-  if (!check_feature(23)){feature_error();exit;}
+  if (!check_feature(15)){feature_error();exit;}
   $sql = "delete from business_groups where business_group_index='$id'";
   $result = mysql_query($sql);
 

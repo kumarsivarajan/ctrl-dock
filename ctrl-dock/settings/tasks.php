@@ -1,6 +1,6 @@
 <?
 include("config.php");
-if (!check_feature(16)){feature_error();exit;}  
+if (!check_feature(24)){feature_error();exit;}  
 ?>
 <?
 $SELECTED="TASKS";

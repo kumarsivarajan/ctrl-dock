@@ -47,7 +47,7 @@ while ($row = mysql_fetch_row($result)){
 		<td class='reportdata' style='text-align: center;'><a href="host_svc.php?host_id=<? echo $row[0]; ?>&hostname=<?echo $row[1];?>"><img border=0 src="images/services.gif"></a></td>
 		<td class='reportdata' style='text-align: center;'><a href="edit_host_nw_snmp_1.php?host_id=<? echo $row[0]; ?>&hostname=<?echo $row[1];?>"><img border=0 src="images/snmp.gif"></a></td>
 		<td class='reportdata' style='text-align: center;'><a href="edit_host_1.php?host_id=<? echo $row[0]; ?>"><img border=0 src="images/edit.gif"></a></td>
-		<td class='reportdata' style='text-align: center;'><a href="mail_uptime_notification.php?host_id=<? echo $row[0]; ?>&hostname=<?echo $row[1];?>"><img border=0 src="images/email.jpeg" height="22" width="22"></a></td>
+		<td class='reportdata' style='text-align: center;'><a href="mail_uptime_notification.php?host_id=<? echo $row[0]; ?>&hostname=<?echo $row[1];?>"><img border=0 src="images/email.gif"></a></td>
 		<td class='reportdata' width=40 style='text-align: center;'><a href='host_delete_cf.php?host_id=<?echo $row[0];?>&hostname=<?echo $row[1];?>'><img src=images/delete.gif border=0></img></a></td>
 	</tr>
 	<?	

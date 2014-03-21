@@ -22,6 +22,21 @@ include("header.php");
 	<td class='tdformlabel'><b>Monitor Port</font></b></td>
 	<td align=right><input name="port" size="10" class='forminputtext'></td>
 </tr>
+<tr><td>&nbsp;</td></tr>
+<tr>
+	<td class='tdformlabel'><b>Monitor URL</font></b></td>
+	<td align=right><input name="url" size="40" class='forminputtext'></td>
+</tr>
+<tr>
+	<td class='tdformlabel'><b>Check Pattern</font></b></td>
+	<td align=right><input name="pattern" size="40" class='forminputtext'></td>
+</tr>
+<tr>
+	<td class='tdformlabel'><b>URL Timeout (in secs)</font></b></td>
+	<td align=right><input name="url_timeout" size="10" class='forminputtext'></td>
+</tr>
+
+<tr><td>&nbsp;</td></tr>
 <tr>
 	<td class='tdformlabel'><b>Alarm Threshold</font></b></td>
 	<td align=right><input name="alarm_threshold" size="10" class='forminputtext'></td>
@@ -50,11 +65,14 @@ include("header.php");
 	<td class="reportheader">Port</td>
 	<td class="reportheader" width=50>Status</td>
 	<td class="reportheader" width=100>Alarm Threshold</td>
+	<td class="reportheader" width=200>URL</td>
+	<td class="reportheader" width=200>Pattern</td>
+	<td class="reportheader" width=100>URL Timeout</td>
 	<td class="reportheader" width=60>Delete</td>
 </tr>
 <?
 $i=0;
-$sql = "select description,port,enabled,alarm_threshold from hosts_service where host_id='$host_id' order by description";
+$sql = "select description,port,enabled,alarm_threshold,url,pattern,timeout from hosts_service where host_id='$host_id' order by description";
 $result = mysql_query($sql);
 $row_color="#FFFFFF";
 while ($row = mysql_fetch_row($result)){
@@ -64,10 +82,19 @@ while ($row = mysql_fetch_row($result)){
 ?>
 	<tr bgcolor=<?echo $row_color; ?>>
 		<td class='reportdata'><? echo $row[0]; ?></td>
-		<td class='reportdata' style='text-align: center;'><? echo $row[1]; ?></td>
+		<?
+		$port=$row[1];
+		$timeout="";
+		if($row[1]=="0"){$port="Site Check";$timeout=$row[6]." secs";}
+		?>
+		<td class='reportdata' style='text-align: center;'><? echo $port; ?></td>
 		<td class='reportdata' style='text-align: center;'><? echo $status; ?></td>
 		<td class='reportdata' style='text-align: center;'><? echo $row[3]; ?></td>
-		<td class=reportdata width=40 style='text-align: center;'><a href='host_svc_delete.php?host_id=<?echo $host_id;?>&port=<?echo $row[1];?>&hostname=<?echo $hostname;?>'><img src=images/delete.gif border=0></img></a></td>
+		<td class='reportdata'><? echo $row[4]; ?></td>
+		<td class='reportdata'><? echo $row[5]; ?></td>
+		<td class='reportdata'><? echo $timeout; ?></td>
+
+		<td class=reportdata width=40 style='text-align: center;'><a href='host_svc_delete.php?host_id=<?echo $host_id;?>&port=<?echo $row[1];?>&hostname=<?echo $hostname;?>&url=<? echo $row[4];?>'><img src=images/delete.gif border=0></img></a></td>
 	</tr>
 <? $i++; }?>
 </table>

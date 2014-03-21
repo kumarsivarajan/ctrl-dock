@@ -31,7 +31,7 @@ $account_type=$_REQUEST['account_type'];
 </tr>
 <?
 //get the function
-    include("function.php");	
+		include("function.php");	
     	$page = (int) (!isset($_GET["page"]) ? 1 : $_GET["page"]);
     	$limit = 20;
     	$startpoint = ($page * $limit) - $limit;
@@ -45,11 +45,11 @@ $account_type=$_REQUEST['account_type'];
 		}
 
 		$sql.=" and b.country like '$country' and a.staff_number like '$staff_number' and a.username like '$alphabet%' and a.username like '%$account%'";
-		$sql.=" order by a.first_name LIMIT ".$startpoint.",".$limit;
-
+		$sql.=" order by a.first_name";
+#		$sql.=" order by a.first_name LIMIT ".$startpoint.",".$limit;
+		
 		$result = mysql_query($sql);
 		$record_count=mysql_num_rows($result);
-
 ?>
 		
 

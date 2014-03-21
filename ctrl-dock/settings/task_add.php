@@ -1,7 +1,7 @@
 <?
 
 include("config.php"); 
-if (!check_feature(17)){feature_error();exit;}
+if (!check_feature(25)){feature_error();exit;}
 
 $currtimestamp		=mktime();
 $currentday			=date('D',$currtimestamp);

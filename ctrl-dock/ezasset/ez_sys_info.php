@@ -16,12 +16,14 @@ $record_count  = mysql_num_rows($result);
 if ($record_count>0){
 	$row = mysql_fetch_row($result);
 	$system_id=$row[0];
+	
 	echo "<b>Please wait while this page loads</b>";
+	
 ?>
-	<meta http-equiv="refresh" content="0;url=../OA2/index.php/main/system_display/<?=$system_id;?>">
+	<meta http-equiv="refresh" content=0;url="../OA2/index.php/main/system_display/<?=$system_id;?>">
 <?
 	
 }else{
-	echo "There is no additional information available for this asset";
+	echo "<br><br><font face=Arial size=2>There is no additional information available for this asset</font>";
 }
 ?>

@@ -10,15 +10,21 @@ include("include/version.php");
 <base target="rimmain">
 </head>
 
-<body topmargin="0" leftmargin="0" bgcolor=#336699>
+<body topmargin="0" leftmargin="0">
 
-<table border="0" cellpadding="0" cellspacing=0  width="100%" height="40">
+<table border="0" cellpadding="0" cellspacing=0  width="1024" height="42" bgcolor="<?=$MENU_BGCOLOR;?>">
 <tr>
 	<td rowspan=2 valign=middle width=120 height=40 >
-	<a target=_blank href=http://www.ctrl-dock.org><img border=0 src=images/logo.png></img></a>
+	<? if ($DASH==1){?>
+		<a href=dash.php>
+	<?}?>
+	<img border=0 width=120px height=40px src=images/logo.png></img>
+	<? if ($DASH==1){?>
+		</a>
+	<?}?>
 	</td>
 	
-	<td class=mainmenu style="text-align:right;width:100%;"><b>
+	<td style="text-align:right;width:100%;"><b>
 	&nbsp;
 	
 	<? if ($DASH==1){?>
@@ -93,10 +99,10 @@ include("include/version.php");
 	&nbsp;	
 	</tr>
 	<tr>
-	<td class=mainmenu style="text-align:right;line-height:12px;" bgcolor=#336699>
-		<font class=menulink style="font-size:10px;">logged in as <?=$User_Full_Name;?></font>
+	<td style="text-align:right;line-height:12px;">
+		<font style="font-family: Arial;font-size:9px;color:#EEEEEE;">logged in as <?=$User_Full_Name;?></font>
 		&nbsp;
-		<a class=menulink style="text-decoration: none;font-size:10px;" target="_top" href="logout.php"><b>LOGOUT</b></a>
+		<a style="text-decoration:none;font-family: Arial;font-size:9px;color:#FFFFFF;" target="_top" href="logout.php"><b>LOGOUT</b></a>
 		&nbsp;	
 	</td>
   </tr>

@@ -25,6 +25,10 @@ APP_PATH="/var/www/html/rim"
 
 # Escalation Information
 */3 * * * * cd $APP_PATH/scripts/;php escalations.php
+
+# Daily Backup
+1 1 * * * cd $APP_PATH/scripts/;php backup.php
+
 #### END OF SCHEDULED JOBS FOR RIMBOX
 
 

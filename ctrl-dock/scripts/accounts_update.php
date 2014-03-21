@@ -24,8 +24,7 @@ function disable_account($username){
 // Update against Master RIM Server
 if($ezRIM==1){
 	// Fetch the details of all users who have been provisioned to access this RIMBOX	
-	$url=$MASTER_URL."/api/rim_access.php?key=".$MASTER_API_KEY."&agency=".$AGENCY_ID;	
-	echo $url;
+	$url=$MASTER_URL."/api/rim_access.php?key=".$MASTER_API_KEY."&agency=".$AGENCY_ID;
 	if ($query = load_xml($url)){
 		for($i=0;$i<count($query);$i++){
 			$first_name				=$query->user[$i]->first_name;
@@ -79,7 +78,7 @@ if($ezRIM==1){
 		//Disable the accounts that are not listed in the master_list
 		
 		// Fetch the list of accounts in the local instance which are active
-		$sql="select username from user_master where account_status='Active' and username!='administrator' order by username";
+		$sql="select username from user_master where account_status='Active' and account_type='service_account' and username!='administrator' order by username";
 		$result = mysql_query($sql);
 
 		while ($row = mysql_fetch_row($result)){

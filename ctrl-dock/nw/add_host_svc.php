@@ -7,13 +7,18 @@ $hostname	=$_REQUEST["hostname"];
 
 
 $description		=$_REQUEST["description"];
-$port				=$_REQUEST["port"];
+$port				=$_REQUEST["port"];if(strlen($port)==0){$port="00";}
 $enabled			=$_REQUEST["enabled"];
 $alarm_threshold	=$_REQUEST["alarm_threshold"];
 
+$pattern			=$_REQUEST["pattern"];
+$url_timeout		=$_REQUEST["url_timeout"];
+$url				=$_REQUEST["url"];
+
+
 if ($host_id!=""){
 
-  $sql = "insert into hosts_service (host_id,description,port,enabled,alarm_threshold) values ('$host_id','$description','$port','$enabled','$alarm_threshold')";
+  $sql = "insert into hosts_service (host_id,description,port,enabled,alarm_threshold,pattern,timeout,url) values ('$host_id','$description','$port','$enabled','$alarm_threshold','$pattern','$url_timeout','$url')";
   mysql_query($sql);
 
 ?>

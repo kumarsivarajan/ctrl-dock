@@ -1473,7 +1473,7 @@ class Ticket{
         if($var['duedate'] && !strcasecmp($origin,'staff'))
              $sql.=',duedate='.db_input(date('Y-m-d G:i',Misc::dbtime($var['duedate'].' '.$var['time'])));
 
-        echo $sql;
+        // echo $sql;
 		//exit;
         $ticket=null;
         //return $ticket;
