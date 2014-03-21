@@ -94,7 +94,6 @@ while ($row = mysql_fetch_row($result)){
 <?
 // For Site Check Services
 $sql = "select url,description from hosts_service where enabled=1 and host_id='$host_id' and port=0";
-echo "$sql<br>";
 $result = mysql_query($sql);
 while ($row = mysql_fetch_row($result)){
 	$description	=$row[1];
@@ -112,7 +111,7 @@ while ($row = mysql_fetch_row($result)){
 	}else{
 		$sub_sql.= " and timestamp BETWEEN '$fromdate' and '$todate' order by record_id desc";
 	}
-	echo $sub_sql."<br>";
+
 	$sub_result = mysql_query($sub_sql);
 	$record_count=mysql_num_rows($sub_result);
 
