@@ -1,7 +1,7 @@
 <?
 
 include("config.php"); 
-if (!check_feature(18)){feature_error();exit;}
+if (!check_feature(25)){feature_error();exit;}
 
 $task_id			=$_REQUEST["task_id"];
 

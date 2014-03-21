@@ -1,6 +1,6 @@
 <?php 
 include("config.php"); 
-if (!check_feature(26)){feature_error();exit;}
+if (!check_feature(18)){feature_error();exit;}
 
 $service=$_REQUEST["service"];
 

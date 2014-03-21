@@ -17,11 +17,11 @@ $result = mysql_query($sql);
 
 
 
-$sql="SELECT a.host_id,a.hostname,b.retry_count,b.timeout,b.community_string,a.platform,b.alarm_threshold,b.port FROM hosts_master a,hosts_nw_snmp b WHERE a.host_id=b.host_id AND a.status='1' AND b.enabled='1' ORDER BY a.hostname";
+$sql="SELECT a.host_id,a.hostname,b.retry_count,b.timeout,b.community_string,a.platform,b.alarm_threshold,b.port,b.version,b.disk_exclude,b.v3_user,b.v3_pwd FROM hosts_master a,hosts_nw_snmp b WHERE a.host_id=b.host_id AND a.status='1' AND b.enabled='1' ORDER BY a.hostname";
 $result = mysql_query($sql);
 
 $cpu_db_data = "";
-$mem_db_data = ""; //same can be resued for dsk data too.
+$mem_db_data = ""; //same can be reused for dsk data too.
 $cpu_user = -1;
 $cpu_system = 0;
 $cpu_idle = 0;
@@ -33,6 +33,8 @@ $new_mem_status = -1;
 $host_id="";
 $atleast_one = 0;
 
+$pattern_exclude = 'a,b';
+
 while ($row = mysql_fetch_row($result)){
 	$host_id		=	$row[0];
 	$hostname		=	$row[1].":".$row[7];
@@ -42,6 +44,11 @@ while ($row = mysql_fetch_row($result)){
 	$platform		=	$row[5];if($platform==""){$platform="LINUX";}
 	$alarm_threshold	= $row[6]-1;
 	$limit				= $alarm_threshold+1;
+	$snmp_version		=	$row[8]; if ($snmp_version==''){$snmp_version='v2';}
+	$disk_exclude		=	$row[9];
+	$v3_user			=	$row[10];
+	$v3_pwd				=	$row[11];
+	$pattern_exclude = explode(',',$disk_exclude);
 	
 	$sub_sql	="SELECT nw_snmp_cpu_status,nw_snmp_mem_status,nw_snmp_dsk_status FROM hosts_nw_snmp_log WHERE host_id='$host_id' ORDER BY record_id DESC LIMIT $limit";
 	
@@ -60,7 +67,12 @@ while ($row = mysql_fetch_row($result)){
 					$cpu_info = ".1.3.6.1.2.1.25.3.3.1.2";
 
 					snmp_set_quick_print(1);
-					$procInfo = @snmprealwalk($hostname, $community_string, $cpu_info, $timeout, $count);
+					$procInfo='';
+					if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
+						$procInfo = @snmp3_real_walk($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", $cpu_info, $timeout, $count);
+					}else{
+						$procInfo = @snmprealwalk($hostname, $community_string, $cpu_info, $timeout, $count);
+					}
 					
 					if ( count($procInfo) == 1 ){
 						echo("Unable to query Windows server $hostname for CPU Utilization");
@@ -104,7 +116,12 @@ while ($row = mysql_fetch_row($result)){
 					$total_mem_info = ".1.3.6.1.2.1.25.2.2";
 
 					snmp_set_quick_print(1);
-					$snmpInfo = @snmprealwalk($hostname, $community_string, $used_mem_info, $timeout, $count);
+					$snmpInfo='';
+					if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
+						$snmpInfo = @snmp3_real_walk($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", $used_mem_info, $timeout, $count);
+					}else{
+						$snmpInfo = @snmprealwalk($hostname, $community_string, $used_mem_info, $timeout, $count);
+					}
 
 					if ( count($snmpInfo) == 1 ){
 						echo("Unable to query Windows server $hostname for Used Memory Info");
@@ -131,7 +148,12 @@ while ($row = mysql_fetch_row($result)){
 
 					//get the total memory available
 					snmp_set_quick_print(1);
-					$snmpInfo = @snmprealwalk($hostname, $community_string, $total_mem_info, $timeout, $count);
+					$snmpInfo='';
+					if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
+						$snmpInfo = @snmp3_real_walk($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", $total_mem_info, $timeout, $count);
+					}else{
+						$snmpInfo = @snmprealwalk($hostname, $community_string, $total_mem_info, $timeout, $count);
+					}
 					$mem_db_data .= "Total Mem: ";
 					foreach ( $snmpInfo as $oid => $val ){
 						$temp = array();
@@ -183,19 +205,39 @@ while ($row = mysql_fetch_row($result)){
 					$new_dsk_status = 0;
 					
 					snmp_set_quick_print(1);
-					$snmpInfo = @snmprealwalk($hostname, $community_string, $disk_info, $timeout, $count);
+					$snmpInfo='';
+					if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
+						$snmpInfo = @snmp3_real_walk($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", $disk_info, $timeout, $count);
+					}else{
+						$snmpInfo = @snmprealwalk($hostname, $community_string, $disk_info, $timeout, $count);
+					}
 					foreach ( $snmpInfo as $oid => $val ){
 						$mem_db_data = $mem_db_data . $oid . "," . $val . ",";
 						
 						$pos = strpos($val, "FixedDisk");
 						if ($pos == true){
 							$index = substr($oid, strrpos($oid, ".")+1);
-							$diskLabel = @snmpget($hostname, $community_string, $disk_info.".3.$index", $timeout, $count);							
-							$diskTotalSpace = @snmpget($hostname, $community_string, $disk_info.".5.$index", $timeout, $count);							
-							$diskUsedSpace = @snmpget($hostname, $community_string, $disk_info.".6.$index", $timeout, $count);							
-							$disk_pct_used = round(($diskUsedSpace / $diskTotalSpace)*100,2);
+							$diskLabel='';
+							if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
+								$diskLabel = @snmp3_get($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", $disk_info.".3.$index", $timeout, $count);
+							}else{
+								$diskLabel = @snmpget($hostname, $community_string, $disk_info.".3.$index", $timeout, $count);
+							}
+							if (in_array($diskLabel, $pattern_exclude)){
+								//print_r($val); echo " is being ignored\n";
+								continue;
+							}
+							$diskUsedSpace=$diskTotalSpace='';
+							if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
+								$diskTotalSpace = @snmp3_get($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", $disk_info.".5.$index", $timeout, $count);
+								$diskUsedSpace = @snmp3_get($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", $disk_info.".6.$index", $timeout, $count);
+							}else{
+								$diskTotalSpace = @snmpget($hostname, $community_string, $disk_info.".5.$index", $timeout, $count);							
+								$diskUsedSpace = @snmpget($hostname, $community_string, $disk_info.".6.$index", $timeout, $count);						
+							}
+							$dsk_pct_used = round(($diskUsedSpace / $diskTotalSpace)*100,2);
 							
-							$dsk_utilization = $dsk_utilization . substr($diskLabel,0,strpos($diskLabel," ")). " => " . $disk_pct_used . "%</br>";
+							$dsk_utilization = $dsk_utilization . substr($diskLabel,0,strpos($diskLabel," ")). " => " . $dsk_pct_used . "%</br>";
 							if ($dsk_pct_used > $param_threshold){
 								$new_dsk_status++;
 							}
@@ -237,7 +279,13 @@ while ($row = mysql_fetch_row($result)){
 				
 				if ( "CPU Utilization" == $param_name){				
 					snmp_set_quick_print(1);
-					$procInfo = @snmprealwalk($hostname, $community_string, ".1.3.6.1.4.1.2021.11", $timeout, $count);
+					$cpu_info = ".1.3.6.1.4.1.2021.11";
+					$procInfo = '';
+					if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
+						$procInfo = @snmp3_real_walk($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", $cpu_info, $timeout, $count);
+					}else{
+						$procInfo = @snmprealwalk($hostname, $community_string, $cpu_info, $timeout, $count);
+					}
 					
 					if ( count($procInfo) == 1 ){
 						echo("Unable to query server $hostname for CPU Utilization");
@@ -281,8 +329,12 @@ while ($row = mysql_fetch_row($result)){
 					}
 				} else if ("Disk Utilization" == $param_name){
 					snmp_set_quick_print(1);
-					$hrStorageDescr = @snmprealwalk($hostname, $community_string, "hrStorageDescr", $timeout, $count);
-
+					$hrStorageDescr = '';
+					if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
+						$hrStorageDescr = @snmp3_real_walk($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", "hrStorageDescr", $timeout, $count);
+					}else{
+						$hrStorageDescr = @snmprealwalk($hostname, $community_string, $cpu_info, $timeout, $count);
+					}
 					if ( count($hrStorageDescr) == 1 )
 					{
 						echo("Unable to query server $hostname for Disk Utilization");
@@ -295,12 +347,22 @@ while ($row = mysql_fetch_row($result)){
 					foreach ( $hrStorageDescr as $oid => $val )
 					{
 						$mem_db_data = $mem_db_data . $oid . "," . $val . ",";
-						
+						if (in_array($val, $pattern_exclude)){
+							//print_r($val); echo " is being ignored\n";
+							continue;
+						}
 						if ("/" == substr($val,0,1)){
 							$index = substr($oid, strrpos($oid, ".")+1);
 
-							$used = @snmpget($hostname, $community_string, "hrStorageUsed.$index", $timeout, $count);
-							$total = @snmpget($hostname, $community_string, "hrStorageSize.$index", $timeout, $count);
+							$used = '';
+							$total = '';
+							if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
+								$used = @snmp3_get($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", "hrStorageUsed.$index", $timeout, $count);
+								$total = @snmp3_get($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", "hrStorageSize.$index", $timeout, $count);
+							}else{
+								$used = @snmpget($hostname, $community_string, "hrStorageUsed.$index", $timeout, $count);
+								$total = @snmpget($hostname, $community_string, "hrStorageSize.$index", $timeout, $count);
+							}
 
 							if ( ! ereg("^[0-9]+$", $used) ){
 								echo("Unable to determine used space due to failed snmp query");
@@ -308,7 +370,10 @@ while ($row = mysql_fetch_row($result)){
 							if ( ! ereg("^[0-9]+$", $total) ){
 								echo("Unable to determine size due to failed snmp query");
 							}
-							$dsk_pct_used = round(($used / $total)*100, 0);
+							$dsk_pct_used = 0;
+							if ($total > 0){
+								$dsk_pct_used = round(($used / $total)*100, 0);
+							}
 							$dsk_utilization = $dsk_utilization . $val. " => " . $dsk_pct_used . "%</br>";
 							if ($dsk_pct_used > $param_threshold){
 								$new_dsk_status++;
@@ -342,7 +407,12 @@ while ($row = mysql_fetch_row($result)){
 				}else if ("Memory Utilization" == $param_name){ //end of else if dsk utilization
 				
 					snmp_set_quick_print(1);
-					$snmp_result = @snmpget($hostname, $community_string, ".1.3.6.1.4.1.2021.4.5.0", $timeout, $count);
+					$snmp_result = '';
+					if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
+						$snmp_result = @snmp3_get($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", ".1.3.6.1.4.1.2021.4.5.0", $timeout, $count);
+					}else{
+						$snmp_result = @snmpget($hostname, $community_string, ".1.3.6.1.4.1.2021.4.5.0", $timeout, $count);
+					}
 				
 					if (strrpos($snmp_result, ":") > 0){
 						$total_mem = substr($snmp_result, strrpos($snmp_result, ":")+2);
@@ -350,7 +420,12 @@ while ($row = mysql_fetch_row($result)){
 						$total_mem = $snmp_result;
 					}
 					
-					$snmp_result = @snmpget($hostname, $community_string, ".1.3.6.1.4.1.2021.4.6.0", $timeout, $count);
+					$snmp_result = '';
+					if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
+						$snmp_result = @snmp3_get($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", ".1.3.6.1.4.1.2021.4.6.0", $timeout, $count);
+					}else{
+						$snmp_result = @snmpget($hostname, $community_string, ".1.3.6.1.4.1.2021.4.6.0", $timeout, $count);
+					}
 					
 					if (strpos($snmp_result, ":") > 0){
 						$free_mem = substr($snmp_result, strrpos($snmp_result, ":")+2);
@@ -358,7 +433,12 @@ while ($row = mysql_fetch_row($result)){
 						$free_mem = $snmp_result;
 					}
 					
-					$snmp_result = @snmpget($hostname, $community_string, ".1.3.6.1.4.1.2021.4.15.0", $timeout, $count);
+					$snmp_result = '';
+					if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
+						$snmp_result = @snmp3_get($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", ".1.3.6.1.4.1.2021.4.15.0", $timeout, $count);
+					}else{
+						$snmp_result = @snmpget($hostname, $community_string, ".1.3.6.1.4.1.2021.4.15.0", $timeout, $count);
+					}
 					
 					if (strpos($snmp_result, ":") > 0){
 						$cache_mem = substr($snmp_result, strrpos($snmp_result, ":")+2);

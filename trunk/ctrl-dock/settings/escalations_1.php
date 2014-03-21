@@ -1,5 +1,8 @@
 <?php
-include("config.php"); 
+include("config.php");
+if (!check_feature(27)){feature_error();exit;} 
+
+
 $SELECTED="ESCALATIONS";
 include("header.php");
 ?>

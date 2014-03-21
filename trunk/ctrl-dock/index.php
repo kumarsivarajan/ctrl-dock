@@ -1,5 +1,9 @@
 <? 
 	include_once("include/version.php");
+	include_once("include/config.php");
+	include_once("include/db.php");
+	include_once("include/system_config.php");
+
 ?>
 
 <title>control dock login</title>
@@ -7,20 +11,20 @@
 <br><br><br><br>
 <div align="center">
 <form method=post action=frames.php>
-	<table border="0" width="370"  height=40 cellspacing="0" cellpadding="0" bgcolor=#5C5C5C>
+	<table border="0" width="370"  height=40 cellspacing="0" cellpadding="0" bgcolor=<?=$MENU_BGCOLOR;?>>
 		<tr>
 			<td align=left>			
-				<img border=0 src="images/logo.png"></img>
+				<img border=0 width=100 src="images/logo.png"></img>
 			</td>
 			<td align=right>
 			</td>
 		</tr>
 	</table>
 
-	<table bgcolor=#336699 border="0" width="370"  cellspacing="0" cellpadding="5">
+	<table border="0" width="370"  cellspacing="0" cellpadding="5" bgcolor=#DDDDDD>
 		<tr>
 			<td style="border-style:none; border-width:medium; " height="14">			
-				<font face="Arial" size="2" color="#FFFFFF">username</font>
+				<font face="Arial" size="2" color="#000000">username</font>
 			</td>
 		</tr>
 		<tr>
@@ -30,7 +34,7 @@
 		</tr>
 		<tr>
 			<td style="border-style:none; border-width:medium; " height="14">
-				<font face="Arial" color="#FFFFFF" size="2">password </font>
+				<font face="Arial" color="#000000" size="2">password </font>
 			</td>
 		</tr>
 		<tr>
@@ -51,6 +55,6 @@
 <font face="Arial" size="1" color="#BBBBBB">
 <a href="http://www.ctrl-dock.org" style="text-decoration: none">
 <span>
-<font face="Arial" size="1" color="#BBBBBB">ctrl-dock ver. <?=$VERSION;?></font></a>
+<font face="Arial" size="1" color="#BBBBBB">control dock ver. <?=$VERSION;?></font></a>
 <font face="Arial" size="1" color="#BBBBBB">
 </center>

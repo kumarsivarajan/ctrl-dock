@@ -1,6 +1,6 @@
 <?
 include("config.php"); 
-if (!check_feature(28)){feature_error();exit;} 
+if (!check_feature(20)){feature_error();exit;} 
 
 $SELECTED="QUICK LINKS";
 include("header.php");
@@ -15,19 +15,19 @@ $action=$_REQUEST["action"];
 if ($action==''){$action="add";}
 
 if ($link!='' && $link_name!='' && $link_priority!='' && $action=="add"){
-  if (!check_feature(29)){feature_error();exit;} 
+  if (!check_feature(21)){feature_error();exit;} 
   $sql = "insert into quick_links (link,link_name,link_priority) values('$link','$link_name','$link_priority')";
   $result = mysql_query($sql);	  
 }
 
 if ($link!='' && $link_name!='' && $link_priority!='' && $action=="edit"){
-  if (!check_feature(30)){feature_error();exit;} 
+  if (!check_feature(22)){feature_error();exit;} 
   $sql = "update quick_links set link='$link', link_name='$link_name', link_priority='$link_priority' where link_id=$id";
   $result = mysql_query($sql);	  
 }
 
 if ($action=="delete"){
-if (!check_feature(31)){feature_error();exit;} 
+if (!check_feature(23)){feature_error();exit;} 
   $sql = "delete from quick_links where link_id=$id";
   $result = mysql_query($sql);	  
 }

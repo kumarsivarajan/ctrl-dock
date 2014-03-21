@@ -1,1 +1,1 @@
-<?include("config.php");if (!check_feature(19)){feature_error();exit;}$task_id=$_REQUEST["task_id"];$sql = "delete from scheduled_tasks where task_id='$task_id'";$result = mysql_query($sql);?><meta http-equiv="Refresh" content="1; URL=tasks.php">
+<?include("config.php");if (!check_feature(26)){feature_error();exit;}$task_id=$_REQUEST["task_id"];$sql = "delete from scheduled_tasks where task_id='$task_id'";$result = mysql_query($sql);?><meta http-equiv="Refresh" content="1; URL=tasks.php">

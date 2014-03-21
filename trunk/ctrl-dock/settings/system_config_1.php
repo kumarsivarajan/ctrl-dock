@@ -183,7 +183,7 @@ include("header.php");
 </tr>
 <tr>		
 		<td class='tdformlabel'><b>Terminal Port</font></b></td>
-		<td align=right><input name="terminalport"  value="<? echo $row[15]; ?>" size="40" class='forminputtext'></td>
+		<td align=right><input name="terminalport"  value="<? echo $row[15]; ?>" size="6" class='forminputtext'></td>
 </tr>
 <tr><td bgcolor=#666666 colspan=2><font face=Arial size=2 color=White><b>&nbsp;Miscellaeneous</b></td></tr>
 <tr>		
@@ -202,18 +202,21 @@ include("header.php");
         </td>
 </tr>
 
+<tr><td bgcolor=#666666 colspan=2><font face=Arial size=2 color=White><b>&nbsp;Branding</b></td></tr>
+<tr>		
+		<td class='tdformlabel'><b>Branding : Menu Background Color</font></b></td>
+		<td align=right><input name="menu_bgcolor"  value="<? echo $row[16]; ?>" size="6" class='forminputtext'></td>
+</tr>
 <tr>
 	<td colspan=2 align=center>
 		<br><input type=submit value="Update Account" name="Submit" class='forminputbutton'>
 	</td>
 </tr>
 </form>
-<tr><td bgcolor=#666666 colspan=2><font face=Arial size=2 color=White><b>&nbsp;Branding : Upload Logo</b></td></tr>
 <tr>
 		<td class='tdformlabel'>
-		Prefered Logo Format & Size (.png with width : 120px height:40px) 
-		<br>
-		Logo Background Hex Code #5C5C5C</td>
+			Prefered Logo Format & Size (.png with width : 120px height:40px) 
+		</td>
 		<td align=right>
 		<form enctype="multipart/form-data" method="POST" action="upload_logo.php">
 			<input type="hidden" name="MAX_FILE_SIZE" value="10000000000">

@@ -1136,7 +1136,10 @@ CREATE TABLE `hosts_service` (
   `port` int(10) default NULL,
   `description` varchar(255) default NULL,
   `enabled` int(1) default '1',
-  `alarm_threshold` int(10) default '2'
+  `alarm_threshold` int(10) default '2',
+  `pattern` varchar(100),
+  `timeout` int(5),
+  `url` varchar(255)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 
@@ -1150,6 +1153,8 @@ CREATE TABLE `hosts_service_log` (
   `port` int(10) default NULL,
   `svc_status` int(1) default NULL,
   `timestamp` int(10) default NULL,
+  `url` varchar(255) default NULL,
+  `loadtime` int(10) default NULL,
   PRIMARY KEY  (`record_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -1219,12 +1224,13 @@ CREATE TABLE `config` (
   `https` int(1) default '0',
   `snmp` INT(1) NOT NULL DEFAULT '1',
   `terminal` INT(1) NOT NULL DEFAULT '1',
-  `terminalport` VARCHAR(255) NULL
+  `terminalport` VARCHAR(255) NULL,
+  `menu_bgcolor` varchar(20) default '#336699'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 
 
-insert into `config` (`account_as_email`, `md5_enable`, `asset_prefix`, `audit_expiry`, `ezrim`, `master_url`, `master_api_key`, `agency_id`, `service_dash`, `service_ezasset`, `service_ezticket`, `service_network`, `https`) values('0','0','AX','15','0','','','1','1','1','1','1','0');
+insert into `config` (`account_as_email`, `md5_enable`, `asset_prefix`, `audit_expiry`, `ezrim`, `master_url`, `master_api_key`, `agency_id`, `service_dash`, `service_ezasset`, `service_ezticket`, `service_network`, `https`,`menu_bgcolor`) values('0','0','AX','15','0','','','1','1','1','1','1','0','#336699');
 
 CREATE TABLE `super_admin` (
   `username` varchar(255) default NULL
@@ -1447,7 +1453,11 @@ CREATE TABLE `hosts_nw_snmp` (
   `enabled` int(1) default '1',
   `community_string` varchar(50) default NULL,
   `alarm_threshold` int(10) default '2',
-  `port` int(3) default '161'
+  `port` int(3) default '161',
+  `version` varchar(5) default 'v2',
+  `disk_exclude` varchar(255),
+  `v3_user` varchar(50),
+  `v3_pwd` varchar(50)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 
