@@ -4,6 +4,7 @@ include_once("../include/db.php");
 include_once("../include/mail.php");
 include_once("../include/mail_helper.php");
 include_once("../include/ticket_post.php");
+include_once("../include/simple_html_dom.php");
 
 
 // Perform a periodic clean-up of Network Log Files
@@ -17,7 +18,7 @@ $result = mysql_query($sql);
 
 
 
-$sql="SELECT a.host_id,a.hostname,b.port,b.alarm_threshold FROM hosts_master a,hosts_service b WHERE a.host_id=b.host_id AND a.status='1' AND b.enabled='1' ORDER BY a.hostname";
+$sql="SELECT a.host_id,a.hostname,b.port,b.alarm_threshold,b.url,b.pattern,b.timeout FROM hosts_master a,hosts_service b WHERE a.host_id=b.host_id AND a.status='1' AND b.enabled='1' ORDER BY a.hostname";
 $result = mysql_query($sql);
 
 while ($row = mysql_fetch_row($result)){
@@ -27,42 +28,90 @@ while ($row = mysql_fetch_row($result)){
 	$alarm_threshold=	$row[3];
 	$timestamp		=	mktime();
 	
-	$sub_sql	="SELECT description FROM hosts_service WHERE host_id='$host_id' and port='$port'";
+	$url				=$row[4];
+	$pattern			=$row[5];
+	$url_timeout		=$row[6];
+	
+	$sub_sql	="SELECT description FROM hosts_service WHERE host_id='$host_id' and port='$port' and url='$url'";
 	$sub_result = mysql_query($sub_sql);
 	$sub_row	= mysql_fetch_row($sub_result);
 	$svc		= $sub_row[0];
 
-	
-	$connection=@fsockopen($hostname,$port,$errno, $errstr,3);
+	if($port>0){
+		$connection=@fsockopen($hostname,$port,$errno, $errstr,3);
+			
+		if ($connection) {
+			$svc_status=1;
+			fclose($connection);
+		}else{
+			$svc_status=0;
+		}
 		
-	if ($connection) {
-		$svc_status=1;
-		fclose($connection);
-	}else{
-		$svc_status=0;
-	}
-	
-	$sub_sql="insert into hosts_service_log (host_id,port,svc_status,timestamp) values ('$host_id','$port','$svc_status','$timestamp')";
-	$sub_result = mysql_query($sub_sql);
-	
-	if ($svc_status==0){
-		// Check the last known state of the host and the service
-		$limit=$alarm_threshold+1;
-		$sub_sql	="SELECT svc_status FROM hosts_service_log WHERE host_id='$host_id' and port='$port' ORDER BY record_id DESC LIMIT $limit";
+		$sub_sql="insert into hosts_service_log (host_id,port,svc_status,timestamp) values ('$host_id','$port','$svc_status','$timestamp')";
 		$sub_result = mysql_query($sub_sql);
-		$down_count=0;		
-		while($sub_row=mysql_fetch_row($sub_result)){
-			if($sub_row[0]==0){$down_count++;}
-			$last_status=$sub_row[0];
-		}
 		
-		// If the service was down and breached the alarm threshold, generate a ticket
-		if($down_count==$alarm_threshold && $last_status==1){	
-			$timestamp_human=date("d-M-Y H:i:s",$timestamp);
-			$message  = "ALERT $hostname $svc($port) DOWN $timestamp_human";
-			$subject=$message;
-			ticket_post($smtp_email,$smtp_email,"28","$subject","$message",'1');		
+		if ($svc_status==0){
+			// Check the last known state of the host and the service
+			$limit=$alarm_threshold+1;
+			$sub_sql	="SELECT svc_status FROM hosts_service_log WHERE host_id='$host_id' and port='$port' ORDER BY record_id DESC LIMIT $limit";
+			$sub_result = mysql_query($sub_sql);
+			$down_count=0;		
+			while($sub_row=mysql_fetch_row($sub_result)){
+				if($sub_row[0]==0){$down_count++;}
+				$last_status=$sub_row[0];
+			}
+			
+			// If the service was down and breached the alarm threshold, generate a ticket
+			if($down_count==$alarm_threshold && $last_status==1){	
+				$timestamp_human=date("d-M-Y H:i:s",$timestamp);
+				$message  = "ALERT $hostname $svc($port) DOWN $timestamp_human";
+				$subject=$message;
+				ticket_post($smtp_email,$smtp_email,"28","$subject","$message",'1');		
+			}
 		}
 	}
 	
+	if($port==0){
+		$t1 = mktime();
+		$html = file_get_html($url)->plaintext;
+		$t2 = mktime();
+		
+		$diff=$t2 - $t1;
+
+		if (!strstr($html,$pattern)){
+			$svc_status=0;
+			$subject="CHECKSITE ALERT - ".$url . " is DOWN";
+			$message="CHECKSITE ALERT - ".$url . " is DOWN";
+		}else{
+			if ($diff > $url_timeout){
+				$svc_status=0;
+				$subject="CHECKSITE ALERT - ".$url . " is SLOW";
+				$message="CHECKSITE ALERT - ".$url . " load time (".$diff." secs) has exceeded threshold time";
+			}else{
+				$svc_status=1;
+			}
+		}
+		
+		$sub_sql="insert into hosts_service_log (host_id,port,svc_status,timestamp,url,loadtime) values ('$host_id','$port','$svc_status','$timestamp','$url','$diff')";
+		$sub_result = mysql_query($sub_sql);
+		
+		if ($svc_status==0){
+			// Check the last known state of the host and the service
+			$limit=$alarm_threshold+1;
+			$sub_sql	="SELECT svc_status FROM hosts_service_log WHERE host_id='$host_id' and url='$url' ORDER BY record_id DESC LIMIT $limit";			
+			$sub_result = mysql_query($sub_sql);
+			$down_count=0;		
+			while($sub_row=mysql_fetch_row($sub_result)){
+				if($sub_row[0]==0){$down_count++;}
+				$last_status=$sub_row[0];
+			}
+			
+			// If the service was down and breached the alarm threshold, generate a ticket
+			if($down_count==$alarm_threshold && $last_status==1){	
+				$timestamp_human=date("d-M-Y H:i:s",$timestamp);
+				$message  = $message. " $timestamp_human";			
+				ticket_post($smtp_email,$smtp_email,"28","$subject","$message",'1');		
+			}
+		}
+	}
 }
