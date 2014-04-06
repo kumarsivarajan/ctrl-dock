@@ -333,7 +333,7 @@ while ($row = mysql_fetch_row($result)){
 					if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
 						$hrStorageDescr = @snmp3_real_walk($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", "hrStorageDescr", $timeout, $count);
 					}else{
-						$hrStorageDescr = @snmprealwalk($hostname, $community_string, $cpu_info, $timeout, $count);
+						$hrStorageDescr = @snmprealwalk($hostname, $community_string, "hrStorageDescr", $timeout, $count);
 					}
 					if ( count($hrStorageDescr) == 1 )
 					{

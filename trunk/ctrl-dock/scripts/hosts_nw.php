@@ -15,7 +15,7 @@ $then=mktime()-$cleanup_period;
 $sql="delete from hosts_nw_log where timestamp<$then";
 $result = mysql_query($sql);
 
-$sql="SELECT a.host_id,a.hostname,b.count,b.timeout,b.alarm_threshold,b.flap_timeout,b.flap_threshold FROM hosts_master a,hosts_nw b WHERE a.host_id=b.host_id AND a.status='1' AND b.enabled='1' ORDER BY a.hostname";
+$sql="SELECT a.host_id,a.hostname,b.count,b.timeout,b.alarm_threshold,b.flap_timeout,b.flap_threshold,a.description FROM hosts_master a,hosts_nw b WHERE a.host_id=b.host_id AND a.status='1' AND b.enabled='1' ORDER BY a.hostname";
 $result = mysql_query($sql);
 
 while ($row = mysql_fetch_row($result)){
@@ -26,6 +26,7 @@ while ($row = mysql_fetch_row($result)){
 	$alarm_threshold=	$row[4];
 	$flap_timeout	=	$row[5];
 	$flap_threshold	=	$row[6];
+	$hostdesc		=	$row[7];
 	$timestamp		=	mktime();
 	
 	$pingoutput=array();
@@ -79,7 +80,7 @@ while ($row = mysql_fetch_row($result)){
 		// If the Flap threshold is breached, then send an alert.
 		if ($flap >= $flap_threshold && $last_status==1){
 			$timestamp_human=date("d-M-Y H:i:s",$timestamp);
-			$message  = "ALERT $hostname NETWORK IS FLAPPING $timestamp_human";
+			$message  = "ALERT $hostdesc - $hostname NETWORK IS FLAPPING $timestamp_human";
 			$subject=$message;
 			ticket_post($smtp_email,$smtp_email,"28","$subject","$message",'1');
 		}
@@ -100,7 +101,7 @@ while ($row = mysql_fetch_row($result)){
 		// If the host was down and breached the alarm threshold, generate a ticket
 		if($down_count==$alarm_threshold && $last_status==1){			
 			$timestamp_human=date("d-M-Y H:i:s",$timestamp);
-			$message  = "ALERT $hostname DOWN $timestamp_human";
+			$message  = "ALERT $hostdesc - $hostname DOWN $timestamp_human";
 			$subject=$message;
 			ticket_post($smtp_email,$smtp_email,"28","$subject","$message",'1');
 		}
@@ -123,7 +124,7 @@ while ($row = mysql_fetch_row($result)){
 		}
 		if($up_count == $alarm_threshold && $last_status == 0){
  			$timestamp_human=date("d-M-Y H:i:s",$timestamp);
-			$body = "$hostname UP on $timestamp_human";
+			$body = "$hostdesc - $hostname UP on $timestamp_human";
 			$attachement ="";
 			// GET ALL THE EMAILS WHO ARE ASSOCIATED WITH THAT HOST '
 			$select_email_query = sprintf("SELECT email_id

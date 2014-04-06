@@ -38,7 +38,6 @@ while ($row = mysql_fetch_row($result)){
 	}else{
 		$sub_sql.= " and timestamp BETWEEN '$fromdate' and '$todate' order by record_id desc";
 	}
-
 	$sub_result = mysql_query($sub_sql);
 	$record_count=mysql_num_rows($sub_result);
 
@@ -68,8 +67,8 @@ while ($row = mysql_fetch_row($result)){
 	<?
 	$sl_no=1;
 
-	//for($i=count($graph_data)-1;$i>=0;$i--){
-	for($i=0;$i<=count($graph_data)-1;$i++){
+	for($i=count($graph_data)-1;$i>=0;$i--){
+	//for($i=0;$i<=count($graph_data)-1;$i++){
 		if (($i%2)==1){$row_color="#EDEDE4";}else{$row_color="#FFFFFF";}
 		$date	=$summary[$i][0];
 		$status	=$summary[$i][1];
@@ -141,8 +140,8 @@ while ($row = mysql_fetch_row($result)){
 	<?
 	$sl_no=1;
 
-	//for($i=count($graph_data)-1;$i>=0;$i--){
-	for($i=0;$i<=count($graph_data)-1;$i++){
+	for($i=count($graph_data)-1;$i>=0;$i--){
+	//for($i=0;$i<=count($graph_data)-1;$i++){
 		if (($i%2)==1){$row_color="#EDEDE4";}else{$row_color="#FFFFFF";}
 		$date	=$summary[$i][0];
 		$status	=$summary[$i][1];
