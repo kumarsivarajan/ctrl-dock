@@ -18,7 +18,7 @@ $result = mysql_query($sql);
 
 
 
-$sql="SELECT a.host_id,a.hostname,b.port,b.alarm_threshold,b.url,b.pattern,b.timeout FROM hosts_master a,hosts_service b WHERE a.host_id=b.host_id AND a.status='1' AND b.enabled='1' ORDER BY a.hostname";
+$sql="SELECT a.host_id,a.hostname,b.port,b.alarm_threshold,b.url,b.pattern,b.timeout,a.alert_status FROM hosts_master a,hosts_service b WHERE a.host_id=b.host_id AND a.status='1' AND b.enabled='1' ORDER BY a.hostname";
 $result = mysql_query($sql);
 
 while ($row = mysql_fetch_row($result)){
@@ -31,6 +31,7 @@ while ($row = mysql_fetch_row($result)){
 	$url				=$row[4];
 	$pattern			=$row[5];
 	$url_timeout		=$row[6];
+	$alert_status		=$row[7];
 	
 	$sub_sql	="SELECT description FROM hosts_service WHERE host_id='$host_id' and port='$port' and url='$url'";
 	$sub_result = mysql_query($sub_sql);
@@ -62,11 +63,61 @@ while ($row = mysql_fetch_row($result)){
 			}
 			
 			// If the service was down and breached the alarm threshold, generate a ticket
-			if($down_count==$alarm_threshold && $last_status==1){	
+			if($down_count==$alarm_threshold && $last_status==1 && $alert_status==1){	
 				$timestamp_human=date("d-M-Y H:i:s",$timestamp);
 				$message  = "ALERT $hostname $svc($port) DOWN $timestamp_human";
 				$subject=$message;
 				ticket_post($smtp_email,$smtp_email,"28","$subject","$message",'1');		
+			}
+			
+			// Get all the emails who have subscribed to the service going down and 
+			// intend to receive continuous alerts while the service is down
+
+			$select_email_query = "SELECT email_id FROM sys_uptime_email WHERE status = 'active' AND host_id = '$host_id' and continuos_alerts=1";
+			$email_result = mysql_query($select_email_query);
+			if (mysql_num_rows($email_result)>0 && $down_count>$alarm_threshold && $alert_status==1){
+				while($email_row = mysql_fetch_assoc($email_result)){
+					$timestamp_human=date("d-M-Y H:i:s",$timestamp);
+					$message  = "ALERT $hostname $svc($port) DOWN $timestamp_human";
+					$subject=$message;
+					$to_email = $email_row['email_id'];
+					ezmail($to_email,$to_email,$subject,$message,$attachment);
+				}
+			}
+			
+		}
+		
+		//This section is used to send a notification mail to the respective people to say the service is UP again
+		if ($svc_status==1){
+			$limit=$alarm_threshold+1;
+			$select_up_query	="SELECT svc_status FROM hosts_service_log WHERE host_id='$host_id' and port='$port' ORDER BY record_id DESC LIMIT $limit";
+			$up_result = mysql_query($select_up_query);
+			
+			$up_count 	= 0;
+			$down_count	= 0;
+			while($up_row = mysql_fetch_row($up_result)){
+				if($up_row[0] == 1){
+					$up_count++;
+				}
+				if($up_row[0] == 0){
+					$down_count++;
+				}
+			}
+			
+			if($down_count>=$alarm_threshold && $alert_status==1){
+				$timestamp_human=date("d-M-Y H:i:s",$timestamp);
+				$body = "$hostname $svc($port) UP on $timestamp_human";
+			
+				$attachment ="";
+				// GET ALL THE EMAILS WHO ARE ASSOCIATED WITH THAT HOST '
+				$select_email_query = sprintf("SELECT email_id
+						       FROM sys_uptime_email
+						       WHERE status = 'active' AND host_id = '%d'",$host_id);
+				$email_result = mysql_query($select_email_query);
+				while($email_row = mysql_fetch_assoc($email_result)){
+					$to_email = $email_row['email_id']; 
+					ezmail($to_email,$to_email,"Service $svc UP",$body,$attachment);
+				}
 			}
 		}
 	}
@@ -107,11 +158,59 @@ while ($row = mysql_fetch_row($result)){
 			}
 			
 			// If the service was down and breached the alarm threshold, generate a ticket
-			if($down_count==$alarm_threshold && $last_status==1){	
+			if($down_count==$alarm_threshold && $last_status==1 && $alert_status==1){
 				$timestamp_human=date("d-M-Y H:i:s",$timestamp);
-				$message  = $message. " $timestamp_human";			
+				$message  = $message. " $timestamp_human";		
 				ticket_post($smtp_email,$smtp_email,"28","$subject","$message",'1');		
 			}
+			
+			
+			// Get all the emails who have subscribed to the service going down and 
+			// intend to receive continuous alerts while the service is down
+			
+			$select_email_query = "SELECT email_id FROM sys_uptime_email WHERE status = 'active' AND host_id = '$host_id' and continuos_alerts=1";
+			$email_result = mysql_query($select_email_query);
+			if (mysql_num_rows($email_result)>0 && $down_count>$alarm_threshold && $alert_status==1){
+				while($email_row = mysql_fetch_assoc($email_result)){
+					$to_email = $email_row['email_id'];
+					ezmail($to_email,$to_email,$subject,$message,$attachment);
+				}
+			}
 		}
+		
+		
+		//This section is used to send a notification mail to the respective people to say the service is UP again
+		if ($svc_status==1){
+			$limit=$alarm_threshold+1;
+			$select_up_query	="SELECT svc_status FROM hosts_service_log WHERE host_id='$host_id' and url='$url'  ORDER BY record_id DESC LIMIT $limit";
+			$up_result = mysql_query($select_up_query);
+			
+			$up_count 	= 0;
+			$down_count	= 0;
+			while($up_row = mysql_fetch_row($up_result)){
+				if($up_row[0] == 1){
+					$up_count++;
+				}
+				if($up_row[0] == 0){
+					$down_count++;
+				}
+			}
+			
+			if($down_count>=$alarm_threshold && $alert_status==1){
+				$timestamp_human=date("d-M-Y H:i:s",$timestamp);
+				$body = "$svc($url) UP on $timestamp_human";
+			
+				$attachment ="";
+				// GET ALL THE EMAILS WHO ARE ASSOCIATED WITH THAT HOST '
+				$select_email_query = sprintf("SELECT email_id
+						       FROM sys_uptime_email
+						       WHERE status = 'active' AND host_id = '%d'",$host_id);
+				$email_result = mysql_query($select_email_query);
+				while($email_row = mysql_fetch_assoc($email_result)){
+					$to_email = $email_row['email_id'];
+					ezmail($to_email,$to_email,"URL $url UP",$body,$attachment);
+				}
+			}
+		}	
 	}
 }

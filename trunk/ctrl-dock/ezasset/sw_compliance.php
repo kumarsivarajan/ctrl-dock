@@ -186,8 +186,9 @@ echo "</table>";
 <?
 	$sub_url_1=$base_url."/api/oa_audited_list.php?key=$API_KEY";
 	$sub_query_1 = load_xml($sub_url_1);
-
+	$sl_no=0;
 	for($i=0;$i<count($sub_query_1);$i++){
+		
 		$hostname	=$sub_query_1->host[$i]->hostname;
 		$system_id	=$sub_query_1->host[$i]->system_id;
 		$os			=$sub_query_1->host[$i]->os;
@@ -199,6 +200,7 @@ echo "</table>";
 		$count=mysql_num_rows($sub_result);
 
 		if($count==0){
+			$sl_no++;
 			echo "<tr>";
 			echo "<td class='reportdata'><a target=_blank href='../OA2/index.php/main/system_display/$system_id'>$hostname</a></td>";
 			echo "<td class='reportdata'> $os</td>";			
@@ -206,6 +208,8 @@ echo "</table>";
 			echo "</tr>";
 		}
 	}
+	echo "<tr><td class=reportdata colspan=3 style='text-align: left;'>TOTAL : $sl_no</td></tr>";
+
 ?>
 </table>
 </td>

@@ -30,6 +30,7 @@ $asset_db            =$DATABASE_NAME."_oa";
 		<select class="formselect" size=1 name=package_name>
 		<?
 			mysql_select_db($asset_db, $link);
+			mysql_query("SET NAMES `utf8`");
 			$sql = "select distinct key_name from sys_sw_software_key order by key_name"; 	
 			$result = mysql_query($sql);
 			while ($row = mysql_fetch_row($result)) {

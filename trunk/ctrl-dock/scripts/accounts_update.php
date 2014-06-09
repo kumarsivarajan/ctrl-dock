@@ -114,7 +114,7 @@ while ($row = mysql_fetch_row($result)){
 
 // Disable accounts which have been disabled or made obsolete directly in the local instance
 
-$sql="select username from user_master where account_status in ('Obsolete','Disabled')";
+$sql="select username from user_master where account_status in ('Obsolete')";
 $result = mysql_query($sql);
 
 while ($row = mysql_fetch_row($result)){

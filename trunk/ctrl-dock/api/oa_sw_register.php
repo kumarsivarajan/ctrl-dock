@@ -35,11 +35,12 @@ if($num_rows>0){
 				
 				
 				$license_purchased=0;$license_used=0;
-				
+				mysql_query("SET NAMES `utf8`"); 
 				$sub_result = mysql_query("SELECT SUM(quantity) AS license_purchased FROM sw_licenses WHERE package_name='$key_name'");
 				$sub_row = mysql_fetch_array($sub_result);
 				$license_purchased=$sub_row['license_purchased'];
-								
+				
+				mysql_query("SET NAMES `utf8`"); 				
 				$sub_result = mysql_query("SELECT distinct system_id FROM sys_sw_software_key WHERE key_name='$key_name' group by system_id");
 				$license_used=mysql_num_rows($sub_result);
 				
@@ -48,6 +49,7 @@ if($num_rows>0){
 				$sw_ia_host="LIST OF IN-ACTIVE HOSTS FOR $software_title : ";
 				$active_count=0;$inactive_count=0;
 				
+				mysql_query("SET NAMES `utf8`");
 				$sub_result = mysql_query("SELECT distinct a.hostname from system a,sys_sw_software_key b where a.system_id=b.system_id and b.key_name='$key_name'");
 				while($sub_row = mysql_fetch_array($sub_result)){
 					$hostname=$sub_row[0];

@@ -811,7 +811,8 @@ function selectBoxval(tval)
             <th width="126">From</th>
 			<th width="126">Assigned</th>
 			<th width="50" >Status</th>
-			<th width="65">Due Date</th>           
+			<th width="80" >Rating</th>
+			<th width="65" >Due Date</th>           
         </tr>       
         <?
         $class = "row1";
@@ -873,7 +874,7 @@ function selectBoxval(tval)
 				<td nowrap class="light-font"><?=$row['helptopic'];?>&nbsp;</td>
 
                 <td class="light-font">
-                   <a <?if($flag) { ?> class="Icon <?=$flag?>Ticket" title="<?=ucfirst($flag)?> Ticket" <?}?> 
+                   <a <?if($flag) { ?> <?=$flag?>Ticket" title="<?=ucfirst($flag)?> Ticket" <?}?> 
                     href="tickets.php?id=<?=$row['ticket_id']?>&track_id=<?php echo $row['track_id'];?>">
 					<?=$subject?>
                     </a>
@@ -885,13 +886,54 @@ function selectBoxval(tval)
 				<td nowrap class="light-font">&nbsp;
 					<?php
 						$staff_id= $row['staff_id'];
-						$assigned_sql = "SELECT firstname,lastname from isost_staff where staff_id = '$staff_id'";
+						$assigned_sql = "SELECT firstname,lastname,email from isost_staff where staff_id = '$staff_id'";
 						$assigned_sql_res = mysql_query($assigned_sql);
 						$assigned_sql_row = db_fetch_row($assigned_sql_res);
 						echo $assigned_sql_row[0] . " " .$assigned_sql_row[1];
+						$assigned_email=$assigned_sql_row[2];
 					?>
 				</td>
 				<td align="center" nowrap class="light-font"><? echo strtoupper($row['status']);?></td>
+				
+				<td align="center" nowrap class="light-font">
+					<?
+					$rating_sql		="select rating from ticket_rating where ticket_id=".$row['ticket_id'];
+					$rating_result 	=mysql_query($rating_sql);
+					$rating			=0;
+					if (mysql_num_rows($rating_result)>0){
+						$rating_row = mysql_fetch_row($rating_result);
+						$rating			=$rating_row[0];
+					}
+					
+					// Only users who are logged in and originally owned the ticket can give a rating
+					$logged_in_user=$thisuser->getEmail();
+					if($row['status']=="closed" && $row['email']==$logged_in_user && $staff_id>0){
+					}
+					
+					$stars_lit=$rating;
+					$stars_unlit=5-$rating;
+					
+					$source=$row['email'];
+					
+					if($staff_id>0){
+						$url="../../rating/index.php?ticket_id=".$row['ticket_id']."&subject=".$subject."&rated_staff=".$assigned_email."&rated_by=".$logged_in_user."&source=".$source;		
+						?><a onclick="javascript:void window.open('<?=$url;?>','Rate the Support','width=700,height=500,toolbar=0,menubar=0,location=0,status=0,scrollbars=0,resizable=1,left=250,top=100');return false;"><?
+					}
+					
+					for($i=1;$i<=$stars_lit;$i++){
+						echo "<img src=../images/star_lit.png border=0>";
+					}
+					for($i=1;$i<=$stars_unlit;$i++){
+						echo "<img src=../images/star_unlit.png border=0>";
+					}
+					
+					if($staff_id>0){
+						echo "</a>";
+					}
+					
+					?>
+				</td>
+					
 				<td align="center" nowrap class="light-font">&nbsp;<?=Format::db_date($row['duedate'])?></td>
 				<input type="hidden" id="checkCount" value="<?php echo $num;?>"/>
            

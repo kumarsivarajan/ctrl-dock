@@ -15,7 +15,7 @@ $then=mktime()-$cleanup_period;
 $sql="delete from hosts_nw_log where timestamp<$then";
 $result = mysql_query($sql);
 
-$sql="SELECT a.host_id,a.hostname,b.count,b.timeout,b.alarm_threshold,b.flap_timeout,b.flap_threshold,a.description FROM hosts_master a,hosts_nw b WHERE a.host_id=b.host_id AND a.status='1' AND b.enabled='1' ORDER BY a.hostname";
+$sql="SELECT a.host_id,a.hostname,b.count,b.timeout,b.alarm_threshold,b.flap_timeout,b.flap_threshold,a.alert_status FROM hosts_master a,hosts_nw b WHERE a.host_id=b.host_id AND a.status='1' AND b.enabled='1' ORDER BY a.hostname";
 $result = mysql_query($sql);
 
 while ($row = mysql_fetch_row($result)){
@@ -26,8 +26,8 @@ while ($row = mysql_fetch_row($result)){
 	$alarm_threshold=	$row[4];
 	$flap_timeout	=	$row[5];
 	$flap_threshold	=	$row[6];
-	$hostdesc		=	$row[7];
 	$timestamp		=	mktime();
+	$alert_status	=	$row[7];
 	
 	$pingoutput=array();
 	exec("ping -c $count -W $timeout -q $hostname", $pingoutput, $pingstatuscode);
@@ -78,16 +78,17 @@ while ($row = mysql_fetch_row($result)){
 		}
 		
 		// If the Flap threshold is breached, then send an alert.
-		if ($flap >= $flap_threshold && $last_status==1){
+		if ($flap >= $flap_threshold && $last_status==1 && $alert_status==1){
 			$timestamp_human=date("d-M-Y H:i:s",$timestamp);
-			$message  = "ALERT $hostdesc - $hostname NETWORK IS FLAPPING $timestamp_human";
+			$message  = "ALERT $hostname NETWORK IS FLAPPING $timestamp_human";
 			$subject=$message;
 			ticket_post($smtp_email,$smtp_email,"28","$subject","$message",'1');
 		}
 	}
 	
-	
+
 	if($nw_status==0){
+
 		// Check the last known state of the host
 		$limit=$alarm_threshold+1;
 		$sub_sql	="SELECT nw_status FROM hosts_nw_log WHERE host_id='$host_id' ORDER BY record_id DESC LIMIT $limit";
@@ -99,33 +100,57 @@ while ($row = mysql_fetch_row($result)){
 		}
 		
 		// If the host was down and breached the alarm threshold, generate a ticket
-		if($down_count==$alarm_threshold && $last_status==1){			
+		if($down_count==$alarm_threshold && $last_status==1 && $alert_status==1){			
 			$timestamp_human=date("d-M-Y H:i:s",$timestamp);
-			$message  = "ALERT $hostdesc - $hostname DOWN $timestamp_human";
+			$message  = "ALERT $hostname DOWN $timestamp_human";
 			$subject=$message;
 			ticket_post($smtp_email,$smtp_email,"28","$subject","$message",'1');
 		}
+		
+		// Get all the emails who have subscribed to the host going down and 
+		// intend to receive continuous alerts while the host is down
+			
+		$select_email_query = "SELECT email_id FROM sys_uptime_email WHERE status = 'active' AND host_id = '$host_id' and continuos_alerts=1";
+		$email_result = mysql_query($select_email_query);
+			
+		if (mysql_num_rows($email_result)>0 && $down_count>$alarm_threshold  && $alert_status==1){
+			while($email_row = mysql_fetch_assoc($email_result)){
+
+				$timestamp_human=date("d-M-Y H:i:s",$timestamp);
+				$message  = "ALERT $hostname DOWN $timestamp_human";
+				$subject=$message;
+			
+				$to_email = $email_row['email_id'];
+				ezmail($to_email,$to_email,$subject,$message,$attachment);
+			}
+		}
+		
+		
 	}else{
-		//This section is used to send a notification mail to the respected people to say the system is UP agian
+	
+		//This section is used to send a notification mail to the respective people to say the system is UP again
 		//Check any server is UP after it went DOWN
 		//$up_count_limit = $alarm_threshold; //Check the last three entries
+		
 		$limit = $alarm_threshold + 1;
-		$select_up_query = sprintf("SELECT nw_status
-					    FROM hosts_nw_log
-					    WHERE host_id=%d
-					    ORDER BY record_id DESC LIMIT %d",$host_id,$limit);
+		$select_up_query ="SELECT nw_status FROM hosts_nw_log WHERE host_id=$host_id ORDER BY record_id DESC LIMIT $limit";
 		$up_result = mysql_query($select_up_query);
-		$up_count = 0;
+
+		$up_count 	= 0;
+		$down_count	= 0;
 		while($up_row = mysql_fetch_row($up_result)){
 			if($up_row[0] == 1){
 				$up_count++;
 			}
-                        $last_status=$up_row[0];
+			if($up_row[0] == 0){
+				$down_count++;
+			}
 		}
-		if($up_count == $alarm_threshold && $last_status == 0){
+		
+		if($down_count>=$alarm_threshold  && $alert_status==1){
  			$timestamp_human=date("d-M-Y H:i:s",$timestamp);
-			$body = "$hostdesc - $hostname UP on $timestamp_human";
-			$attachement ="";
+			$body = "$hostname UP on $timestamp_human";
+			$attachment ="";
 			// GET ALL THE EMAILS WHO ARE ASSOCIATED WITH THAT HOST '
 			$select_email_query = sprintf("SELECT email_id
 						       FROM sys_uptime_email
@@ -133,7 +158,7 @@ while ($row = mysql_fetch_row($result)){
 			$email_result = mysql_query($select_email_query);
 			while($email_row = mysql_fetch_assoc($email_result)){
 				$to_email = $email_row['email_id']; 
-				ezmail($to_email,$to_email,"System UP",$body,$attachement);
+				ezmail($to_email,$to_email,"System $hostname UP",$body,$attachment);
 			}
 		}
 	}

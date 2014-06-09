@@ -820,8 +820,9 @@ class Ticket{
     }
 
     //Insert Staff Reply
-    function postResponse($msgid,$response,$signature='none',$attachment=false,$mail_cc,$canalert=true){
+    function postResponse($msgid,$response,$signature='none',$attachment=false,$mail_cc,$canalert=true,$time_hh=0,$time_mm=0){
         global $thisuser,$cfg;
+		$time=($time_hh*3600)+($time_mm*60);
 
         if(!$thisuser || !$thisuser->getId() || !$thisuser->isStaff()) //just incase
             return 0;
@@ -833,7 +834,8 @@ class Ticket{
                 ',response='.db_input(Format::striptags($response)).
                 ',staff_id='.db_input($thisuser->getId()).
                 ',staff_name='.db_input($thisuser->getName()).
-                ',ip_address='.db_input($thisuser->getIP());
+                ',ip_address='.db_input($thisuser->getIP()).
+				',time_spent='.$time;
         $resp_id=0;
         //echo $sql;
         if(db_query($sql) && ($resp_id=db_insert_id())):
@@ -920,15 +922,18 @@ class Ticket{
     }
 
     //Insert Internal Notes 
-    function postNote($title,$note,$alert=true,$poster='') {        
+    function postNote($title,$note,$alert=true,$poster='',$time_hh=0,$time_mm=0) {        
         global $thisuser,$cfg;
+		
+		$time=($time_hh*3600)+($time_mm*60);
 
         $sql= 'INSERT INTO '.TICKET_NOTE_TABLE.' SET created=NOW() '.
                 ',ticket_id='.db_input($this->getId()).
                 ',title='.db_input(Format::striptags($title)).
                 ',note='.db_input(Format::striptags($note)).
                 ',staff_id='.db_input($thisuser?$thisuser->getId():0).
-                ',source='.db_input(($poster || !$thisuser)?$poster:$thisuser->getName());
+                ',source='.db_input(($poster || !$thisuser)?$poster:$thisuser->getName()).
+				',time_spent='.$time;
         //echo $sql;
     if(db_query($sql) && ($id=db_insert_id())) {
             //If enabled...send alert to staff (Internal Note Alert)

@@ -17,7 +17,7 @@ $result = mysql_query($sql);
 
 
 
-$sql="SELECT a.host_id,a.hostname,b.retry_count,b.timeout,b.community_string,a.platform,b.alarm_threshold,b.port,b.version,b.disk_exclude,b.v3_user,b.v3_pwd FROM hosts_master a,hosts_nw_snmp b WHERE a.host_id=b.host_id AND a.status='1' AND b.enabled='1' ORDER BY a.hostname";
+$sql="SELECT a.host_id,a.hostname,b.retry_count,b.timeout,b.community_string,a.platform,b.alarm_threshold,b.port,b.version,b.disk_exclude,b.v3_user,b.v3_pwd,a.alert_status FROM hosts_master a,hosts_nw_snmp b WHERE a.host_id=b.host_id AND a.status='1' AND b.enabled='1' ORDER BY a.hostname";
 $result = mysql_query($sql);
 
 $cpu_db_data = "";
@@ -49,6 +49,7 @@ while ($row = mysql_fetch_row($result)){
 	$v3_user			=	$row[10];
 	$v3_pwd				=	$row[11];
 	$pattern_exclude = explode(',',$disk_exclude);
+	$alert_status		= $row[12];
 	
 	$sub_sql	="SELECT nw_snmp_cpu_status,nw_snmp_mem_status,nw_snmp_dsk_status FROM hosts_nw_snmp_log WHERE host_id='$host_id' ORDER BY record_id DESC LIMIT $limit";
 	
@@ -99,7 +100,7 @@ while ($row = mysql_fetch_row($result)){
 							}
 							
 							// If the alarm threshold was breached, generate a ticket
-							if($down_count==$alarm_threshold && $last_status==1){
+							if($down_count==$alarm_threshold && $last_status==1 && $alert_status==1){
 								$timestamp = mktime();
 								$timestamp_human=date("d-M-Y H:i:s",$timestamp);
 								$message  = "ALERT $hostname - CPU Utilization Threshold breached at $timestamp_human";
@@ -188,7 +189,7 @@ while ($row = mysql_fetch_row($result)){
 						}
 						
 						// If the host was up as known last, generate a ticket
-						if($down_count==$alarm_threshold && $last_status==1){
+						if($down_count==$alarm_threshold && $last_status==1 && $alert_status==1){
 							$timestamp = mktime();
 							$timestamp_human=date("d-M-Y H:i:s",$timestamp);
 							$message  = "ALERT $hostname - Memory Utilization Threshold breached at $timestamp_human";
@@ -259,7 +260,7 @@ while ($row = mysql_fetch_row($result)){
 						
 					
 						// If the alarm threshold was breached, generate a ticket
-						if($down_count==$alarm_threshold && $last_status==1){
+						if($down_count==$alarm_threshold && $last_status==1 && $alert_status==1){
 							$timestamp = mktime();
 							$timestamp_human=date("d-M-Y H:i:s",$timestamp);
 							$message  = "ALERT $hostname - Disk Utilization Threshold breached at $timestamp_human";
@@ -318,7 +319,7 @@ while ($row = mysql_fetch_row($result)){
 							}
 							
 							// If the alarm threshold was breached, generate a ticket
-							if($down_count==$alarm_threshold && $last_status==1){
+							if($down_count==$alarm_threshold && $last_status==1 && $alert_status==1){
 								$timestamp = mktime();
 								$timestamp_human=date("d-M-Y H:i:s",$timestamp);
 								$message  = "ALERT $hostname - CPU Utilization Threshold breached at $timestamp_human";
@@ -333,7 +334,7 @@ while ($row = mysql_fetch_row($result)){
 					if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
 						$hrStorageDescr = @snmp3_real_walk($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", "hrStorageDescr", $timeout, $count);
 					}else{
-						$hrStorageDescr = @snmprealwalk($hostname, $community_string, "hrStorageDescr", $timeout, $count);
+						$hrStorageDescr = @snmprealwalk($hostname, $community_string, $cpu_info, $timeout, $count);
 					}
 					if ( count($hrStorageDescr) == 1 )
 					{
@@ -396,7 +397,7 @@ while ($row = mysql_fetch_row($result)){
 						
 					
 						// If the alarm threshold was breached, generate a ticket
-						if($down_count==$alarm_threshold && $last_status==1){
+						if($down_count==$alarm_threshold && $last_status==1 && $alert_status==1){
 							$timestamp = mktime();
 							$timestamp_human=date("d-M-Y H:i:s",$timestamp);
 							$message  = "ALERT $hostname - Disk Utilization Threshold breached at $timestamp_human";
@@ -466,7 +467,7 @@ while ($row = mysql_fetch_row($result)){
 						}
 
 						// If the alarm threshold was breached, generate a ticket
-						if($down_count==$alarm_threshold && $last_status==1){	
+						if($down_count==$alarm_threshold && $last_status==1 && $alert_status==1){	
 							$timestamp = mktime();
 							$timestamp_human=date("d-M-Y H:i:s",$timestamp);
 							$message  = "ALERT $hostname - Memory Utilization Threshold breached at $timestamp_human";

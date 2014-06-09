@@ -85,7 +85,8 @@ if($_POST && !$errors):
                 $errors['err']='Email is in banlist. Must be removed to reply';
 
             //If no error...do the do.
-            if(!$errors && ($respId=$ticket->postResponse($_POST['msg_id'],$_POST['response'],$_POST['signature'],$_FILES['attachment'],$_POST['txt_mail_cc']))){
+            //if(!$errors && ($respId=$ticket->postResponse($_POST['msg_id'],$_POST['response'],$_POST['signature'],$_FILES['attachment'],$_POST['txt_mail_cc']))){
+            if(!$errors && ($respId=$ticket->postResponse($_POST['msg_id'],$_POST['response'],$_POST['signature'],$_FILES['attachment'],$_POST['txt_mail_cc'],true,$_POST['time_hh'],$_POST['time_mm']))){
                 $msg='Response Posted Successfully';
                 //Set status if any.
                 $wasOpen=$ticket->isOpen();
@@ -257,7 +258,7 @@ if($_POST && !$errors):
             if(!$params->validate($_POST))
                 $errors=array_merge($errors,$params->errors());
 
-            if(!$errors && $ticket->postNote($_POST['title'],$_POST['note'])){
+            if(!$errors && $ticket->postNote($_POST['title'],$_POST['note'],true,'',$_POST['time_hh'],$_POST['time_mm'])){
                 $msg='Internal note posted';
                 if(isset($_POST['ticket_status']) && $_POST['ticket_status']){
 		    //Start -- code for updating the location in the isost_ticket table
@@ -510,7 +511,7 @@ if($_POST && !$errors):
             case 'open':
                 $ticket=null;
                 //TODO: check if the user is allowed to create a ticet.
-                if(($ticket=Ticket::create_by_staff($_POST,$errors))) {
+				if(($ticket=Ticket::create_by_staff($_POST,$errors))) {
                     $ticket->reload();
                     $msg='Ticket created successfully';
                     if($thisuser->canAccessDept($ticket->getDeptId()) || $ticket->getStaffId()==$thisuser->getId()) {

@@ -1,6 +1,7 @@
 <?php 
 
-include("config.php"); 
+include("config.php");
+if (!check_feature(29)){feature_error();exit;} 
 
 $hostname	=$_REQUEST["hostname"];
 $hostdesc	=$_REQUEST["desc"];
@@ -147,7 +148,7 @@ if ($record_count>0)
 <tr>
 	<td class='reportheader' style="text-align:left; height:20px;" width=960>NETWORK RESPONSE</td>
 	<td class='reportheader' style="text-align:right; height:20px;" width=20>LOGS</td>
-	<td class='reportheader' style="text-align:center; height:20px;" width=20><a href='javascript:void(0);' onclick="javascript:window.open('<?=$log_url;?>','Ping Statistics','status=0,toolbar=0,menubar=0,scrollbars=1,location=0,resizable=0,width=500,height=800');">
+	<td class='reportheader' style="text-align:center; height:20px;" width=20><a href='javascript:void(0);' onclick="javascript:window.open('<?=$log_url;?>','Ping Statistics','status=0,toolbar=0,menubar=0,scrollbars=1,location=0,resizable=0,width=600,height=800');">
 	<img border=0 src="images/history.gif"></img></a>
 	</td>
 </tr>
@@ -191,7 +192,7 @@ else
 <tr>
 	<td class='reportheader' style="text-align:left; height:20px;" width=960>NETWORK RESPONSE</td>
 	<td class='reportheader' style="text-align:right; height:20px;" width=20>LOGS</td>
-	<td class='reportheader' style="text-align:center; height:20px;" width=20><a href='javascript:void(0);','Ping Statistics','status=0,toolbar=0,menubar=0,scrollbars=1,location=0,resizable=0,width=500,height=800');">
+	<td class='reportheader' style="text-align:center; height:20px;" width=20><a href='javascript:void(0);','Ping Statistics','status=0,toolbar=0,menubar=0,scrollbars=1,location=0,resizable=0,width=600,height=800');">
 	<img border=0 src="images/history.gif"></img></a>
 	</td>
 </tr>
@@ -296,7 +297,7 @@ $log_url="svc_history.php?hostname=$hostname&fromdate=$fromdate&todate=$todate&t
 <tr>
 	<td class='reportheader' style="text-align:left; height:20px;" width=960>SERVICE AVAILABILITY</td>
 	<td class='reportheader' style="text-align:right; height:20px;" width=20>LOGS</td>
-	<td class='reportheader' style="text-align:left; height:20px;" width=20><a href='javascript:void(0);' onclick="javascript:window.open('<?=$log_url;?>','Service Status History','status=0,toolbar=0,menubar=0,scrollbars=1,location=0,resizable=0,width=500,height=800');">
+	<td class='reportheader' style="text-align:left; height:20px;" width=20><a href='javascript:void(0);' onclick="javascript:window.open('<?=$log_url;?>','Service Status History','status=0,toolbar=0,menubar=0,scrollbars=1,location=0,resizable=0,width=600,height=800');">
 	<img border=0 src="images/history.gif"></img></a>
 	</td>
 </tr>

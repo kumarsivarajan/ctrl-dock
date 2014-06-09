@@ -62,6 +62,20 @@ $row=mysql_fetch_array($result);
 $pending_approval=$row[0];
 
 
+$sql="select sum(time_spent) from isost_ticket_response where ticket_id=$id";
+$result=mysql_query($sql);
+$row=mysql_fetch_array($result);
+$time_spent=$row[0];
+
+$sql="select sum(time_spent) from isost_ticket_note where ticket_id=$id";
+$result=mysql_query($sql);
+$row=mysql_fetch_array($result);
+$time_spent=$time_spent+$row[0];
+
+if ($time_spent<3600){$time_spent=round($time_spent/60,2) . " mins";}
+if ($time_spent>3600){$time_spent=round($time_spent/3600,2);$time_spent=$time_spent . " Hrs";}
+
+
 $ticket_status=$ticket->getStatus();
 if($ticket_status=="open"){
 	if($pending_approval==1){
@@ -246,6 +260,10 @@ function ShowInternalLocation(){
                 <th nowrap>Last Response</th>
                 <td><?=Format::db_datetime($ticket->getLastResponseDate())?></td>
             </tr>
+			<tr>
+                <th nowrap>Time Spent</th>
+                <td><b><?=$time_spent?></b></td>
+            </tr>
 			<?php
             if($ticket->isOpen()){ ?>
             <tr>
@@ -329,17 +347,26 @@ if($thisuser->canManageTickets() || $thisuser->isManager()){ ?>
 <?
 //Internal Notes
 
-$sql ='SELECT note_id,title,note,source,created FROM '.TICKET_NOTE_TABLE.' WHERE ticket_id='.db_input($id).' ORDER BY created DESC';
+$sql ='SELECT note_id,title,note,source,created,time_spent FROM '.TICKET_NOTE_TABLE.' WHERE ticket_id='.db_input($id).' ORDER BY created DESC';
 if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
     $display=($notes>5)?'none':'block'; //Collapse internal notes if more than 5.
+	
 ?>
 <div align="left">
-    <a class="Icon note" href="#" onClick="toggleLayer('ticketnotes'); return false;">Internal Notes (<?=$notes?>)</a><br><br>
+    <a class="Icon note" href="#" onClick="toggleLayer('ticketnotes'); return false;">INTERNAL NOTES (<?=$notes?>)</a><br><br>
     <div id='ticketnotes' style="display:<?=$display?>;text-align:center;"> 
         <?
         while($row=db_fetch_array($resp)) {?>
+		<?
+			$time_spent=$row['time_spent'];
+				
+			if ($time_spent<3600){$time_spent=round($time_spent/60,2) . " mins";}
+			if ($time_spent>3600){$time_spent=round($time_spent/3600,2);$time_spent=$time_spent . " Hrs";}
+		?>
         <table align="center" class="note" cellspacing="0" cellpadding="1" width="100%" border=0>
-            <tr><th><?=Format::db_daydatetime($row['created'])?>&nbsp;-&nbsp; posted by <?=$row['source']?></th></tr>
+	
+            <tr><th>
+			<?=Format::db_daydatetime($row['created'])?>&nbsp;-&nbsp; posted by <?=$row['source']?>&nbsp;&nbsp;(Time Spent : <?=$time_spent;?>)</th></tr>
             <? if($row['title']) {?>
             <tr class="header"><td><?=Format::display($row['title'])?></td></tr>
             <?} ?>
@@ -348,9 +375,10 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
      <?} ?>
    </div>
 </div>
+<hr><br>
 <?} ?>
 <div align="left">
-    <a class="Icon thread" href="#" onClick="toggleLayer('ticketthread'); return false;">Ticket Thread</a>
+    <a class="Icon thread" href="#" onClick="toggleLayer('ticketthread'); return false;">TICKET THREAD</a>
     <div id="ticketthread">
 	<?
 	    //get messages
@@ -377,9 +405,14 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
 		    $resp =db_query($sql);
 		    while ($resp_row = db_fetch_array($resp)) {
                 $respID=$resp_row['response_id'];
+				$time_spent=$resp_row['time_spent'];
+				
+				if ($time_spent<3600){$time_spent=round($time_spent/60,2) . " mins";}
+				if ($time_spent>3600){$time_spent=round($time_spent/3600,2);$time_spent=$time_spent . " Hrs";}
+
                 ?>
     		    <table align="center" class="response" cellspacing="0" cellpadding="1" width="100%" border=0>
-    		        <tr><th><?=Format::db_daydatetime($resp_row['created'])?>&nbsp;-&nbsp;<?=$resp_row['staff_name']?></th></tr>
+    		        <tr><th><?=Format::db_daydatetime($resp_row['created'])?>&nbsp;-&nbsp;<?=$resp_row['staff_name']?>&nbsp;&nbsp;(Time Spent : <?=$time_spent;?>)</th></tr>
                     <?if($resp_row['attachments']>0){ ?>
                     <tr class="header">
                         <td><?=$ticket->getAttachmentStr($respID,'R')?></td></tr>
@@ -436,6 +469,31 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
                             <textarea name="response" id="response" cols="90" rows="9" wrap="soft" style="width:90%"><?=$info['response']?></textarea>
                         </div>
                         <?php if($cfg->canUploadFiles()){ //TODO: may be allow anyways and simply email out attachment?? ?>
+						
+						<label for="timespent" >Time spent on ticket (hrs:mins) :</label>
+
+			
+						<select size=1 class=formselect name="time_hh">
+						<?
+							for($i=0;$i<24;$i++){
+								if ($i<10){$i="0".$i;}
+								echo "<option value='$i'>$i</option>";
+							}
+						?>
+						</select>
+						&nbsp;:&nbsp;
+						<select size=1 class=formselect name="time_mm">
+						<?
+							for($i=0;$i<60;$i++){
+							if ($i<10){$i="0".$i;}
+							echo "<option value='$i'>$i</option>";
+						}
+						?>
+						</select>
+						
+						
+						
+						
                         <div style="margin-top: 3px;">
                             <label for="attachment" >Attach File:</label>
                             <input type="file" name="attachment" id="attachment" size=30px value="<?=$info['attachment']?>" /> 
@@ -508,6 +566,27 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
                                 <font class="error">*&nbsp;<?=$errors['note']?></font></label><br/>
                             <textarea name="note" id="note" cols="80" rows="7" wrap="soft" style="width:90%"><?=$info['note']?></textarea>
                         </div>
+						
+						<label for="timespent" >Time spent on ticket (hrs:mins) :</label>
+
+						<select size=1 class=formselect name="time_hh">
+						<?
+							for($i=0;$i<24;$i++){
+								if ($i<10){$i="0".$i;}
+								echo "<option value='$i'>$i</option>";
+							}
+						?>
+						</select>
+						&nbsp;:&nbsp;
+						<select size=1 class=formselect name="time_mm">
+						<?
+							for($i=0;$i<60;$i++){
+							if ($i<10){$i="0".$i;}
+							echo "<option value='$i'>$i</option>";
+						}
+						?>
+						</select>
+						
 
                         <?
                          //When the ticket is assigned Allow assignee, admin or ANY dept manager to close it
@@ -605,7 +684,7 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
                                 <option value="0" selected="selected">-Select Staff Member.-</option>
                                 <?
                                 //TODO: make sure the user's group is also active....DO a join.
-                                $sql=' SELECT staff_id,CONCAT_WS(" ",lastname,firstname) as name FROM '.STAFF_TABLE.
+                                $sql=' SELECT staff_id,CONCAT_WS(" ",firstname,lastname) as name FROM '.STAFF_TABLE.
                                      ' WHERE isactive=1 AND onvacation=0 ';
                                 if($ticket->isAssigned()) 
                                     $sql.=' AND staff_id!='.db_input($ticket->getStaffId());
@@ -665,32 +744,7 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
                     </form>
                 </p>
             </div>
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-        </div>		
+		</div>		
     </td>
  </tr>
  </table>

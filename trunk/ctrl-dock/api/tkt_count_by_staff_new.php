@@ -32,11 +32,12 @@ if($num_rows>0){
 				$staff_name=$row[1];
 				$staff_id = $row[0];		
 				
-				$staff_sql = "select first_name, last_name from user_master where username='$staff_name'";
+				$staff_sql = "select first_name, last_name, official_email from user_master where username='$staff_name'";
 				$staff_result = mysql_query($staff_sql);
 				$staff_result = mysql_fetch_row($staff_result);
-				$firstname = $staff_result[0];
-				$lastname = $staff_result[1];
+				$firstname 			= $staff_result[0];
+				$lastname 			= $staff_result[1];
+				$official_email		= $staff_result[2];
 				// Start New section to display the close details
 				$local = "locally";
 				$remote = "remotely";
@@ -118,18 +119,40 @@ if($num_rows>0){
 				while($sub_row = mysql_fetch_array($sla_result)){				
 					$sla_breached= $sub_row[0];
 				}
+			
+				// Get Staff Rating
+				$rating_sql		="select AVG(rating) from ticket_rating where rated_staff='$official_email' and rated_date>$start_date and rated_date<$end_date";
+				$rating_result  = mysql_query($rating_sql);
+				$rating_row 	= mysql_fetch_row($rating_result);
+				$rating 		= round($rating_row[0],1);
 				
-			echo "<ticketcount>";
-				echo "<staff>".$firstname. " " . $lastname ."</staff>";
-				echo "<open_count>".$open_count."</open_count>";
-				echo "<close_locally_count>".$close_locally_count."</close_locally_count>";
-				echo "<close_remote_count>".$close_remote_count."</close_remote_count>";
-				echo "<closed_count>".$closed_count."</closed_count>";
-				echo "<total_count>".$total_count."</total_count>";
-				echo "<avg_response_time>".$avg_response."</avg_response_time>";
-				echo "<avg_closure_time>".$avg_closure."</avg_closure_time>";
-				echo "<sla_breached_count>".$sla_breached."</sla_breached_count>";
-			echo "</ticketcount>";
+				// Get Time spent on Ticket
+				// Check Internal Notes
+				$ts_sql		="select SUM(time_spent) from isost_ticket_note where staff_id='$staff_id' and UNIX_TIMESTAMP(created)>$start_date and UNIX_TIMESTAMP(created)<$end_date";
+				$ts_result  = mysql_query($ts_sql);
+				$ts_row 	= mysql_fetch_row($ts_result);
+				$time_spent	= round($ts_row[0],1);
+				
+				// Check Response
+				$ts_sql		="select SUM(time_spent) from isost_ticket_response where staff_id='$staff_id' and UNIX_TIMESTAMP(created)>$start_date and UNIX_TIMESTAMP(created)<$end_date";
+				$ts_result  = mysql_query($ts_sql);
+				$ts_row 	= mysql_fetch_row($ts_result);
+				$time_spent	= $time_spent + round($ts_row[0],1);
+			
+			
+				echo "<ticketcount>";
+					echo "<staff>".$firstname. " " . $lastname ."</staff>";
+					echo "<open_count>".$open_count."</open_count>";
+					echo "<close_locally_count>".$close_locally_count."</close_locally_count>";
+					echo "<close_remote_count>".$close_remote_count."</close_remote_count>";
+					echo "<closed_count>".$closed_count."</closed_count>";
+					echo "<total_count>".$total_count."</total_count>";
+					echo "<avg_response_time>".$avg_response."</avg_response_time>";
+					echo "<avg_closure_time>".$avg_closure."</avg_closure_time>";
+					echo "<sla_breached_count>".$sla_breached."</sla_breached_count>";
+					echo "<rating>".$rating."</rating>";
+					echo "<time_spent>".$time_spent."</time_spent>";
+				echo "</ticketcount>";
 			}
 			// Fetch the count for unassigned tickets
 			//Open Tickets
@@ -187,6 +210,9 @@ if($num_rows>0){
 				while($sub_row = mysql_fetch_array($sla_result)){				
 					$sla_breached= $sub_row[0];
 				}
+				
+								
+				
 			echo "<ticketcount>";
 				echo "<staff>Unassigned</staff>";
 				echo "<open_count>".$open_count."</open_count>";
@@ -228,9 +254,7 @@ $num_rows		= '';
 if($api_key!=$API_KEY || $api_key==''){
 	invalid();
 }else{
-		//$sql="SELECT ticket_id,staff_id,status,isoverdue FROM isost_ticket WHERE UNIX_TIMESTAMP(created) >= $start_date and UNIX_TIMESTAMP(created) <= $end_date AND source!='system' ORDER BY ticket_id";
-		//$sql = "SELECT username,staff_id from isost_staff where username != 'administrator'";
-		$sql = "select distinct a.staff_id,b.username from isost_ticket a, isost_staff b where a.track_id!=999999 and UNIX_TIMESTAMP(a.created) >= 1385836200 and UNIX_TIMESTAMP(a.created) <= 1388514599 and b.username != 'administrator' and a.staff_id=b.staff_id";
+		$sql = "select distinct a.staff_id,b.username from isost_ticket a, isost_staff b where a.track_id!=999999 and UNIX_TIMESTAMP(a.created) >= $start_date and UNIX_TIMESTAMP(a.created) <= $end_date and b.username != 'administrator' and a.staff_id=b.staff_id";
 		$result = mysql_query($sql);		
 		$num_rows = mysql_num_rows($result);
 		showxml($result, $num_rows);

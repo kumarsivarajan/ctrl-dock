@@ -21,6 +21,8 @@
     font-family: Arial, Helvetica, sans-serif;
     text-decoration: none;
     font-weight: bold;
+	font-size: 13px;
+	background-color: #EEE;
 }
 
 .error {
@@ -198,13 +200,13 @@ table.ticketoptions td {
 }
 
 table.message, table.response,table.note {
-    border: 1px solid;
+    border: 0px solid;
     border-bottom: none;
     border-color:#ADADAD;
 }
 
 table.message td, table.message th,table.response td, table.response th,table.note td, table.note th {
-    border-bottom:1px solid;
+    border-bottom:0px solid;
     padding:5px;
 }
 
@@ -222,15 +224,15 @@ table.message th, table.response th, table.note th {
 }
 
 table.message th {
-    background-color: #C3D9FF;
+    background-color: #95D1E9;
 }
 
 table.response th {
-    background-color: #FFE0B3;
+    background-color: #9FF79F;
 }
 
 table.note th {
-    background-color: #D5DFF3;
+    background-color: #F6F68B;
     color: #3E3E3E;
 }
 

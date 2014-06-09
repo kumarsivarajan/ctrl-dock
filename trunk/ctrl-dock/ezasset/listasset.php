@@ -85,14 +85,13 @@ $sql.= "a.assigned_type,a.assigned_agency,a.assigned_bg,a.parent_assetid";
 $sql.= " from asset a,assetcategory b,agency c,assetstatus d, user_master e";
 $sql.= " where a.assetcategoryid=b.assetcategoryid and a.agencyid=c.agency_index and a.statusid=d.statusid and a.employee=e.username";
 
+
 $sql.=" and a.assetid like '$assetid' and serialno like '$serialno'";
 $sql.=" and b.assetcategoryid like '$assetcategoryid' and d.statusid like '$statusid'";
 $sql.=" and a.employee like '$employee'";
 $sql.=" and a.hostname like '$hostname'";
 $sql.=" and a.rentalinfo like '$rentalinfo'";
-
 $sql.=" order by a.assetid";
-
 
 $result = mysql_query($sql);
 
@@ -146,15 +145,12 @@ while ($row = mysql_fetch_row($result)) {
 	   echo "<td class=reportdata> $sub_row[0]</td>";
 	}
 
-	
-	$status="IA";
-	if($row[8]=="Active"){$status="A";}
-    echo "<td class=reportdata style='text-align:center' width=16><b>$status</b></td>";
+    echo "<td class=reportdata style='text-align:center' width=16>".$row[8]."</td>";
 	
 	$status="O";
 	if($row[14]=="Rental"){$status="R";}
 	if($row[14]=="Lease"){$status="L";}
-	echo "<td class=reportdata style='text-align:center' width=16><b>$status</b></td>";
+	echo "<td class=reportdata style='text-align:center' width=16>$status</td>";
 	echo "<td class=reportdata style='text-align:center'>";
 	if (strlen($row[11])>0){
 		echo "<a Title='$row[11]'><img border=0 src=images/comments.gif></a>"; 

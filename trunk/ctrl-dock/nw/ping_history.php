@@ -1,5 +1,6 @@
 <?php 
 include("config.php"); 
+if (!check_feature(29)){feature_error();exit;}
 
 $hostname	=$_REQUEST["hostname"];
 $timedetail	=$_REQUEST["timedetail"];

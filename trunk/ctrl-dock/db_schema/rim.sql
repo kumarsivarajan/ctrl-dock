@@ -945,6 +945,7 @@ CREATE TABLE `isost_ticket_note` (
   `title` varchar(255) NOT NULL default 'Generic Intermal Notes',
   `note` text NOT NULL,
   `created` datetime NOT NULL default '0000-00-00 00:00:00',
+  `time_spent` int (10) default 0,
   PRIMARY KEY  (`note_id`),
   KEY `ticket_id` (`ticket_id`),
   KEY `staff_id` (`staff_id`),
@@ -993,6 +994,7 @@ CREATE TABLE `isost_ticket_response` (
   `ip_address` varchar(16) NOT NULL default '',
   `created` datetime NOT NULL default '0000-00-00 00:00:00',
   `updated` datetime NOT NULL default '0000-00-00 00:00:00',
+  `time_spent` int (10) default 0,
   PRIMARY KEY  (`response_id`),
   KEY `ticket_id` (`ticket_id`),
   KEY `msg_id` (`msg_id`),
@@ -1095,6 +1097,7 @@ CREATE TABLE `hosts_master` (
   `status` int(1) default NULL,
   `platform` varchar(10) default NULL,
   `description` varchar(255) NOT NULL,
+  `alert_status`  int(1) default 1,
   PRIMARY KEY  (`host_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -1505,6 +1508,7 @@ CREATE TABLE `sys_uptime_email` (
  `created` datetime NOT NULL default '0000-00-00 00:00:00',
  `status` enum('active','inactive') NOT NULL default 'active',
  `host_id` int(11) default NULL,
+ `continuos_alerts` int(2) default 0,
  PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -1639,4 +1643,12 @@ CREATE TABLE `terminal_login` (
   `username` varchar(255) default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-
+CREATE TABLE `ticket_rating` (
+  `ticket_id` int(255) default NULL,
+  `rated_staff` varchar(255) default NULL,
+  `rated_by` varchar(255) default NULL,
+  `rated_date` int(10) default NULL,
+  `rating` int(10) default '3',
+  `comments` varchar(255) default NULL, 
+  PRIMARY KEY  (`ticket_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;

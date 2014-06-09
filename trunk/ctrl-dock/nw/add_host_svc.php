@@ -11,9 +11,9 @@ $port				=$_REQUEST["port"];if(strlen($port)==0){$port="00";}
 $enabled			=$_REQUEST["enabled"];
 $alarm_threshold	=$_REQUEST["alarm_threshold"];
 
-$pattern			=$_REQUEST["pattern"];
-$url_timeout		=$_REQUEST["url_timeout"];
-$url				=$_REQUEST["url"];
+$pattern			=trim($_REQUEST["pattern"]);
+$url_timeout		=trim($_REQUEST["url_timeout"]);
+$url				=trim($_REQUEST["url"]);
 
 
 if ($host_id!=""){
