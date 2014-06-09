@@ -12,7 +12,4 @@ include_once("../include/mail.php");
 
 include_once("../include/features.php");
 include_once("../include/calendar.php");
-include_once("../include/css/default.css");
-
-//if (!check_feature(34)){feature_error();exit;}
 ?>

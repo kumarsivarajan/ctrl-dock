@@ -3,13 +3,18 @@ include("config.php");
 
 $host_id=$_REQUEST["host_id"];
 
-$sql = "select hostname,platform,status,description from hosts_master where host_id='$host_id'";
+$sql = "select hostname,platform,status,description,alert_status from hosts_master where host_id='$host_id'";
 $result = mysql_query($sql);
 $row = mysql_fetch_row($result);
 $hostname=$row[0];
 $platform=$row[1];
 $status=$row[2];
 $description=$row[3];
+
+$alert_status=$row[4];
+$alert_status_text="Active";
+if($alert_status==0){$alert_status_text="Disabled";}
+
 
 $status_text="Active";
 if($status==0){$status_text="Disabled";}
@@ -42,10 +47,20 @@ include("header.php");
         </td>
 </tr>
 <tr>
-<td class='tdformlabel'><b>Status</font></b></td>
+<td class='tdformlabel'><b>Monitoring Status</font></b></td>
         <td align=right>
                 <select size=1 name=status class='formselect'>
 					<option value='<?echo $status;?>'><?echo $status_text;?></option>
+                    <option value='1'>Active</option>
+					<option value='0'>Disabled</option>
+                </select>
+        </td>
+</tr>
+<tr>
+<td class='tdformlabel'><b>Alert Status</font></b></td>
+        <td align=right>
+                <select size=1 name=alert_status class='formselect'>
+					<option value='<?echo $alert_status;?>'><?echo $alert_status_text;?></option>
                     <option value='1'>Active</option>
 					<option value='0'>Disabled</option>
                 </select>

@@ -12,12 +12,10 @@ $code_tabs=array();
 
 <table border=0 width=100% cellspacing=0 cellpadding=2>
 <tr>
-	<td class='reportdata' width=650><b>HOSTS</td>
-	<td class='reportdata' style="text-align:right;height:20px;" width=40><a href='dash/dash_see_more_hosts.php' style="text-decoration:none;">details</a>
-	<td class='reportdata' style="text-align:center; height:20px;" width=20><a href='dash/dash_see_more_hosts.php'><img border=0 src="images/history.gif"></a>
+	<td class='reportdata' width=100%><b>HOSTS</td>
 </tr>
 </table>
-<table class="reporttable" width=100% cellspacing=0 cellpadding=5>
+<table class="reporttable" width=100% cellspacing=0 cellpadding=5 onclick="window.location='dash/dash_see_more_hosts.php'">
 <tr>	
 <?
 	// Fetch Network Status Summary

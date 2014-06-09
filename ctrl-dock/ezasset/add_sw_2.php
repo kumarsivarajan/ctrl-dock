@@ -19,6 +19,7 @@ $comments=$_REQUEST["comments"];
 
 if ($error_code==0){
 	mysql_select_db($asset_db, $link);
+	mysql_query("SET NAMES `utf8`");
 	$sql ="insert into sw_licenses (package_name,procurement_source,procurement_date,procurement_vendor,license_type,quantity,comments)";
 	$sql.=" values ('$package_name','$procurement_source','$procurement_date','$procurement_vendor','$license_type','$quantity','$comments')";
 	$result = mysql_query($sql);

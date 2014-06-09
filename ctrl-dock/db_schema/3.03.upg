@@ -1,0 +1,14 @@
+CREATE TABLE `ticket_rating` (
+  `ticket_id` int(255) default NULL,
+  `rated_staff` varchar(255) default NULL,
+  `rated_by` varchar(255) default NULL,
+  `rated_date` int(10) default NULL,
+  `rating` int(10) default '3',
+  `comments` varchar(255) default NULL, 
+  PRIMARY KEY  (`ticket_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+alter table isost_ticket_response add time_spent int (10) default 0;
+alter table isost_ticket_note add time_spent int (10) default 0;
+alter table sys_uptime_email add `continuos_alerts` int(2) default 0;
+alter table hosts_master add `alert_status` int(1) default 1;

@@ -11,16 +11,13 @@ $base_url.=$_SERVER["SERVER_NAME"]."/".$INSTALL_HOME;
 
 ?>
 
-
-
 <table border=0 width=100% cellspacing=0 cellpadding=2>
 <tr>
-	<td class='reportdata' width=650><b>TICKETS</td>
-	<td class='reportdata' style="text-align:right;height:20px;" width=40><a href='eztickets/scp/tickets.php' style="text-decoration:none;">details</a>
-	<td class='reportdata' style="text-align:center; height:20px;" width=20><a href='eztickets/scp/tickets.php'><img border=0 src="images/history.gif"></a>
+	<td class='reportdata' width=100%><b>TICKETS</td>
 </tr>
 </table>
-<table class="reporttable" width=100% cellspacing=0 cellpadding=5>
+
+<table class="reporttable" width=100% cellspacing=0 cellpadding=5 onclick="window.location='eztickets/scp/tickets.php'">
 <?
 $url=$base_url."/api/tkt_count_summary.php?key=$API_KEY&staff=$username";
 if ($query = load_xml($url)){

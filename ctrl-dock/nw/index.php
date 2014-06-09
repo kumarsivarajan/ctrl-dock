@@ -4,7 +4,7 @@ $SELECTED="NETWORK HOSTS";
 include("header.php");
 ?>
 
-<table class="reporttable" width=100%>
+<table class="reporttable" width=100% cellspacing=0 cellpadding=5>
 <tr>
 	<td colspan=10 align=right>
 		<a style="text-decoration: none" href="add_host.php">
@@ -20,8 +20,8 @@ include("header.php");
 	<td class="reportheader" width=60>Ping</td>
 	<td class="reportheader" width=60>Services</td>
 	<td class="reportheader" width=60>SNMP</td>
-	<td class="reportheader" width=60>Edit</td>
 	<td class="reportheader" width=60>Email</td>
+	<td class="reportheader" width=60>Edit</td>
 	<td class="reportheader" width=60>Delete</td>
 </tr>
 <?php
@@ -46,8 +46,8 @@ while ($row = mysql_fetch_row($result)){
 		<td class='reportdata' style='text-align: center;'><a href="edit_host_nw_1.php?host_id=<? echo $row[0]; ?>&hostname=<?echo $row[1];?>"><img border=0 src="images/network.gif"></a></td>
 		<td class='reportdata' style='text-align: center;'><a href="host_svc.php?host_id=<? echo $row[0]; ?>&hostname=<?echo $row[1];?>"><img border=0 src="images/services.gif"></a></td>
 		<td class='reportdata' style='text-align: center;'><a href="edit_host_nw_snmp_1.php?host_id=<? echo $row[0]; ?>&hostname=<?echo $row[1];?>"><img border=0 src="images/snmp.gif"></a></td>
-		<td class='reportdata' style='text-align: center;'><a href="edit_host_1.php?host_id=<? echo $row[0]; ?>"><img border=0 src="images/edit.gif"></a></td>
 		<td class='reportdata' style='text-align: center;'><a href="mail_uptime_notification.php?host_id=<? echo $row[0]; ?>&hostname=<?echo $row[1];?>"><img border=0 src="images/email.gif"></a></td>
+		<td class='reportdata' style='text-align: center;'><a href="edit_host_1.php?host_id=<? echo $row[0]; ?>"><img border=0 src="images/edit.gif"></a></td>
 		<td class='reportdata' width=40 style='text-align: center;'><a href='host_delete_cf.php?host_id=<?echo $row[0];?>&hostname=<?echo $row[1];?>'><img src=images/delete.gif border=0></img></a></td>
 	</tr>
 	<?	

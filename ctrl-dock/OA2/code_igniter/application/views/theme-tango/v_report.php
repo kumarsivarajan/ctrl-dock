@@ -87,7 +87,7 @@ foreach($query as $row) {
 				switch($column_variable_name)
 				{
 				case "tag":
-					echo "\t\t\t<td align=\"center\"><a href='../../../../ezasset/del_system.php?id=$row->system_id'>Delete</a></td>\n";
+					//echo "\t\t\t<td align=\"center\"><a href='../../../../ezasset/del_system.php?id=$row->system_id'>Delete</a></td>\n";
 				break;
 
 				default:

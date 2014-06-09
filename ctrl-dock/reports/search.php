@@ -15,10 +15,10 @@ include("config.php");
 <tr>
 <form method="POST" action="report.php">
 	<td><font face=Arial size=1 color=white><b>&nbsp; GENERATE REPORT FROM DATE</b></td>
-	<td align=left><input class=formnputtext name=start_date id="start_date" style="font-size: 9pt; font-family: Arial; width:165px;" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF></td>
+	<td align=left><input class=formnputtext value="<?=$start_date;?>" name=start_date id="start_date" style="font-size: 9pt; font-family: Arial; width:165px;" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF></td>
 
 	<td><font face=Arial size=1 color=white><b>&nbsp; GENERATE REPORT TO DATE</b></td>
-	<td align=left><input class=formnputtext name=end_date id="end_date" style="font-size: 9pt; font-family: Arial; width:165px;" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF></td>
+	<td align=left><input class=formnputtext value="<?=$end_date;?>" name=end_date id="end_date" style="font-size: 9pt; font-family: Arial; width:165px;" onclick="event.cancelBubble=true;calendar(this);" autocomplete=OFF></td>
 
 	<td align=right>
 		<input type="submit" value="Query" name="Submit" style="font-family: Arial; font-size: 8pt; font-weight: bold">

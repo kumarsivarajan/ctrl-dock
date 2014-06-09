@@ -14,10 +14,10 @@ $row	= mysql_fetch_row($result);
 $host_id=$row[0];
 ?>
 <title>Service Availability : <?=$hostname;?></title>
-<table class="reporttable" width=450 border=0>
+<table class="reporttable" width=100% border=0>
 <tr><td class='reportdata' colspan=5><b>Service Availability : <?=$hostname;?></b></td></tr>
 </table>
-<table class="reporttable" width=450>
+<table class="reporttable" width=100%>
 </tr>
 
 <?
