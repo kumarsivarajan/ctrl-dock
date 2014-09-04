@@ -1407,6 +1407,7 @@ insert  into `rim_group_feature`(`group_id`,`feature_id`) values (2,3);
 insert  into `rim_group_feature`(`group_id`,`feature_id`) values (2,4);
 insert  into `rim_group_feature`(`group_id`,`feature_id`) values (2,5);
 insert  into `rim_group_feature`(`group_id`,`feature_id`) values (2,6);
+insert  into `rim_group_feature`(`group_id`,`feature_id`) values (2,29);
 insert  into `rim_group_feature`(`group_id`,`feature_id`) values (2,34);
 insert  into `rim_group_feature`(`group_id`,`feature_id`) values (2,35);
 insert  into `rim_group_feature`(`group_id`,`feature_id`) values (2,36);
@@ -1650,5 +1651,6 @@ CREATE TABLE `ticket_rating` (
   `rated_date` int(10) default NULL,
   `rating` int(10) default '3',
   `comments` varchar(255) default NULL, 
+  `closed_rating` int(1) DEFAULT 0,
   PRIMARY KEY  (`ticket_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;

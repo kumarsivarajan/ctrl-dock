@@ -16,6 +16,25 @@ $rated_staff	=$_REQUEST["rated_staff"];
 $rated_by		=$_REQUEST["rated_by"];
 $source			=$_REQUEST["source"];
 $subject		=$_REQUEST["subject"];
+$ticket_status	=$_REQUEST["ticket_status"];
+
+
+if ($ticket_status=="open"){
+	$sql="update ticket_rating set closed_rating=0 where ticket_id='$ticket_id'";
+	$result = mysql_query($sql);
+}
+
+// Check if the ticket has been rated after it has been closed.
+
+$sql="select * from ticket_rating where ticket_id='$ticket_id'";
+$result = mysql_query($sql);
+$rating_count=mysql_num_rows($result);
+
+if ($rating_count>0){
+	$row = mysql_fetch_row($result);
+	$closed_rating=$row[6];
+}
+
 ?>
 <table border=0 width=100% cellspacing=1 cellpadding=3>
 <tr>
@@ -69,13 +88,15 @@ if(isset($_REQUEST["rating_".$rater_id]) && strlen($_REQUEST["comments"])>0){
   
 
   $now=mktime();
-  $sql ="delete from ticket_rating where ticket_id='$ticket_id'";
-  $result = mysql_query($sql);
-  $sql ="insert into ticket_rating";
-  $sql.=" values ('$ticket_id','$rated_staff','$rated_by','$now','$rater_rating','$comments')";
-  $result = mysql_query($sql);
-  
-
+  if ($closed_rating==0){
+	  $sql ="delete from ticket_rating where ticket_id='$ticket_id'";
+	  $result = mysql_query($sql);
+	  
+	  if($ticket_status=="closed"){ $closed_rating=1;}
+	  $sql ="insert into ticket_rating";
+	  $sql.=" values ('$ticket_id','$rated_staff','$rated_by','$now','$rater_rating','$comments',$closed_rating)";
+	  $result = mysql_query($sql);
+  }
   
   
   
@@ -133,7 +154,7 @@ if(is_file($rater_filename)){
 }
 
 //Show rating form only if the the user logged in is the one who is the source of the ticket
-if ($rated_by==$source){
+if ($rated_by==$source && $closed_rating==0){
 	// Show Form
 	echo '<div class="hreview">';
 	echo '<form method="post" action="'.$_SERVER["PHP_SELF"].'">';
@@ -141,11 +162,11 @@ if ($rated_by==$source){
 	echo '<div>';
 	echo '<b>Rate the quality of support that your received for this support request.</b>';
 	echo '<br><br>';
-	echo '<label for="rate5_'.$rater_id.'"><input tabindex=1 type="radio" value="5" name="rating_'.$rater_id.'[]" id="rate5_'.$rater_id.'" />Excellent</label>';
-	echo '<label for="rate4_'.$rater_id.'"><input tabindex=2 type="radio" value="4" name="rating_'.$rater_id.'[]" id="rate4_'.$rater_id.'" />Very Good</label>';
-	echo '<label for="rate3_'.$rater_id.'"><input tabindex=3 type="radio" value="3" name="rating_'.$rater_id.'[]" id="rate3_'.$rater_id.'" />Good</label>';
-	echo '<label for="rate2_'.$rater_id.'"><input tabindex=4 type="radio" value="2" name="rating_'.$rater_id.'[]" id="rate2_'.$rater_id.'" />Fair</label>';
 	echo '<label for="rate1_'.$rater_id.'"><input tabindex=5 type="radio" value="1" name="rating_'.$rater_id.'[]" id="rate1_'.$rater_id.'" />Poor</label>';
+	echo '<label for="rate2_'.$rater_id.'"><input tabindex=4 type="radio" value="2" name="rating_'.$rater_id.'[]" id="rate2_'.$rater_id.'" />Fair</label>';
+	echo '<label for="rate3_'.$rater_id.'"><input tabindex=3 type="radio" value="3" name="rating_'.$rater_id.'[]" id="rate3_'.$rater_id.'" />Good</label>';
+	echo '<label for="rate4_'.$rater_id.'"><input tabindex=2 type="radio" value="4" name="rating_'.$rater_id.'[]" id="rate4_'.$rater_id.'" />Very Good</label>';
+	echo '<label for="rate5_'.$rater_id.'"><input tabindex=1 type="radio" value="5" name="rating_'.$rater_id.'[]" id="rate5_'.$rater_id.'" />Excellent</label>';
 	echo '<input type="hidden" name="rs_id" value="'.$rater_id.'" />';
 	echo '<br><br>';
 	echo '<b>Provide your feedback / comments for your rating.</b>';
@@ -158,7 +179,7 @@ if ($rated_by==$source){
 	echo "<input type=hidden name=rated_by value=$rated_by>";
 	echo "<input type=hidden name=ticket_id value=$ticket_id>";
 	echo "<input type=hidden name=subject value='$subject'>";
-
+	echo "<input type=hidden name=ticket_status value='$ticket_status'>";
 
 	echo '<input type=button value="Close this window" onclick="javascript:window.close()">';
 	echo '</div>';
@@ -171,10 +192,10 @@ if ($rated_by==$source){
 // Check if ticket has already been rated
 $sql="select * from ticket_rating where ticket_id='$ticket_id' order by rated_date desc limit 1";
 $result = mysql_query($sql);
-$record_count=mysql_num_rows($result);
+$rating_count=mysql_num_rows($result);
 
 // Display last rating information
-if ($record_count>0){
+if ($rating_count>0){
 	echo "<hr>";
 	$row = mysql_fetch_row($result);
 	

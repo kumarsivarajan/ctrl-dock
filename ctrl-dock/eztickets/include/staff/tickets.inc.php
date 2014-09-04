@@ -906,31 +906,29 @@ function selectBoxval(tval)
 					}
 					
 					// Only users who are logged in and originally owned the ticket can give a rating
-					$logged_in_user=$thisuser->getEmail();
-					if($row['status']=="closed" && $row['email']==$logged_in_user && $staff_id>0){
-					}
-					
-					$stars_lit=$rating;
-					$stars_unlit=5-$rating;
-					
-					$source=$row['email'];
-					
-					if($staff_id>0){
-						$url="../../rating/index.php?ticket_id=".$row['ticket_id']."&subject=".$subject."&rated_staff=".$assigned_email."&rated_by=".$logged_in_user."&source=".$source;		
-						?><a onclick="javascript:void window.open('<?=$url;?>','Rate the Support','width=700,height=500,toolbar=0,menubar=0,location=0,status=0,scrollbars=0,resizable=1,left=250,top=100');return false;"><?
-					}
-					
-					for($i=1;$i<=$stars_lit;$i++){
-						echo "<img src=../images/star_lit.png border=0>";
-					}
-					for($i=1;$i<=$stars_unlit;$i++){
-						echo "<img src=../images/star_unlit.png border=0>";
-					}
-					
-					if($staff_id>0){
-						echo "</a>";
-					}
-					
+					$logged_in_user=$thisuser->getEmail();					
+						
+						$stars_lit=$rating;
+						$stars_unlit=5-$rating;
+						
+						$source=$row['email'];
+						$ticket_status=$row['status'];
+						
+						if($staff_id>0){
+							$url="../../rating/index.php?ticket_id=".$row['ticket_id']."&subject=".$subject."&rated_staff=".$assigned_email."&rated_by=".$logged_in_user."&source=".$source."&ticket_status=".$ticket_status;		
+							?><a onclick="javascript:void window.open('<?=$url;?>','Rate the Support','width=700,height=500,toolbar=0,menubar=0,location=0,status=0,scrollbars=0,resizable=1,left=250,top=100');return false;"><?
+						}
+				
+						for($i=1;$i<=$stars_lit;$i++){
+							echo "<img src=../images/star_lit.png border=0>";
+						}
+						for($i=1;$i<=$stars_unlit;$i++){
+							echo "<img src=../images/star_unlit.png border=0>";
+						}
+						
+						if($staff_id>0){
+							echo "</a>";
+						}
 					?>
 				</td>
 					

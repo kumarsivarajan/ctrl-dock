@@ -73,6 +73,7 @@ $row=mysql_fetch_array($result);
 $time_spent=$time_spent+$row[0];
 
 if ($time_spent<3600){$time_spent=round($time_spent/60,2) . " mins";}
+if ($time_spent==3600){$time_spent=round($time_spent/3600,2);$time_spent=$time_spent . " Hr";}
 if ($time_spent>3600){$time_spent=round($time_spent/3600,2);$time_spent=$time_spent . " Hrs";}
 
 
@@ -361,6 +362,7 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
 			$time_spent=$row['time_spent'];
 				
 			if ($time_spent<3600){$time_spent=round($time_spent/60,2) . " mins";}
+			if ($time_spent==3600){$time_spent=round($time_spent/3600,2);$time_spent=$time_spent . " Hr";}
 			if ($time_spent>3600){$time_spent=round($time_spent/3600,2);$time_spent=$time_spent . " Hrs";}
 		?>
         <table align="center" class="note" cellspacing="0" cellpadding="1" width="100%" border=0>
@@ -408,7 +410,10 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
 				$time_spent=$resp_row['time_spent'];
 				
 				if ($time_spent<3600){$time_spent=round($time_spent/60,2) . " mins";}
+				if ($time_spent==3600){$time_spent=round($time_spent/3600,2);$time_spent=$time_spent . " Hr";}
 				if ($time_spent>3600){$time_spent=round($time_spent/3600,2);$time_spent=$time_spent . " Hrs";}
+
+
 
                 ?>
     		    <table align="center" class="response" cellspacing="0" cellpadding="1" width="100%" border=0>
