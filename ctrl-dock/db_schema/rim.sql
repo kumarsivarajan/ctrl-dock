@@ -1052,39 +1052,40 @@ insert  into `isost_timezone`(`id`,`offset`,`timezone`) values (30,12.0,'Aucklan
 CREATE TABLE `escalations` (
   `esc_id` int(10) NOT NULL,
   `ticket_type_id` tinyint(3) default NULL,
-  `esc_username` varchar(255) default NULL,
-  `emergency` int(10) default NULL,
-  `high` int(10) default NULL,
-  `medium` int(10) default NULL,
-  `low` int(10) default NULL,
-  `exception` int(10) default NULL,
+  `emergency` float(5,2) default NULL,
+  `high` float(5,2) default NULL,
+  `medium` float(5,2) default NULL,
+  `low` float(5,2) default NULL,
+  `exception` float(5,2) default NULL,
   `dept_id` int(10) default NULL,
   `esc_phone` varchar(50) default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
  
-insert into `escalations` (`esc_id`, `ticket_type_id`, `esc_username`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('1','1',NULL,'0','4','16','24','120','1','');
-insert into `escalations` (`esc_id`, `ticket_type_id`, `esc_username`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('2','1',NULL,'0','6','20','26','120','1','');
-insert into `escalations` (`esc_id`, `ticket_type_id`, `esc_username`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('3','1',NULL,'0','7','24','48','120','1','');
+insert into `escalations` (`esc_id`, `ticket_type_id`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('1','1','0.25','4','16','24','120','1','');
+insert into `escalations` (`esc_id`, `ticket_type_id`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('2','1','0.5','6','20','26','120','1','');
+insert into `escalations` (`esc_id`, `ticket_type_id`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('3','1','1','7','24','48','120','1','');
 
-insert into `escalations` (`esc_id`, `ticket_type_id`, `esc_username`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('1','3',NULL,'0','4','16','24','120','1','');
-insert into `escalations` (`esc_id`, `ticket_type_id`, `esc_username`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('2','3',NULL,'0','6','20','26','120','1','');
-insert into `escalations` (`esc_id`, `ticket_type_id`, `esc_username`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('3','3',NULL,'0','7','24','48','120','1','');
+insert into `escalations` (`esc_id`, `ticket_type_id`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('1','3','0.25','4','16','24','120','1','');
+insert into `escalations` (`esc_id`, `ticket_type_id`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('2','3','0.5','6','20','26','120','1','');
+insert into `escalations` (`esc_id`, `ticket_type_id`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('3','3','1','7','24','48','120','1','');
 
-insert into `escalations` (`esc_id`, `ticket_type_id`, `esc_username`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('1','4',NULL,'0','4','16','24','120','1','');
-insert into `escalations` (`esc_id`, `ticket_type_id`, `esc_username`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('2','4',NULL,'0','6','20','26','120','1','');
-insert into `escalations` (`esc_id`, `ticket_type_id`, `esc_username`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('3','4',NULL,'0','7','24','48','120','1','');
+insert into `escalations` (`esc_id`, `ticket_type_id`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('1','4','0.25','4','16','24','120','1','');
+insert into `escalations` (`esc_id`, `ticket_type_id`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('2','4','0.5','6','20','26','120','1','');
+insert into `escalations` (`esc_id`, `ticket_type_id`, `emergency`, `high`, `medium`, `low`, `exception`,`dept_id`,`esc_phone`) values('3','4','1','7','24','48','120','1','');
+
+
+CREATE TABLE `escalation_email` (
+  `email` varchar(500) default NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 /*Table structure for table `escalations_log` */
 
 DROP TABLE IF EXISTS `escalations_log`;
 
 CREATE TABLE `escalations_log` (
-  `record_id` int(10) NOT NULL auto_increment,
   `ticket_id` int(10) default NULL,
   `level` int(10) default NULL,
-  `esc_username` varchar(255) default NULL,
-  `timestamp` int(10) default NULL,
-  PRIMARY KEY  (`record_id`)
+  `timestamp` int(10) default NULL
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 /*Table structure for table `hosts_master` */
@@ -1195,6 +1196,25 @@ CREATE TABLE `rim_master_mytickets` (
   `assigned_to` varchar(255) default NULL,
   `ticket_count` varchar(255) default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `rim_master_nw` (
+  `agency_index` int(10) default NULL,
+  `hostname` varchar(255) default NULL,
+  `description` varchar(255) default NULL,
+  `platform` varchar(255) default NULL,
+  `network` int(10) default NULL,
+  `live` int(10) default NULL,
+  `count` int(10) default NULL,
+  `snmp` int(1) default NULL,
+  `network_snmp_cpu_status` int(1) default NULL,
+  `cpu` varchar(10) default NULL,
+  `network_snmp_mem_status` int(1) default NULL,
+  `mem` varchar(10) default NULL,
+  `network_snmp_dsk_status` int(1) default NULL,
+  `dsk` varchar(500) default NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
 
 
 CREATE TABLE `scheduled_tasks` (
