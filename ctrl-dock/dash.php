@@ -7,9 +7,7 @@
 <?if (check_feature(20)){?>
 <tr>
 	<td width=100% valign=top align=center>
-		<br>
 		<?include("dash/dash_quick_links.php");?>
-		<br>
 	</td>
 </tr>
 <?}?>
@@ -18,7 +16,6 @@
 <tr>
 	<td>
 		<?include("dash/dash_open_tickets.php");?>
-		<br>
 	</td>
 </tr>
 <?}?>
@@ -27,7 +24,6 @@
 <tr>
 	<td>
 		<?include("dash/dash_nw_status.php");?>
-		<br>
 	</td>
 </tr>
 <?}?>
@@ -36,7 +32,6 @@
 <tr>
 	<td>
 		<?include("dash/dash_pending_rca.php");?>
-		<br>
 	</td>
 </tr>
 <?}?>
@@ -45,7 +40,6 @@
 <tr>
 	<td>
 		<?include("dash/dash_pending_pa.php");?>
-		<br>
 	</td>
 </tr>
 <?}?>
@@ -54,7 +48,7 @@
 <?if($EZASSET==1){?>
 <tr>	
 	<td>
-			<?include("dash/dash_sw_compliance.php");?>
+			<?//include("dash/dash_sw_compliance.php");?>
 			<?include("dash/dash_asset_summary.php");?>
 	</td>
 </tr>
