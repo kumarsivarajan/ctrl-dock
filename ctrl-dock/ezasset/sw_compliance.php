@@ -27,7 +27,7 @@ $base_url.=$_SERVER["SERVER_NAME"]."/".$INSTALL_HOME;
 	<td class="reportheader">Active</td>
 	<td class="reportheader">In-Active</td>
 	<td class="reportheader">Total</td>
-	<td class="reportheader">Compliance</td>	
+	<td class="reportheader" width=100>Compliance</td>	
 </td>
 </tr>
 <?

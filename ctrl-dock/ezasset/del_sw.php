@@ -2,7 +2,7 @@
 include_once("config.php");
 
 include_once("searchasset.php");
-if (!check_feature(36)){feature_error();exit;}
+if (!check_feature(37)){feature_error();exit;}
 
 $asset_db            =$DATABASE_NAME."_oa";
 
