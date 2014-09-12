@@ -1,5 +1,7 @@
 <?php 
-include("config.php"); 
+include("config.php");
+if (!check_feature(31)){feature_error();exit;}
+ 
 
 $host_id	=$_REQUEST["host_id"];
 $hostname	=$_REQUEST["hostname"];

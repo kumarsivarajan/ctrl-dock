@@ -5,10 +5,8 @@ Creation Date: 18/05/2012
 Function: Queruy to delete the specified email from DB
 *******************************************************************************************************/
 include("config.php");
-if (!check_feature(19)){
-	feature_error();
-	exit;
-}
+if (!check_feature(31)){feature_error();exit;}
+
 $id=$_REQUEST["id"];
 $delete_query = sprintf("DELETE FROM sys_uptime_email 
 			 WHERE id=%d",$id);

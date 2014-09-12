@@ -1,6 +1,6 @@
 <?php 
 include("config.php"); 
-if (!check_feature(12)){feature_error();exit;} 
+if (!check_feature(10)){feature_error();exit;} 
 
 $SELECTED="DISABLED / HIDDEN OFFICE LOCATIONS";
 include("header.php");

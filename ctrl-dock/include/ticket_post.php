@@ -15,7 +15,7 @@ function ticket_post($name,$email,$topicId,$subject,$message,$ticket_type_id='')
             'email'=>urlencode($email),            
             'topicId'=>urlencode($topicId),
             'subject'=>urlencode($subject),
-			'ticket_type_id'=> urlencode($ticket_type_id),
+			'tickettype'=> urlencode($ticket_type_id),
 			'dept_id'=> urlencode($dept_id),
 			'pri'=> urlencode($pri),
 			'message'=>urlencode($message)
@@ -24,6 +24,7 @@ function ticket_post($name,$email,$topicId,$subject,$message,$ticket_type_id='')
 	$response='';
 	foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
 	rtrim($fields_string,'&');
+	
 
 	try{
 		$response=do_post_request($ticket_post_url,$fields_string);

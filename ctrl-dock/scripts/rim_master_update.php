@@ -4,6 +4,7 @@ include_once("../include/config.php");
 include_once("../include/db.php");
 include_once("../include/system_config.php");
 include_once("../include/load_xml.php");
+include_once("../include/host_nw.php");
 
 if($ezRIM==1){
 
@@ -36,6 +37,7 @@ if($ezRIM==1){
 	$row = mysql_fetch_array($result);
 	$summary[$i]=$row[0];	
 	$i++;
+	
 	
 	// Fetch Network Status Summary
 	$sql = "SELECT a.host_id FROM hosts_nw a, hosts_master b WHERE enabled='1' AND b.status='1' AND a.host_id=b.host_id ORDER BY host_id";
@@ -154,6 +156,62 @@ if($ezRIM==1){
 		
 		rim_master_mytickets($email,$ticket_count);
 	}
+}
+
+// Update network status to RIM Master
+if($ezRIM==1){
+	$sql = "SELECT hostname,platform,description from hosts_master WHERE status='1' ORDER BY hostname";
+	$result = mysql_query($sql);	
+	$num_rows = mysql_num_rows($result);
+
+	if($num_rows>0){
+		while($row = mysql_fetch_array($result)){		
+				$hostname=$row[0];
+				$platform=$row[1];			
+				if(strlen($row[2])>0){$description=$row[2];	}
+							
+				$network=get_nw_status($hostname);
+				
+				list($live,$count)=get_svc_status($hostname,$base_url,$API_KEY);
+				list($snmp,$network_snmp_cpu_status,$cpu,$network_snmp_mem_status,$mem,$network_snmp_dsk_status,$dsk)=get_snmp_status($hostname);
+				
+				// Update RIM Master
+				$url=$MASTER_URL."/api/rim_master_nw.php";
+				$fields=array();$fields_string="";
+				$fields = array(
+					'key'=>urlencode($MASTER_API_KEY),		
+					'agency'=>urlencode($AGENCY_ID),		
+					'hostname'=>urlencode($hostname),
+					'description'=>urlencode($description),
+					'platform'=>urlencode($platform),
+					'network'=>urlencode($network),
+					'live'=>urlencode($live),
+					'count'=>urlencode($count),
+					'snmp'=>urlencode($snmp),
+					'network_snmp_cpu_status'=>urlencode($network_snmp_cpu_status),
+					'cpu'=>urlencode($cpu),
+					'network_snmp_mem_status'=>urlencode($network_snmp_mem_status),
+					'mem'=>urlencode($mem),
+					'network_snmp_dsk_status'=>urlencode($network_snmp_dsk_status),
+					'dsk'=>urlencode($dsk)
+				);
+				
+				foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+				rtrim($fields_string,'&');
+											
+				$ch = curl_init();	
+						
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 60);
+				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 60);
+				curl_setopt($ch, CURLOPT_TIMEOUT,60);		
+				curl_setopt($ch, CURLOPT_POST,count($fields));
+				curl_setopt($ch, CURLOPT_POSTFIELDS,$fields_string);
+				$data = curl_exec($ch);	
+						
+				curl_close($ch);
+			}
+		}
 }
 
 

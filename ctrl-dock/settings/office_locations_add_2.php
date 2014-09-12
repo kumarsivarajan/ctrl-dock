@@ -1,6 +1,6 @@
 <?php 
 include("config.php");
-if (!check_feature(13)){feature_error();exit;} 
+if (!check_feature(9)){feature_error();exit;} 
 
 echo "<center><table border=0 width=50%>";
 $address=mysql_real_escape_string($_REQUEST["address"]);if (strlen($address)<= 0){$error=1;}

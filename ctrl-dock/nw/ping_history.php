@@ -13,10 +13,10 @@ $row	= mysql_fetch_row($result);
 $host_id=$row[0];
 ?>
 <title>Ping Statistics : <?=$hostname;?></title>
-<table class="reporttable" width=600 border=0>
+<table class="reporttable" width=650 border=0>
 <tr><td class='reportdata' colspan=5><b>Ping Statistics : <?=$hostname;?></b></td></tr>
 </table>
-<table class="reporttable" width=600 cellpadding=4>
+<table class="reporttable" width=650 cellpadding=4>
 <tr><td colspan=6>
 <?
 $sql="select timestamp,nw_status,min,avg,max from hosts_nw_log where host_id='$host_id'";
@@ -60,7 +60,7 @@ $graph_height="300px";
 </td></tr>
 
 <tr>
-	<td class="reportheader" width=200 colspan=2>Date & Time</td>	
+	<td class="reportheader" width=250 colspan=2>Date & Time</td>	
 	<td class="reportheader" width=85>Status</td>
 	<td class="reportheader" width=105>Min</td>
 	<td class="reportheader" width=105>Avg</td>

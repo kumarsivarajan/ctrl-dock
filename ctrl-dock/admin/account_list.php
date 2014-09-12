@@ -55,6 +55,7 @@ $account_type=$_REQUEST['account_type'];
 
 <tr>
 	<td class="reportheader">Name</td>
+	<td class="reportheader">Username</td>
 	<td class="reportheader">Staff No.</td>
 	<td class="reportheader">Account Type</td>
 	<td class="reportheader">Status</td>
@@ -74,6 +75,7 @@ while ($row = mysql_fetch_row($result)){
 ?>
 <tr bgcolor=<?echo $row_color; ?>>
         <td class='reportdata'><? echo "$row[0] $row[1]"; ?></td>
+        <td class='reportdata'><? echo "$row[8]"; ?></td>
         <td class='reportdata'><? echo $row[2]; ?></td>
         <td class='reportdata'><? echo $row[3]; ?></td>
         <?$font_color="#336600"; if ($row[4]!="Active"){$font_color="#CC0000";}?>

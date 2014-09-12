@@ -1,7 +1,7 @@
 <?php
 include("config.php"); 
 if (!check_feature(38)){feature_error();exit;}
-$SELECTED="AGENCIES";
+$SELECTED="VENDORS / CUSTOMERS";
 include("header.php");
 ?>
 <table border=0 width=100% cellpadding="2" cellspacing="0" bgcolor=#C0C0C0>

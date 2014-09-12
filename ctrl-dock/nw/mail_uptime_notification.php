@@ -5,10 +5,8 @@ Cre Date: 18/05/2012
 Function: Display a link to add Emails, if alreay emails are there in database display them 
 ******************************************************************************************/
 include("config.php");
-if (!check_feature(16)){
-	feature_error();
-	exit;
-}  
+if (!check_feature(31)){feature_error();exit;}
+
 $host_id  = $_REQUEST["host_id"];
 $hostname =$_REQUEST["hostname"];
 

@@ -7,6 +7,7 @@ include("include/db.php");
 <table width=100% cellspacing=1 cellpadding=2 border=0>
 <tr>
 	<td class='reportdata' colspan=2 style='text-align: right;'>
+	<b>QUICKLINKS</b>&nbsp;&nbsp;
 <?
 	$sql = "select * from quick_links order by link_priority,link_name";
 	$result = mysql_query($sql);

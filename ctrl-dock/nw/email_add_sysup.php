@@ -5,10 +5,8 @@ Creation Date: 18/05/2012
 Function: Display the UI for adding an email and query to insert the details to DB
 *******************************************************************************************************/
 include("config.php"); 
-if (!check_feature(17)){
-	feature_error();
-	exit;
-}
+if (!check_feature(31)){feature_error();exit;}
+
 
 $host_id = $_REQUEST["host_id"];
 $hostname	=$_REQUEST["hostname"];

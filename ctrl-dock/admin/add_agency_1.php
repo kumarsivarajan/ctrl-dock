@@ -1,7 +1,7 @@
 <?php 
 include("config.php"); 
 if (!check_feature(39)){feature_error();exit;}
-$SELECTED="ADD AGENCY";
+$SELECTED="ADD VENDOR / CUSTOMER";
 include("header.php");
 ?>
 <form method=POST action=add_agency_2.php>

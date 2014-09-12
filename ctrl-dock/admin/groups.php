@@ -1,6 +1,6 @@
 <?
 include("config.php"); 
-if (!check_feature(6)){feature_error();exit;} 
+if (!check_feature(4)){feature_error();exit;} 
 
 $group=mysql_real_escape_string($_REQUEST["group"]);
 $group_desc=mysql_real_escape_string($_REQUEST["group_desc"]);
@@ -14,6 +14,7 @@ if ($group!='' && $action=="edit"){
 }
 
 if ($group!='' && $action=="add"){
+  if (!check_feature(5)){feature_error();exit;}
   $sql = "insert into groups (group_name,group_description) values ('$group','$group_desc')";
   $result = mysql_query($sql);
 }
@@ -21,7 +22,7 @@ if ($group!='' && $action=="add"){
 
 
 if ($action=="delete"){
-  if (!check_feature(11)){feature_error();exit;}
+  if (!check_feature(7)){feature_error();exit;}
   
   $sql = "delete from groups where group_id='$id'";
   $result = mysql_query($sql);
@@ -34,7 +35,7 @@ if ($action=="delete"){
 }
 
 if ($action=='edit'){
-  if (!check_feature(8)){feature_error();exit;}
+  if (!check_feature(6)){feature_error();exit;}
   
   $sql = "select * from groups where group_id=$id";
   $result = mysql_query($sql);	  

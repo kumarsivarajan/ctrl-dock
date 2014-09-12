@@ -3,6 +3,9 @@ include("config.php");
 $SELECTED="ADD HOST";
 include("header.php");
 
+if (!check_feature(30)){feature_error();exit;}
+
+
 
 $hostname=mysql_real_escape_string($_REQUEST["hostname"]);
 $description=mysql_real_escape_string($_REQUEST["description"]);
