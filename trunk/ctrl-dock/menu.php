@@ -12,99 +12,143 @@ include("include/version.php");
 
 <body topmargin="0" leftmargin="0">
 
-<table border="0" cellpadding="0" cellspacing=0  width="1024" height="42" bgcolor="<?=$MENU_BGCOLOR;?>">
+<table border="0" cellpadding="3" cellspacing=0  width="100%" height="80px" bgcolor=#DDDDDD>
 <tr>
-	<td rowspan=2 valign=middle width=120 height=40 >
+	<td align=center height=42px bgcolor="<?=$MENU_BGCOLOR;?>" colspan=2>
 	<? if ($DASH==1){?>
-		<a href=dash.php>
+		<a target="_parent" href="frames.php">
 	<?}?>
 	<img border=0 width=120px height=40px src=images/logo.png></img>
 	<? if ($DASH==1){?>
 		</a>
 	<?}?>
 	</td>
-	
-	<td style="text-align:right;width:100%;"><b>
-	&nbsp;
-	
+</tr>
+	<tr>
+	<td style="text-align:left;line-height:12px;background-color:#BBBBBB">
+		<font style="font-family: Arial;font-size:10.5px;color:#222222;"><?=substr($User_Full_Name,0,25);?></font>
+	</td>
+	<td style="text-align:left;line-height:12px;background-color:#BBBBBB" width=30>
+		<a style="text-decoration:none;font-family: Arial;font-size:10px;color:#EEEEEE;" target="_top" href="logout.php">logout</a>
+	</td>
+	</tr>
+</table>
+
+
+<table border="0" cellpadding="5" cellspacing=0  width="100%" height="100%" bgcolor=#DDDDDD>
 	<? if ($DASH==1){?>
-	<a class=menulink target="rimmain" href="dash.php">Home</a>
-	&nbsp;
+	<tr>
+	<td width=24><img border=0 src="images/menu_home.png"></a></td>
+	<td><a class=menulink target="_parent" href="frames.php">Home</a></td>
+	</tr>
 	<?}?>
 
-	<? if (check_feature(1)){?>	
-	<a class=menulink target="rimmain" href="admin/account_query.php">Users</a>
-	&nbsp;
+	<? if (check_feature(1)){?>
+	<tr>
+	<td width=24><img border=0 src="images/menu_users.png"></a></td>
+	<td><a class=menulink target="rimmain" href="admin/account_query.php">Users</a></td>
+	</tr>
 	<?}?>
 
 	<? if (check_feature(4)){?>	
-	<a class=menulink target="rimmain" href="admin/groups.php">Groups</a>
-	&nbsp;
+	<tr>
+	<td width=24><img border=0 src="images/menu_groups.png"></a></td>
+	<td><a class=menulink target="rimmain" href="admin/groups.php">Groups</a></td>
+	</tr>
 	<?}?>
 
 	<? if (check_feature(35)){?>	
-	<a class=menulink target="rimmain" href="ezasset/searchasset.php">Assets</a>
-	&nbsp;
+	<tr>
+	<tr>
+	<td width=24><img border=0 src="images/menu_assets.png"></a></td>
+	<td><a class=menulink target="rimmain" href="ezasset/searchasset.php">Asset Management</a></td>
+	</tr>
 	<?}?>
 
 	<? if (check_feature(34)){?>	
-	<a class=menulink target="rimmain" href="eztickets/scp/ezlogin.php">Tickets</a>
-	&nbsp;
+	<tr>
+	<td width=24><img border=0 src="images/menu_tickets.png"></a></td>
+	<td><a class=menulink target="rimmain" href="eztickets/scp/ezlogin.php">Ticket Management</a></td>
+	</tr>
 	<?}?>
 
 	<? if (check_feature(38)){?>	
-	<a class=menulink target="rimmain" href="admin/agency_list.php">Agencies</a>
-	&nbsp;
+	<tr>
+	<td width=24><img border=0 src="images/menu_agencies.png"></a></td>
+	<td><a class=menulink target="rimmain" href="admin/agency_list.php">Vendors / Customers</a></td>
+	</tr>
 	<?}?>
 	
-	<? if (check_feature(8)){?>	
-	<a class=menulink target="rimmain" href="settings/office_locations.php">Offices</a>
-	&nbsp;
+	<? if (check_feature(28)){?>
+	<tr>
+	<td width=24><img border=0 src="images/menu_broadcast.png"></a></td>
+	<td><a class=menulink target="rimmain" href="broadcast/index.php">Broadcast</a></td>
+	</tr>
 	<?}?>
 
-	<? if (check_feature(28)){?>
-	<a class=menulink target="rimmain" href="broadcast/index.php">Broadcast</a>
-	&nbsp;
-	<?}?>
-	<? if (check_feature(44)){?>
-	<a class=menulink target="rimmain" href="reports/index.php">Reports</a>
-	&nbsp;
-	<?}?>
+	
 	<? if (check_feature(46)){?>
-	<a class=menulink target="rimmain" href="documents/sopbox.php">Sopbox</a>
-	&nbsp;
+	<tr>
+	<td width=24><img border=0 src="images/menu_sopbox.png"></a></td>
+	<td><a class=menulink target="rimmain" href="documents/sopbox.php">SOPbox</a></td>
+	</tr>
 	<?}?>	
 	
 	<? if (check_feature(33)){?>
-	<a class=menulink target="rimmain" href="documents/index.php">Documents</a>
-	&nbsp;
+	<tr>
+	<td width=24><img border=0 src="images/menu_documents.png"></a></td>
+	<td><a class=menulink target="rimmain" href="documents/index.php">Documents</a></td>
+	</tr>
 	<?}?>
 	
 	<? if (check_feature(47) || check_feature(48) || check_feature(51)){?>
-	<a class=menulink target="rimmain" href="rca/index.php">RCA</a>
-	&nbsp;
+	<tr>
+	<td width=24><img border=0 src="images/menu_rca.png"></a></td>
+	<td><a class=menulink target="rimmain" href="rca/index.php">Root Cause Analysis</a></td>
+	</tr>
 	<?}?>
 	
-	<? if (check_feature(49) || check_feature(50) || check_feature(52)){?>
-	<a class=menulink target="rimmain" href="pa/index.php">PA</a>
-	&nbsp;
+	<? if (check_feature(49) || check_feature(50) || check_feature(52)){?>	
+	<tr>
+	<td width=24><img border=0 src="images/menu_pa.png"></a></td>
+	<td><a class=menulink target="rimmain" href="pa/index.php">Planned Activities</a></td>
+	</tr>
+	<?}?>
+	
+	
+	<? if (check_feature(8)){?>
+	<tr>
+	<td width=24><img border=0 src="images/menu_offices.png"></a></td>
+	<td><a class=menulink target="rimmain" href="settings/office_locations.php">Office Locations</a></td>
+	</tr>
+	<?}?>
+	
+	<? if (check_feature(44)){?>
+	<tr>
+	<td width=24><img border=0 src="images/menu_report.png"></a></td>
+	<td><a class=menulink target="rimmain" href="reports/index.php">Reports</a></td>
+	</tr>
 	<?}?>
 	
 	<? if (check_feature(41)){?>
-		<a class=menulink  target="rimmain"  href="settings/settings.php">Settings</a>
-		&nbsp;	
+		<tr>
+		<td width=24><img border=0 src="images/menu_settings.png"></a></td>
+		<td><a class=menulink  target="rimmain"  href="settings/settings.php">Settings</a></td>
+		</tr>
 	<?}?>
 	
-	<a target="rimmain" class=menulink href="http://www.ctrl-dock.org/help" target=_blank>Help</a>
-	&nbsp;	
-	</tr>
 	<tr>
-	<td style="text-align:right;line-height:12px;">
-		<font style="font-family: Arial;font-size:9px;color:#EEEEEE;">logged in as <?=$User_Full_Name;?></font>
-		&nbsp;
-		<a style="text-decoration:none;font-family: Arial;font-size:9px;color:#FFFFFF;" target="_top" href="logout.php"><b>LOGOUT</b></a>
-		&nbsp;	
-	</td>
-  </tr>
+	<td width=24><img border=0 src="images/menu_help.png"></a></td>
+	<td><a target="rimmain" class=menulink href="http://www.ctrl-dock.org/help" target=_blank>Help</a></td>
+	</tr>
+	
+	<tr>
+	<td width=24><img border=0 src="images/menu_password.png"></a></td>
+	<td><a target="rimmain" class=menulink href="password_1.php" target=_blank>Change Password</a></td>
+	</tr>
+	
+	
+	<tr><td height=100%><b>&nbsp;</td>
+	
 </table>
 </html>

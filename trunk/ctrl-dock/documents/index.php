@@ -513,7 +513,7 @@ function draw_header()
 </head>
 <body>
 <center>
-<table cellspacing=0 cellpadding=0 width="1024" height="100%" border=1 style="border-collapse: collapse" bordercolor="#666666">
+<table cellspacing=0 cellpadding=0 width="100%" height="100%" border=1 style="border-collapse: collapse" bordercolor="#666666">
 <?
 }
 
