@@ -5,10 +5,8 @@ Created Date: 18/05/2012
 Function: Display the Edit page and handle the Update Query
 *************************************************************************************************/
 include("config.php"); 
-if (!check_feature(18)){
-	feature_error();
-	exit;
-}
+if (!check_feature(31)){feature_error();exit;}
+
 
 if($_REQUEST['update']==1){
 	$id = $_REQUEST["id"];

@@ -199,34 +199,5 @@ while ($row = mysql_fetch_row($result)){
 		$sub_result = mysql_query($sub_sql);
 }
 
-
-
-// Update Documentation Area Credentials
-// Create necessary .htaccess file to protect documents area
-// Check for Feature ID 33 & 42
-$file="../documents/.htaccess";
-$htaccess = fopen($file, 'w+');
-fwrite($htaccess, "AuthType Basic\n");
-fwrite($htaccess, "AuthName PROTECTED\n");
-fwrite($htaccess, "AuthMySQLEnable on\n");
-fwrite($htaccess, "AuthMySQLHost $DATABASE_SERVER\n");
-fwrite($htaccess, "AuthMySQLUser $DATABASE_USERNAME\n");
-fwrite($htaccess, "AuthMySQLPassword $DATABASE_PASSWORD\n");
-fwrite($htaccess, "AuthMySQLDB $DATABASE_NAME\n");
-fwrite($htaccess, "AuthMySQLUserTable user_master\n");
-fwrite($htaccess, "AuthMySQLNameField username\n");
-fwrite($htaccess, "AuthMySQLPasswordField  password\n");
-fwrite($htaccess, "AuthMySQLPwEncryption none\n");
-
-
-$sql="select distinct c.username,c.password,c.first_name,c.last_name,c.official_email from rim_group_feature a,rim_user_group b,user_master c ";
-$sql.=" where a.group_id=b.group_id and b.username=c.username and (a.feature_id='33' or a.feature_id='42' or a.feature_id='46') and c.account_status='Active'";
-$result = mysql_query($sql);
-
-while ($row = mysql_fetch_row($result)){
-	fwrite($htaccess, "require user $row[0]\n");
-}
-fclose($htaccess);
-
 ?>
 

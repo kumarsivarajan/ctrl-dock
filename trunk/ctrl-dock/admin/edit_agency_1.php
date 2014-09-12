@@ -1,7 +1,7 @@
 <?php 
 include("config.php"); 
 if (!check_feature(40)){feature_error();exit;}
-$SELECTED="EDIT AGENCY";
+$SELECTED="EDIT VENDOR / CUSTOMER";
 include("header.php");
 
 $agency_index=$_REQUEST["agency_index"];

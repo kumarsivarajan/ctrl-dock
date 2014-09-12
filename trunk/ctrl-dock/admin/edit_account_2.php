@@ -43,6 +43,16 @@ $official_email=trim($_REQUEST["official_email"]);
 
 $account_status=$_REQUEST["account_status"];
 
+// check if any assets are assigned to the user. If yes, then all assets should be un-assigned before making this user obsolete
+$sub_sql	="select assetid from asset where employee='$account'";
+$sub_result	=mysql_query($sub_sql);
+$count		=mysql_num_rows($sub_result);
+if ($count>0){
+?>
+	<tr><td align=center><font face="Arial" size="2" color="#003399"><b><a href=javascript:history.back();>The user has assets which are assigned in his / her name. <br><br>Please re-assign / un-assign the same before making this user obsolete </font></b></a></td></tr></table>
+<?
+}else{
+
 // Check for validity of the account expiry date
 $account_expiry=$_REQUEST["account_expiry"];
 if (strlen($account_expiry)> 0){
@@ -75,4 +85,5 @@ if ($error==0) {
 		
   <?php
   }
+ }
 ?>

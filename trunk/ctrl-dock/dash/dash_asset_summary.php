@@ -46,13 +46,13 @@ if ($oa_compliance==0){$status="Not Compliant";$status_color="#CC0000";}
 
 // To display asset summary
 ?>
-<table border=0 width=100% cellspacing=1 cellpadding=2 >
+<table border=0 width=97% cellspacing=1 cellpadding=2 >
 <tr>
 	<td class='reportdata' width=100%><b>ASSETS</td>
 </tr>
 </table>
 
-<table class="reporttable" width=100% cellspacing=0 cellpadding=5 >
+<table class="reporttable" width=100% cellspacing=0 cellpadding=2>
 <tr>
 	<td class="reportheader" width=140 style='background-color:#999999'>Asset Category</td>
 	<td class="reportheader" style='background-color:#999999'>Active</td>
@@ -85,13 +85,13 @@ for ($j=0;$j<count($categories);$j++){
 
 			echo "<tr bgcolor=#F0F0F0>";
 			echo "<td class='reportdata'><font size=2><b>$asset</td>";
-			echo "<td class='reportdata' style='text-align: center;'><font size=2>$active</td>";
-			echo "<td class='reportdata' style='text-align: center;'><font size=2>$inactive</td>";
-			echo "<td class='reportdata' style='text-align: center;'><font size=2>$lost</td>";
-			echo "<td class='reportdata' style='text-align: center;'><font size=2>$damaged</td>";
-			echo "<td class='reportdata' style='text-align: center;'><font size=2>$obsolete</td>";
-			echo "<td class='reportdata' style='text-align: center;'><font size=2>$others</td>";
-			echo "<td class='reportdata' style='text-align: center;background-color:#CCCCFF'><b><a href=ezasset/listasset.php?assetid=%&assetcategoryid=$type_id&statusid=%&employee=%&hostname=% style='text-decoration:none;color:#333333;'><font size=2>$total</a></b></td>";		
+			echo "<td class='reportdata' style='text-align: center;'>$active</td>";
+			echo "<td class='reportdata' style='text-align: center;'>$inactive</td>";
+			echo "<td class='reportdata' style='text-align: center;'>$lost</td>";
+			echo "<td class='reportdata' style='text-align: center;'>$damaged</td>";
+			echo "<td class='reportdata' style='text-align: center;'>$obsolete</td>";
+			echo "<td class='reportdata' style='text-align: center;'>$others</td>";
+			echo "<td class='reportdata' style='text-align: center;background-color:#CCCCFF'><b><a href=ezasset/listasset.php?assetid=%&assetcategoryid=$type_id&statusid=%&employee=%&hostname=% style='text-decoration:none;color:#333333;'>$total</a></b></td>";		
 			echo "</tr>";
 		}
 	}

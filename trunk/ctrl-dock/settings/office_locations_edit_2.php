@@ -1,6 +1,6 @@
 <?php 
 include("config.php");
-if (!check_feature(14)){feature_error();exit;}
+if (!check_feature(10)){feature_error();exit;}
 
 $office_index=$_REQUEST["office_index"];
 

@@ -28,7 +28,7 @@ if($record_count==0){
 ?>
 	<table width=100% cellspacing=0 cellpadding=5 class=reporttable>
 	<tr>
-		<td><font face="Arial" color="#C0C0C0" size="1"><i><b>NONE</font></b></td>
+		<td><font face="Arial" color="#C0C0C0" size="1">NONE</font></td>
 	</tr>
 	</table>
 <?

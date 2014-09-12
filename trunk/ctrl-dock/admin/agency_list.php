@@ -15,7 +15,7 @@ $type=$_REQUEST["type"];
 <tr>
 	<td colspan=6 align=right>
 		<a style="text-decoration: none" href="add_agency_1.php">
-		<font color="#99CC33" face="Arial" size="2"><b>Add Agency</font></a>
+		<font color="#99CC33" face="Arial" size="2"><b>Add Vendor / Customer</font></a>
 	</td>
 </tr>
 <tr>

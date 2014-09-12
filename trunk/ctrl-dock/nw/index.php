@@ -1,61 +1,115 @@
 <?include("config.php"); ?>
 <?
-$SELECTED="NETWORK HOSTS";
+$SELECTED="HOST MONITORING";
 include("header.php");
-?>
 
-<table class="reporttable" width=100% cellspacing=0 cellpadding=5>
+
+$base_url="http://";
+if ($HTTPS==1){$base_url="https://";}
+$base_url.=$_SERVER["SERVER_NAME"]."/".$INSTALL_HOME;
+$username=$_SESSION['username'];
+
+
+?>
+<center>
+<br>
+<table class="reporttable" width=100% cellspacing=1 cellpadding=6>
 <tr>
-	<td colspan=10 align=right>
-		<a style="text-decoration: none" href="add_host.php">
-		<font color="#99CC33" face="Arial" size="2"><b>Add Host</font></a>
+	<td class="reportheader">Hostname</td>
+	<td class="reportheader">Description</td>
+	<td class="reportheader">Platform</td>
+	<td class="reportheader" width=100>Network</td>
+	<td class="reportheader" width=100>Services</td>	
+	<?php if($SNMP == 1){ ?>	
+	<td class="reportheader" width=100>CPU</td>
+	<td class="reportheader" width=100>Memory</td>
+	<td class="reportheader" colspan=2 width=100>Disk</td>
+	<?php } ?>
+</tr>
+<?
+$url=$base_url."/api/hosts_list.php?key=$API_KEY";
+$host_list = load_xml($url);
+
+if(count($host_list)>0){
+	for($i=0;$i<count($host_list);$i++){		
+			$hostname=$host_list->host[$i]->hostname;
+			
+			if(strlen($hostname)>0){
+			$platform=$host_list->host[$i]->platform;
+			$description=$host_list->host[$i]->description;
+			
+			echo "<tr bgcolor=#EEEEEE onClick=\"document.location='../nw/show_host_details.php?hostname=$hostname&desc=$description&txttime=6'\">";
+			echo "<td class='reportdata'>".$hostname."</td>";
+			echo "<td class='reportdata'>".$description."</td>";
+			echo "<td class='reportdata' style='text-align: center;'>".$platform."</td>";
+			
+			$network=get_nw_status($hostname);
+
+			if ($network==1){$bgcolor="#65C60D";$text="UP";}
+			if ($network==0){$bgcolor="#FF0000";$text="DOWN";}
+			if ($network==11){$bgcolor="#A9A9A9";$text="NA";}
+			echo "<td class='reportdata' style='text-align: center;background-color: $bgcolor;' width=80>".$text."</td>";
+			
+			
+			list($live,$count)=get_svc_status($hostname,$base_url,$API_KEY);
+			if ($live==$count){$bgcolor="#65C60D";}
+			if ($live<$count){$bgcolor="#FF0000";}
+			if($live == 0 && $count == 0){$bgcolor="#A9A9A9";}
+			echo "<td class='reportdata' style='text-align: center;background-color: $bgcolor;' width=80>".$live."/".$count."</td>";
+			
+			list($snmp,$network_snmp_cpu_status,$cpu,$network_snmp_mem_status,$mem,$network_snmp_dsk_status,$network_snmp_dsk_usage)=get_snmp_status($hostname);
+			
+
+			if($snmp == 1){
+				
+				if ($cpu>0 && $cpu<=100){
+						if ($network_snmp_cpu_status==1){$bgcolor="#65C60D";}
+						if ($network_snmp_cpu_status==0){$bgcolor="#FF0000";}
+						$cpu_text=$cpu."%";
+				}
+				if ($cpu==999)	{$bgcolor="#FFD800";$cpu_text="NR";}
+				if ($cpu==111)	{$bgcolor="#A9A9A9";$cpu_text="NA";}
+				
+				echo "<td class='reportdata' style='text-align: center;background-color: $bgcolor;' width=80>".$cpu_text."</td>";
+
+				
+				if ($mem>0 && $mem<=100){
+						if ($network_snmp_mem_status==1){$bgcolor="#65C60D";}
+						if ($network_snmp_mem_status==0){$bgcolor="#FF0000";}
+						$mem_text=$mem."%";
+				}
+				if ($mem==999)	{$bgcolor="#FFD800";$mem_text="NR";}
+				if ($mem==111)	{$bgcolor="#A9A9A9";$mem_text="NA";}
+				echo "<td class='reportdata' style='text-align: center;background-color: $bgcolor;' width=80>".$mem_text."</td>";
+					
+
+				
+				if ($network_snmp_dsk_status==1)  {$bgcolor="#65C60D";$dsk_text="OK";}
+				if ($network_snmp_dsk_status==0)  {$bgcolor="#FF0000";$dsk_text="CHECK";}
+				if ($network_snmp_dsk_status==-1) {$bgcolor="#A9A9A9"; $network_snmp_dsk_usage="NA";}
+				$network_snmp_dsk_usage=str_replace("</br>","\n",$network_snmp_dsk_usage);
+				echo "<td class='reportdata' style='text-align: center;background-color: $bgcolor;' width=80 title='$network_snmp_dsk_usage'>$dsk_text</td>";
+				
+			}
+			if($snmp == 0){
+				echo "<td class='reportdata' style='text-align: center;background-color: #A9A9A9;' width=80>NA</td>";
+				echo "<td class='reportdata' style='text-align: center;background-color: #A9A9A9;' width=80>NA</td>";
+				echo "<td class='reportdata' style='text-align: center;background-color: #A9A9A9;' width=80>NA</td>";
+			}
+			
+			echo "<td class='reportdata' style='text-align: center;background-color: #A9A9A9;' width=20>
+			<a href='../nw/show_host_details.php?hostname=$hostname&desc=$description&txttime=6'><img border=0 src='../images/history.gif'></a></td>";
+			echo "</tr>";
+		}
+	}
+}
+?>
 	</td>
 </tr>
-
 <tr>
-	<td class="reportheader">Description</td>
-	<td class="reportheader">Hostname / IP Address</td>
-	<td class="reportheader">Platform</td>
-	<td class="reportheader">Status</td>
-	<td class="reportheader" width=60>Ping</td>
-	<td class="reportheader" width=60>Services</td>
-	<td class="reportheader" width=60>SNMP</td>
-	<td class="reportheader" width=60>Email</td>
-	<td class="reportheader" width=60>Edit</td>
-	<td class="reportheader" width=60>Delete</td>
+	<td class='reportdata' colspan=9>
+		NA : Not Available / Applicable&nbsp;&nbsp;NR : Not Reporting
+	</td>
 </tr>
-<?php
-$sql = "select host_id,hostname,platform,status,description from hosts_master order by description,hostname";
-$result = mysql_query($sql);
-$row_color="#FFFFFF";
-while ($row = mysql_fetch_row($result)){
-	if (($i%2)==1){$row_color="#EDEDE4";}else{$row_color="#FFFFFF";}
-	$status="Active";
-	if($row[3]==0){$status="Disabled";}
-	$description=$row[4];
-	if(strlen($description)==0){
-		$description=$row[1];
-	}
-	?>
-	<tr bgcolor=<?echo $row_color; ?>>
-		
-		<td class='reportdata'><? echo $description; ?></td>
-		<td class='reportdata'><? echo $row[1]; ?></td>
-		<td class='reportdata'><? echo $row[2]; ?></td>
-		<td class='reportdata' style='text-align: center;'><? echo $status; ?></td>
-		<td class='reportdata' style='text-align: center;'><a href="edit_host_nw_1.php?host_id=<? echo $row[0]; ?>&hostname=<?echo $row[1];?>"><img border=0 src="images/network.gif"></a></td>
-		<td class='reportdata' style='text-align: center;'><a href="host_svc.php?host_id=<? echo $row[0]; ?>&hostname=<?echo $row[1];?>"><img border=0 src="images/services.gif"></a></td>
-		<td class='reportdata' style='text-align: center;'><a href="edit_host_nw_snmp_1.php?host_id=<? echo $row[0]; ?>&hostname=<?echo $row[1];?>"><img border=0 src="images/snmp.gif"></a></td>
-		<td class='reportdata' style='text-align: center;'><a href="mail_uptime_notification.php?host_id=<? echo $row[0]; ?>&hostname=<?echo $row[1];?>"><img border=0 src="images/email.gif"></a></td>
-		<td class='reportdata' style='text-align: center;'><a href="edit_host_1.php?host_id=<? echo $row[0]; ?>"><img border=0 src="images/edit.gif"></a></td>
-		<td class='reportdata' width=40 style='text-align: center;'><a href='host_delete_cf.php?host_id=<?echo $row[0];?>&hostname=<?echo $row[1];?>'><img src=images/delete.gif border=0></img></a></td>
-	</tr>
-	<?	
-	$i++;
- }
-  
-  
-?>
 </table>
-</body>
-</html>
+<meta http-equiv="refresh" content="300">

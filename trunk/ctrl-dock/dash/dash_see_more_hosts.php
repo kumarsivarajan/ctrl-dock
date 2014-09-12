@@ -15,10 +15,12 @@ $username=$_SESSION['username'];
 <center>
 <table border=0 width=100% cellpadding="2" cellspacing="0" bgcolor=#E5E5E5 >
   <tr>
-    <td width="90%" style="border-style: none; border-width: medium" align=left colspan=1>
-	<font face=Arial size=2 color=#CC0000><b>HOST MONITORING</b></font>
+    <td width="75%" style="border-style: none; border-width: medium" align=left colspan=1>
+		<font face=Arial size=2 color=#CC0000><b>HOST MONITORING</b></font>
 	</td>
-	<td width=10% class='reportdata' style='text-align:right;'>
+	<td width=25% class='reportdata' style='text-align:right;'>
+		<a href="../nw/index.php">CONFIGURE</a>
+		&nbsp;&nbsp;
 		<a href=../dash.php>BACK</a>
 	</td>
 	</tr>
@@ -53,17 +55,20 @@ if(count($host_list)>0){
 			$nw_status = load_xml($url);
 			$network=$nw_status->status[0]->nw_status;
 			if (strlen($network)==0){$network=11;}
+
 			
 			if($SNMP == 1){
-			$url=$base_url."/api/hosts_nw_snmp_status.php?key=$API_KEY&hostname=".$hostname;
-			$nw_snmp_status = load_xml($url);
-			$snmp_data_count = $nw_snmp_status->count[0];
-			$network_snmp_cpu_status=$nw_snmp_status->status[0]->nw_snmp_cpu_status;
-			$network_snmp_mem_status=$nw_snmp_status->status[0]->nw_snmp_mem_status;
-			$network_snmp_dsk_status=$nw_snmp_status->status[0]->nw_snmp_dsk_status;
-			$network_snmp_cpu_usage = $nw_snmp_status->status[0]->cpu_user + $nw_snmp_status->status[0]->cpu_system;
-			$network_snmp_mem_usage = $nw_snmp_status->status[0]->mem_utilization;
-			$network_snmp_dsk_usage = $nw_snmp_status->status[0]->disk_utilization;
+				$sql = "SELECT a.host_id,b.nw_snmp_cpu_status,b.nw_snmp_mem_status,b.cpu_user,b.cpu_system,b.cpu_idle,b.timestamp,b.mem_utilization,b.nw_snmp_dsk_status,b.disk_utilization FROM hosts_master a,hosts_nw_snmp_log b WHERE a.host_id=b.host_id AND a.hostname='$hostname' ORDER BY b.record_id DESC LIMIT 1";
+				$result = mysql_query($sql);
+				$snmp_data_count = mysql_num_rows($result);
+				while ($row = mysql_fetch_object($result)){					
+					$network_snmp_cpu_status=$row->nw_snmp_cpu_status;
+					$network_snmp_mem_status=$row->nw_snmp_mem_status;
+					$network_snmp_dsk_status=$row->nw_snmp_dsk_status;
+					$network_snmp_cpu_usage = $row->cpu_user + $row->cpu_system;
+					$network_snmp_mem_usage = $row->mem_utilization;
+					$network_snmp_dsk_usage = $row->disk_utilization;
+				}
 			}
 			
 			$url=$base_url."/api/hosts_svc_status.php?key=$API_KEY&hostname=".$hostname;
@@ -101,7 +106,7 @@ if(count($host_list)>0){
 			echo "<td class='reportdata' style='text-align: center;background-color: $bgcolor;' width=80>".$live."/".$count."</td>";
 			
 			if($SNMP == 1){
-				if ($snmp_data_count == ""){
+				if ($snmp_data_count > 0){
 					if ($network_snmp_cpu_status==1){$bgcolor="#65C60D";}
 					if ($network_snmp_cpu_status==0){$bgcolor="#FF0000";}
 					if ($network_snmp_cpu_usage >= 0){

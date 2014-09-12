@@ -16,7 +16,6 @@ $sql="delete from hosts_nw_snmp_log where timestamp<$then";
 $result = mysql_query($sql);
 
 
-
 $sql="SELECT a.host_id,a.hostname,b.retry_count,b.timeout,b.community_string,a.platform,b.alarm_threshold,b.port,b.version,b.disk_exclude,b.v3_user,b.v3_pwd,a.alert_status FROM hosts_master a,hosts_nw_snmp b WHERE a.host_id=b.host_id AND a.status='1' AND b.enabled='1' ORDER BY a.hostname";
 $result = mysql_query($sql);
 
@@ -33,8 +32,6 @@ $new_mem_status = -1;
 $host_id="";
 $atleast_one = 0;
 
-$pattern_exclude = 'a,b';
-
 while ($row = mysql_fetch_row($result)){
 	$host_id		=	$row[0];
 	$hostname		=	$row[1].":".$row[7];
@@ -48,7 +45,11 @@ while ($row = mysql_fetch_row($result)){
 	$disk_exclude		=	$row[9];
 	$v3_user			=	$row[10];
 	$v3_pwd				=	$row[11];
-	$pattern_exclude = explode(',',$disk_exclude);
+	if ($disk_exclude or $disk_exclude == ''){
+		$pattern_exclude = null;
+	}else{
+		$pattern_exclude = explode(',',$disk_exclude);
+	}
 	$alert_status		= $row[12];
 	
 	$sub_sql	="SELECT nw_snmp_cpu_status,nw_snmp_mem_status,nw_snmp_dsk_status FROM hosts_nw_snmp_log WHERE host_id='$host_id' ORDER BY record_id DESC LIMIT $limit";
@@ -75,7 +76,7 @@ while ($row = mysql_fetch_row($result)){
 						$procInfo = @snmprealwalk($hostname, $community_string, $cpu_info, $timeout, $count);
 					}
 					
-					if ( count($procInfo) == 1 ){
+					if ( count($procInfo) < 1 ){
 						echo("Unable to query Windows server $hostname for CPU Utilization");
 					}else{
 						$counter = 0;
@@ -224,7 +225,7 @@ while ($row = mysql_fetch_row($result)){
 							}else{
 								$diskLabel = @snmpget($hostname, $community_string, $disk_info.".3.$index", $timeout, $count);
 							}
-							if (in_array($diskLabel, $pattern_exclude)){
+							if ($pattern_exclude and in_array($diskLabel, $pattern_exclude)){
 								//print_r($val); echo " is being ignored\n";
 								continue;
 							}
@@ -334,7 +335,7 @@ while ($row = mysql_fetch_row($result)){
 					if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
 						$hrStorageDescr = @snmp3_real_walk($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", "hrStorageDescr", $timeout, $count);
 					}else{
-						$hrStorageDescr = @snmprealwalk($hostname, $community_string, $cpu_info, $timeout, $count);
+						$hrStorageDescr = @snmprealwalk($hostname, $community_string, "hrStorageDescr", $timeout, $count);
 					}
 					if ( count($hrStorageDescr) == 1 )
 					{
@@ -348,7 +349,7 @@ while ($row = mysql_fetch_row($result)){
 					foreach ( $hrStorageDescr as $oid => $val )
 					{
 						$mem_db_data = $mem_db_data . $oid . "," . $val . ",";
-						if (in_array($val, $pattern_exclude)){
+						if ($pattern_exclude and in_array($val, $pattern_exclude)){
 							//print_r($val); echo " is being ignored\n";
 							continue;
 						}
@@ -487,7 +488,7 @@ while ($row = mysql_fetch_row($result)){
 	}
 	
 	// Reset Variables
-	$host_id=0;$new_cpu_status=0;$new_mem_status=0;$new_dsk_status=0;$cpu_user=0;$cpu_system=0;$cpu_idle=0;$mem_pct_used=0;$cpu_db_data='';$mem_db_data='';$dsk_utilization=0;$timestamp=0;
+	$host_id=0;$new_cpu_status=-1;$new_mem_status=-1;$new_dsk_status=-1;$cpu_user=0;$cpu_system=0;$cpu_idle=0;$mem_pct_used=0;$cpu_db_data='';$mem_db_data='';$dsk_utilization=0;$timestamp=0;
 }
 	
 ?>

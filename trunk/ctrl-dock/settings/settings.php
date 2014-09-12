@@ -26,14 +26,13 @@ if (!check_feature(41)){feature_error();exit;}
 		<?}?>
 		<?if (check_feature(27)){?>
 		<a target="rimmain" style="text-decoration: none" href="../settings/escalations_1.php">	
-		<b>Escalation</b></a>
+		<b>Escalations</b></a>
 		<font face=Arial size=1>&nbsp;&nbsp;</font>
 		<?}?>
 		<?if (check_feature(35)){?>
 		<a target="rimmain" style="text-decoration: none" href="../ezasset/add.php?item=Status">	
 		<b>Asset Status</b></a>
-		<font face=Arial size=1>&nbsp;&nbsp;</font>
-			
+		<font face=Arial size=1>&nbsp;&nbsp;</font>	
 		<a target="rimmain" style="text-decoration: none" href="../ezasset/add.php?item=Category">	
 		<b>Asset Categories</b></a>
 		<?}?>
@@ -44,11 +43,6 @@ if (!check_feature(41)){feature_error();exit;}
 		<b>CONFIGURATION</b>&nbsp;&nbsp;&nbsp;&nbsp;
 	</td>
 		<td class=reportdata style='text-align:right;'>
-			<?if (check_feature(29)){?>
-			<a target="rimmain" style="text-decoration: none" href="../nw/index.php">	
-			<b>Network / Hosts</b></a>
-			<font face=Arial size=1>&nbsp;&nbsp;</font>
-			<?}?>
 			<?if (check_feature(24)){?>
 			<a target="rimmain" style="text-decoration: none" href="../settings/tasks.php">	
 			<b>Scheduled Tasks</b></a>
@@ -59,13 +53,15 @@ if (!check_feature(41)){feature_error();exit;}
 			<b>Tickets</b></a>
 			<font face=Arial size=1>&nbsp;&nbsp;</font>
 			<?}?>
-			<?if (check_feature(29)){?>
+			<?if (check_feature(43)){?>
 			<a target="rimmain" style="text-decoration: none" href="../settings/profile.php">	
 			<b>Profiles</b></a>
 			<font face=Arial size=1>&nbsp;&nbsp;</font>
 			<?}?>
+			<?if (check_feature(41)){?>
 			<a target="rimmain" style="text-decoration: none" href="../settings/system_config_1.php">	
 			<b>General</b></a>
+			<?}?>
 		</td>
 	</tr>
 </table>
