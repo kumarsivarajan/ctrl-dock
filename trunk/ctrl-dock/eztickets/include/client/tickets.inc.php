@@ -75,7 +75,7 @@ $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
 <div style="margin: 10px 0 60px 0;">
  <table width="100%" border="0" cellspacing=0 cellpadding=0 align="center">
     <tr>
-        <td width="60%" class="msg"><?=$showing?>&nbsp;&nbsp;<?=$results_type?></td>
+        <td width="100%" class="msg"><?=$showing?>&nbsp;&nbsp;<?=$results_type?></td>
         <td nowrap >
             <a href="view.php?status=open"><img src="images/view_open_btn.gif" alt="View Open" border=0></a>            
             <a href="view.php?status=closed"><img src="images/view_closed_btn.gif" alt="View Closed" border=0></a>            

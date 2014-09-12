@@ -1,0 +1,36 @@
+alter table escalations drop `esc_username`;
+DROP TABLE IF EXISTS `escalations_log`;
+
+CREATE TABLE `escalations_log` (
+  `ticket_id` int(10) default NULL,
+  `level` int(10) default NULL,
+  `timestamp` int(10) default NULL
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+ALTER TABLE `escalations`
+CHANGE `emergency` `emergency` float(5,2) DEFAULT null,
+CHANGE `high` `high` float(5,2) DEFAULT null,
+CHANGE `medium` `medium` float(5,2) DEFAULT null,
+CHANGE `low` `low` float(5,2) DEFAULT null,
+CHANGE `exception` `exception` float(5,2) DEFAULT null;
+
+CREATE TABLE `escalation_email` (
+  `email` varchar(500) default NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE `rim_master_nw` (
+  `agency_index` int(10) default NULL,
+  `hostname` varchar(255) default NULL,
+  `description` varchar(255) default NULL,
+  `platform` varchar(255) default NULL,
+  `network` int(10) default NULL,
+  `live` int(10) default NULL,
+  `count` int(10) default NULL,
+  `snmp` int(1) default NULL,
+  `network_snmp_cpu_status` int(1) default NULL,
+  `cpu` varchar(10) default NULL,
+  `network_snmp_mem_status` int(1) default NULL,
+  `mem` varchar(10) default NULL,
+  `network_snmp_dsk_status` int(1) default NULL,
+  `dsk` varchar(500) default NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
