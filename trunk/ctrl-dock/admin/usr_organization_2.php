@@ -28,6 +28,6 @@ if ($row[0]<=0){
 }
 
 ?>
-<center><i><b><font size=2 color="#003366" face="Arial">The account information was successfully updated.</font></b></i>
+<center><b><font size=2 color="#003366" face="Arial">The account information was successfully updated.</font></b>
 
 

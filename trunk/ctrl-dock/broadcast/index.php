@@ -6,7 +6,7 @@
 <table class="reporttable" width=100%>
 <tr>
 	<td class="reportheader" width=20>ID</td>
-	<td class="reportheader" width=100>Date / Time</td>
+	<td class="reportheader" width=120>Date / Time</td>
 	<td class="reportheader">To</td>
 	<td class="reportheader">Sent By</td>
 	<td class="reportheader" width=400>Subject</td>
@@ -30,7 +30,7 @@ while ($row = mysql_fetch_row($result)){
 ?>
 	<tr bgcolor=<?echo $row_color; ?>>
 	<td class='reportdata' style='text-align: center;'><? echo $row[0]; ?></td>
-	<td class='reportdata'><? echo date("d M Y H i",$row[1]); ?></td>
+	<td class='reportdata'><? echo date("d M Y H:i",$row[1]); ?></td>
 	<td class='reportdata'><? echo $row[2]; ?></td>
 	<td class='reportdata'><? echo $row[4]; ?></td>
 	<td class='reportdata'><? echo $row[3]; ?></td>
