@@ -11,6 +11,8 @@
 		<font color="#000000" face="Arial" size="1"> | 
 		<a class=reportdata style="text-decoration: none" href="general_1.php"><b>New Message</b></a>			
 		<font color="#000000" face="Arial" size="1"> | 
+		<a class=reportdata style="text-decoration: none" href="asset_1.php"><b>Asset Verification Note</b></a>			
+		<font color="#000000" face="Arial" size="1"> | 
 		<a class=reportdata style="text-decoration: none" href="index.php"><b>History</b></a>	
 	</td>
    </tr>

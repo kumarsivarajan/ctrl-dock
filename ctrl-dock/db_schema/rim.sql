@@ -1674,3 +1674,9 @@ CREATE TABLE `ticket_rating` (
   `closed_rating` int(1) DEFAULT 0,
   PRIMARY KEY  (`ticket_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE `asset_template` (
+`email` varchar(1000)
+);
+
+INSERT INTO `asset_template` (`email`) VALUES ("Dear %%user,<div><br></div><div>As per our records, the following assets are assigned to you. Request you to kindly verify / confirm the same.</div><div><br></div><div>%%asset</div><div><br></div><div>Kindly get in touch with us in case there are any discrepancies.&nbsp;</div><div>As always, we thank you for your co-operation and value your feedback.</div><div><br></div><div>Thanks &amp; Regards</div><div>IT Support</div><br><br>");
