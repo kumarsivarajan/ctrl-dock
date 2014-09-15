@@ -27,7 +27,7 @@ DBNAME=$(echo ${DBNAME%\"})
 DBNAME=$(echo ${DBNAME#?})
 
 mysql $DBNAME < temp/db_schema/$2.upg
-mysql "$DBNAME"_oa < temp/db_schema/"$2"_oa.upg
+#mysql "$DBNAME"_oa < temp/db_schema/"$2"_oa.upg
 
 mv $1 $1.orig
 mv temp $1
