@@ -199,5 +199,26 @@ while ($row = mysql_fetch_row($result)){
 		$sub_result = mysql_query($sub_sql);
 }
 
-?>
 
+// Update Documentation Area Credentials
+// Create necessary .htaccess file to protect documents area
+// Check for Feature ID 33 & 42
+$file="../documents/.htaccess";
+$htaccess = fopen($file, 'w+');
+fwrite($htaccess, "AuthType Basic\n");
+fwrite($htaccess, "AuthName PROTECTED\n");
+fwrite($htaccess, "AuthMySQLEnable on\n");
+fwrite($htaccess, "AuthMySQLHost $DATABASE_SERVER\n");
+fwrite($htaccess, "AuthMySQLUser $DATABASE_USERNAME\n");
+fwrite($htaccess, "AuthMySQLPassword $DATABASE_PASSWORD\n");
+fwrite($htaccess, "AuthMySQLDB $DATABASE_NAME\n");
+fwrite($htaccess, "AuthMySQLUserTable \"user_master, rim_group_feature, rim_user_group\"\n");
+fwrite($htaccess, "AuthMySQLNameField user_master.username\n");
+fwrite($htaccess, "AuthMySQLPasswordField  user_master.password\n");
+fwrite($htaccess, "AuthMySQLPwEncryption none\n");
+fwrite($htaccess, "AuthMySQLUserCondition \"user_master.account_status='Active' and rim_group_feature.group_id=rim_user_group.group_id and rim_user_group.username=user_master.username and (rim_group_feature.feature_id='33' or rim_group_feature.feature_id='42' or rim_group_feature.feature_id='46')\"\n");
+fwrite($htaccess, "require valid-user");
+fclose($htaccess);
+
+
+?>
