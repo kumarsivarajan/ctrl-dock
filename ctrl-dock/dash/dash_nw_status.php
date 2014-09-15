@@ -44,7 +44,7 @@ if(count($host_list)>0){
 
 			if ($network==1){$network_count++;$network_count_up++;}
 			if ($network==0){$network_count++;}
-			if ($network==11){$network_count++;}
+			//if ($network==11){$network_count++;}
 			
 			
 			list($live,$count)=get_svc_status($hostname,$base_url,$API_KEY);

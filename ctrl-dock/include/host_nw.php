@@ -1,13 +1,18 @@
 <?
 function get_nw_status($hostname){
-		$sql="SELECT b.nw_status FROM hosts_master a,hosts_nw_log b WHERE a.host_id=b.host_id AND a.hostname='$hostname' ORDER BY b.record_id DESC LIMIT 1";
+		$sql="select a.host_id from hosts_nw a,hosts_master b where a.host_id=b.host_id and enabled='1' and b.hostname='$hostname'";
 		$result = mysql_query($sql);
-		$row = mysql_fetch_row($result);
-		$network=$row[0];
-			
-		if (strlen($network)==0){$network=11;} // 1=OK,0=DOWN,11=NA
+		$enabled = mysql_num_rows($result);
 		
-		return($network);
+		if ($enabled==1){
+			$sql="SELECT b.nw_status FROM hosts_master a,hosts_nw_log b WHERE a.host_id=b.host_id AND a.hostname='$hostname' ORDER BY b.record_id DESC LIMIT 1";
+			$result = mysql_query($sql);
+			$row = mysql_fetch_row($result);
+			$network=$row[0];
+		}else {
+			$network=11;
+		}
+		return($network);// 1=OK,0=DOWN,11=NA
 }
 
 
@@ -31,8 +36,12 @@ function get_svc_status($hostname,$base_url,$API_KEY){
 function get_snmp_status($hostname){
 
 		global $SNMP;
+		
+		$sql="select a.host_id from hosts_nw_snmp a,hosts_master b where a.host_id=b.host_id and enabled='1' and b.hostname='$hostname'";
+		$result = mysql_query($sql);
+		$enabled = mysql_num_rows($result);
 
-		if($SNMP == 1){
+		if($SNMP == 1 && $enabled == 1){
 		$sql = "SELECT a.host_id,b.nw_snmp_cpu_status,b.nw_snmp_mem_status,b.cpu_user,b.cpu_system,b.cpu_idle,b.timestamp,b.mem_utilization,b.nw_snmp_dsk_status,b.disk_utilization FROM hosts_master a,hosts_nw_snmp_log b WHERE a.host_id=b.host_id AND a.hostname='$hostname' ORDER BY b.record_id DESC LIMIT 1";
 		$result = mysql_query($sql);
 		$snmp_data_count = mysql_num_rows($result);
