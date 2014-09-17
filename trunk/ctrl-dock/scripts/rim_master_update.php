@@ -172,7 +172,7 @@ if($ezRIM==1){
 							
 				$network=get_nw_status($hostname);
 				
-				list($live,$count)=get_svc_status($hostname,$base_url,$API_KEY);
+				list($live,$count)=get_svc_status($hostname);
 				list($snmp,$network_snmp_cpu_status,$cpu,$network_snmp_mem_status,$mem,$network_snmp_dsk_status,$dsk)=get_snmp_status($hostname);
 				
 				// Update RIM Master

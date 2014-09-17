@@ -85,7 +85,6 @@ $api_key		= strip_tags($_REQUEST['key']);
 $hostname		= strip_tags($_REQUEST['hostname']);
 $start_date		= strip_tags($_REQUEST['start_date']);
 $end_date		= strip_tags($_REQUEST['end_date']);
-$end_date		+= 86399;
 
 // validate api key
 if($api_key!=$API_KEY || $api_key==''){
