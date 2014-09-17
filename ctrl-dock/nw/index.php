@@ -51,7 +51,7 @@ if(count($host_list)>0){
 			echo "<td class='reportdata' style='text-align: center;background-color: $bgcolor;' width=80>".$text."</td>";
 			
 			
-			list($live,$count)=get_svc_status($hostname,$base_url,$API_KEY);
+			list($live,$count)=get_svc_status($hostname);
 			if ($live==$count){$bgcolor="#65C60D";}
 			if ($live<$count){$bgcolor="#FF0000";}
 			if($live == 0 && $count == 0){$bgcolor="#A9A9A9";}

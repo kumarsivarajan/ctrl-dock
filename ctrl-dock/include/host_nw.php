@@ -16,21 +16,24 @@ function get_nw_status($hostname){
 }
 
 
-function get_svc_status($hostname,$base_url,$API_KEY){
+function get_svc_status($hostname){
+		
+		$sql = "SELECT a.host_id,b.port,b.description FROM hosts_master a,hosts_service b WHERE a.host_id=b.host_id AND b.enabled='1' AND a.hostname='$hostname' ORDER BY port";
+        $result = mysql_query($sql);
+        $count=0;
+        $live=0;
+        while($row = mysql_fetch_array($result)){
+                $sub_sql="SELECT svc_status,timestamp from hosts_service_log where port='$row[1]' and host_id='$row[0]' order by record_id DESC LIMIT 1";
+                $sub_result = mysql_query($sub_sql);
+                $sub_row = mysql_fetch_array($sub_result);
 
-		$url=$base_url."/api/hosts_svc_status.php?key=$API_KEY&hostname=".$hostname;
-		$services = load_xml($url);
-		$count=0;
-		$live=0;
-		for($j=0;$j<count($services);$j++){
-			$host_id=$services->status[$j]->host_id;
-			if($host_id>0){
-				$status=$services->status[$j]->svc_status;
-				if($status==1){$live++;}
-				$count++;
-			}
-		}
-		return array($live,$count);
+                if($row[0]>0){
+                        $status=$sub_row[0];
+                        if($status==1){$live++;}
+                        $count++;
+                }
+        }
+        return array($live,$count);
 }
 
 function get_snmp_status($hostname){
