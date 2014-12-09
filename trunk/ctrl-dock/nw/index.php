@@ -73,7 +73,7 @@ if(count($host_list)>0){
 				echo "<td class='reportdata' style='text-align: center;background-color: $bgcolor;' width=80>".$cpu_text."</td>";
 
 				
-				if ($mem>0 && $mem<=100){
+				if ($mem>=0 && $mem<=100){
 						if ($network_snmp_mem_status==1){$bgcolor="#65C60D";}
 						if ($network_snmp_mem_status==0){$bgcolor="#FF0000";}
 						$mem_text=$mem."%";
