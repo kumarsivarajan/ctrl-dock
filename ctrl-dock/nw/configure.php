@@ -10,8 +10,9 @@ if (!check_feature(29)){feature_error();exit;}
 <table class="reporttable" width=100% cellspacing=0 cellpadding=5>
 <tr>
 	<td colspan=10 align=right>
-		<a style="text-decoration: none" href="add_host.php">
-		<font color="#99CC33" face="Arial" size="2"><b>Add Host</font></a>
+		<a style="text-decoration: none" href="config_timeserver.php"><font color="#99CC33" face="Arial" size="2"><b>Configure Time Server</a></font>
+		&nbsp;&nbsp;
+		<a style="text-decoration: none" href="add_host.php"><font color="#99CC33" face="Arial" size="2"><b>Add Host</a></font>
 	</td>
 </tr>
 

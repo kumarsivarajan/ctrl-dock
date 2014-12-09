@@ -479,7 +479,195 @@ while ($row = mysql_fetch_row($result)){
 				
 				}		
 			}
-		}//end of elseif Linux
+		}elseif ($platform == "ESX"){//end of elseif Linux
+			$param_enabled = $th_row[3];
+			$param_threshold = $th_row[2];
+			if (1 == $param_enabled){
+				$atleast_one = 1;
+				$param_name = $th_row[1];
+				
+				if ( "CPU Utilization" == $param_name){
+					snmp_set_quick_print(1);
+					$cpu_info = ".1.3.6.1.4.1.6876";
+					$cpu_info = "hrProcessorLoad";
+					$procInfo = '';
+					if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
+						$procInfo = @snmp3_real_walk($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", $cpu_info, $timeout, $count);
+					}else{
+						$procInfo = @snmprealwalk($hostname, $community_string, $cpu_info, $timeout, $count);
+					}
+					$cpuUsed = $cores = 0;
+					foreach ($procInfo as $key=>$val){ //We get the load per core
+						$cores++;
+						$cpuUsed+=$val;
+					}
+					$cpu_user=0;
+					$cpu_system = round(($cpuUsed/($cores*100)),2);
+					if (($cpu_user + $cpu_system ) < $param_threshold){
+						$new_cpu_status = 1;						
+					}else{					
+						$new_cpu_status = 0;				
+										
+						// Check the last known state of the host
+						$sub_result = mysql_query($sub_sql);
+						$down_count=0;		
+						while($sub_row=mysql_fetch_row($sub_result)){
+							if($sub_row[0]==0){$down_count++;}
+							$last_status=$sub_row[0];
+						}
+						
+						// If the alarm threshold was breached, generate a ticket
+						if($down_count==$alarm_threshold && $last_status==1 && $alert_status==1){
+							$timestamp = mktime();
+							$timestamp_human=date("d-M-Y H:i:s",$timestamp);
+							echo $message  = "ALERT $hostname - CPU Utilization Threshold breached at $timestamp_human";
+							$subject=$message;
+							//ticket_post($smtp_email,$smtp_email,"28","$subject","$message",'1');
+						}
+					}
+				}else if ("Disk Utilization" == $param_name){
+					snmp_set_quick_print(1);
+					$hrStorageDescr = '';
+					if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
+						$hrStorageDescr = @snmp3_real_walk($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", "hrStorageDescr", $timeout, $count);
+					}else{
+						$hrStorageDescr = @snmprealwalk($hostname, $community_string, "hrStorageDescr", $timeout, $count);
+					}
+					if ( count($hrStorageDescr) < 1 )
+					{
+						echo("Unable to query server $hostname for Disk Utilization");
+					}
+					$mem_db_data = "";
+					$dsk_utilization = "";
+					$dsk_pct_used = 0;
+					$new_dsk_status = 0;
+					foreach ( $hrStorageDescr as $oid => $val )
+					{
+						$mem_db_data = $mem_db_data . $oid . "," . $val . ",";
+						if ($pattern_exclude and in_array($val, $pattern_exclude)){
+							//print_r($val); echo " is being ignored\n";
+							continue;
+						}
+						if ("/" == substr($val,0,1)){
+							$index = substr($oid, strrpos($oid, ".")+1);
+
+							$used = '';
+							$total = '';
+							if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
+								$used = @snmp3_get($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", "hrStorageUsed.$index", $timeout, $count);
+								$total = @snmp3_get($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", "hrStorageSize.$index", $timeout, $count);
+							}else{
+								$used = @snmpget($hostname, $community_string, "hrStorageUsed.$index", $timeout, $count);
+								$total = @snmpget($hostname, $community_string, "hrStorageSize.$index", $timeout, $count);
+							}
+
+							if ( ! ereg("^[0-9]+$", $used) ){
+								echo("Unable to determine used space due to failed snmp query");
+							}
+							if ( ! ereg("^[0-9]+$", $total) ){
+								echo("Unable to determine size due to failed snmp query");
+							}
+							$dsk_pct_used = 0;
+							if ($total > 0){
+								$dsk_pct_used = round(($used / $total)*100, 0);
+							}
+							echo $dsk_utilization = $dsk_utilization . $val. " => " . $dsk_pct_used . "%</br>";
+							if ($dsk_pct_used > $param_threshold){
+								$new_dsk_status++;
+							}
+						}					
+					}
+					
+					if ($new_dsk_status == 0){
+						$new_dsk_status = 1;
+					}else if ($new_dsk_status > 0){					
+						$new_dsk_status = 0;				
+										
+						// Check the last known state of the host
+						$sub_result = mysql_query($sub_sql);
+						$down_count=0;		
+						while($sub_row=mysql_fetch_row($sub_result)){
+							if($sub_row[2]==0){$down_count++;}
+							$last_status=$sub_row[2];
+						}
+						
+					
+						// If the alarm threshold was breached, generate a ticket
+						if($down_count==$alarm_threshold && $last_status==1 && $alert_status==1){
+							$timestamp = mktime();
+							$timestamp_human=date("d-M-Y H:i:s",$timestamp);
+							echo $message  = "ALERT $hostname - Disk Utilization Threshold breached at $timestamp_human";
+							$subject=$message;
+							ticket_post($smtp_email,$smtp_email,"28","$subject","$message",'1');
+						}
+					}
+				}else if ("Memory Utilization" == $param_name){ //end of else if dsk utilization
+					snmp_set_quick_print(1);
+					$snmp_result = '';
+					
+					$memInfo = "hrStorageDescr";
+					if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
+						$snmp_result = @snmp3_real_walk($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", $memInfo, $timeout, $count);
+					}else{
+						$snmp_result = @snmprealwalk($hostname, $community_string, $memInfo, $timeout, $count);
+					}
+					if ( count($snmp_result) < 1 )
+					{
+						echo("Unable to query server $hostname for Memory Utilization");
+					}
+					$mem_pct_used = 0;
+					foreach ( $snmp_result as $oid => $val ){
+						if ("/" == substr($val,0,1)){
+							//ignore
+						}else{
+							$index = substr($oid, strrpos($oid, ".")+1);
+							$used = '';
+							$total = '';
+							if (strtolower($snmp_version) == 'v3') { //SNMP V3 is used
+								$used = @snmp3_get($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", "hrStorageUsed.$index", $timeout, $count);
+								$total = @snmp3_get($hostname, $v3_user, "authNoPriv", "MD5", $v3_pwd, "DES", "", "hrStorageSize.$index", $timeout, $count);
+							}else{
+								$used = @snmpget($hostname, $community_string, "hrStorageUsed.$index", $timeout, $count);
+								$total = @snmpget($hostname, $community_string, "hrStorageSize.$index", $timeout, $count);
+							}
+							echo "Used: $used;;;;;Total: $total\n";
+							if ( ! ereg("^[0-9]+$", $used) ){
+								echo("Unable to determine used space due to failed snmp query");
+							}
+							if ( ! ereg("^[0-9]+$", $total) ){
+								echo("Unable to determine size due to failed snmp query");
+							}
+							$mem_pct_used = 0;
+							if ($total > 0){
+								$mem_pct_used = round(($used / $total)*100, 0);
+							}
+						}
+					}
+					if ($mem_pct_used < $param_threshold){
+						$new_mem_status = 1;
+					}else{					
+						$new_mem_status = 0;				
+										
+						// Check the last known state of the host
+						$sub_result = mysql_query($sub_sql);
+						$down_count=0;		
+						while($sub_row=mysql_fetch_row($sub_result)){
+							if($sub_row[1]==0){$down_count++;}
+							$last_status=$sub_row[1];
+						}
+
+						// If the alarm threshold was breached, generate a ticket
+						if($down_count==$alarm_threshold && $last_status==1 && $alert_status==1){	
+							$timestamp = mktime();
+							$timestamp_human=date("d-M-Y H:i:s",$timestamp);
+							$message  = "ALERT $hostname - Memory Utilization Threshold breached at $timestamp_human";
+							$subject=$message;
+							ticket_post($smtp_email,$smtp_email,"28","$subject","$message",'1');
+						}
+					}
+				}
+			}
+		}
 	}
 	if (1 == $atleast_one){
 		$timestamp = mktime();

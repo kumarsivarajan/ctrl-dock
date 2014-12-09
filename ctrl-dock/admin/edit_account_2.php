@@ -47,7 +47,7 @@ $account_status=$_REQUEST["account_status"];
 $sub_sql	="select assetid from asset where employee='$account'";
 $sub_result	=mysql_query($sub_sql);
 $count		=mysql_num_rows($sub_result);
-if ($count>0){
+if ($count>0 && $account_status=="Obsolete"){
 ?>
 	<tr><td align=center><font face="Arial" size="2" color="#003399"><b><a href=javascript:history.back();>The user has assets which are assigned in his / her name. <br><br>Please re-assign / un-assign the same before making this user obsolete </font></b></a></td></tr></table>
 <?
