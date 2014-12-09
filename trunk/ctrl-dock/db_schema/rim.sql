@@ -1681,3 +1681,10 @@ CREATE TABLE `asset_template` (
 
 INSERT INTO `asset_template` (`email`) VALUES ("Dear %%user,<div><br></div><div>As per our records, the following assets are assigned to you. Request you to kindly verify / confirm the same.</div><div><br></div><div>%%asset</div><div><br></div><div>Kindly get in touch with us in case there are any discrepancies.&nbsp;</div><div>As always, we thank you for your co-operation and value your feedback.</div><div><br></div><div>Thanks &amp; Regards</div><div>IT Support</div><br><br>");
 
+CREATE TABLE `hosts_timesync_config` (
+  `timeservers` varchar(255) DEFAULT 'pool.ntp.org',
+  `diffthreshold` int(10) DEFAULT '1500'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+insert into hosts_timesync_config values ('pool.ntp.org','1500');
+

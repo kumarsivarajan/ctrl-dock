@@ -62,7 +62,7 @@ if(count($host_list)>0){
 
 			if($snmp == 1){
 				
-				if ($cpu>0 && $cpu<=100){
+				if ($cpu>=0 && $cpu<=100){
 						if ($network_snmp_cpu_status==1){$bgcolor="#65C60D";}
 						if ($network_snmp_cpu_status==0){$bgcolor="#FF0000";}
 						$cpu_text=$cpu."%";
