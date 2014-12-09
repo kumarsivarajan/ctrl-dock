@@ -7,7 +7,7 @@ $SELECTED="TASKS";
 include("header.php");
 ?>
 
-<table class="reporttable" width=1000>
+<table class="reporttable" width=100%>
 <tr>
 	<td colspan=7 align=right>
 		<a style="text-decoration: none" href="task_add.php">
@@ -25,8 +25,8 @@ if($row_count>0){
 <tr>
 	<td class="reportheader" width=40>Sl. No.</td>
 	<td class="reportheader">Summary</td>
-	<td class="reportheader" width=110>Scheduled Date</td>
-	<td class="reportheader" width=100>Next Scheduled</td>
+	<td class="reportheader" width=120>Scheduled Date</td>
+	<td class="reportheader" width=120>Next Scheduled</td>
 	<td class="reportheader" width=100>Recur</td>
 	<td class="reportheader" width=40>Edit</td>
 	<td class="reportheader" width=40>Delete</td>
