@@ -80,7 +80,7 @@ function getTopic(strURL){
     <tr><th nowrap >Department:</th>
     <td><select id="dept_id" name="dept_id" onChange="Javascript:getTopic('<?=$url;?>ajax_open.php?ajx_dept_id='+this.value);">
         <option value="" selected="selected">-Select Dept-</option>
-        <?$depts= mysql_query('SELECT dept_id,dept_name FROM isost_department');
+        <?$depts= mysql_query('SELECT dept_id,dept_name FROM isost_department where ispublic=1');
           while (list($deptId,$deptName) = db_fetch_row($depts)){
             $selected = ($info['dept_id']==$deptId)?'selected':''; ?>
             <option value="<?=$deptId?>"<?=$selected?>><?=$deptName?></option>

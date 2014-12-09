@@ -17,8 +17,8 @@ $code_tabs=array();
 	<td class='reportdata' width=100%><b>HOSTS</td>
 </tr>
 </table>
-<table class="reporttable" width=100% cellspacing=0 cellpadding=5 onclick="window.location='../nw/index.php'">
-
+<?$detail_url=$base_url."/nw/index.php";?>
+<table class="reporttable" width=100% cellspacing=0 cellpadding=5 onclick="window.location='<?=$detail_url;?>'">
 <?
 $network_count		=0;
 $network_count_up	=0;

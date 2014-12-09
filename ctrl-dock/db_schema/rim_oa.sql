@@ -37,7 +37,7 @@ CREATE TABLE `oa_asset_order` (
   `order_cost_code` varchar(50) NOT NULL,
   `order_notes` text NOT NULL default '',
   PRIMARY KEY  (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 
 --
@@ -68,7 +68,7 @@ CREATE TABLE `oa_asset_line` (
   `allocate_type` enum('', 'group', 'location', 'org', 'person', 'item', 'other') NOT NULL default '',
   `allocate_text` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`line_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 
 --
@@ -84,7 +84,7 @@ CREATE TABLE `oa_asset_select` (
   `group_id` int(10) unsigned default NULL,
   `group_amount` int(10) unsigned default '0',
   PRIMARY KEY  (`select_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 
 --
@@ -113,7 +113,7 @@ CREATE TABLE `oa_alert_log` (
   CONSTRAINT `oa_alert_log_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE,
   CONSTRAINT `oa_alert_log_user_id` FOREIGN KEY (`user_id`) REFERENCES `oa_user` (`user_id`) ON DELETE CASCADE,
   CONSTRAINT `oa_alert_oa_change` FOREIGN KEY (`change_id`) REFERENCES `oa_change` (`change_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_audit_log`
@@ -131,7 +131,7 @@ CREATE TABLE `oa_audit_log` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `oa_audit_log_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE,
   CONSTRAINT `oa_audit_log_user_id` FOREIGN KEY (`user_id`) REFERENCES `oa_user` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 
 --
@@ -156,7 +156,7 @@ CREATE TABLE `oa_change` (
   `timestamp` datetime NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY  (`change_id`),
   CONSTRAINT `oa_change_user_id` FOREIGN KEY (`user_id`) REFERENCES `oa_user` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_change_log`
@@ -174,7 +174,7 @@ CREATE TABLE `oa_change_log` (
   KEY `change_id` (`change_id`),
   CONSTRAINT `oa_change_log_change_id` FOREIGN KEY (`change_id`) REFERENCES `oa_change` (`change_id`) ON DELETE CASCADE,
   CONSTRAINT `oa_change_log_user_id` FOREIGN KEY (`user_id`) REFERENCES `oa_user` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_config`
@@ -189,7 +189,7 @@ CREATE TABLE `oa_config` (
   `config_edited_by` int(10) unsigned NOT NULL default '0',
   `config_description` varchar(200) NOT NULL default '',
   PRIMARY KEY  (`config_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_connection`
@@ -216,7 +216,7 @@ CREATE TABLE `oa_connection` (
   `ip_address_internal_a` varchar(30) NOT NULL,
   `ip_address_internal_b` varchar(30) NOT NULL,
   PRIMARY KEY  (`connection_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_contact`
@@ -233,7 +233,7 @@ CREATE TABLE `oa_contact` (
   `fax_number` varchar(20) NOT NULL default '',
   `picture` varchar(100) NOT NULL default '',
   PRIMARY KEY  (`contact_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- table structure for table `oa_device`
@@ -244,7 +244,7 @@ CREATE TABLE `oa_device` (
   `dev_name` varchar(100) NOT NULL default '',
   `dev_group_id` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`dev_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- table structure for table `oa_device_columns`
@@ -260,7 +260,7 @@ CREATE TABLE `oa_device_col` (
   PRIMARY KEY  (`col_id`),
   KEY `dev_id` (`dev_id`),
   CONSTRAINT `oa_dev_col_dev_id` FOREIGN KEY (`dev_id`) REFERENCES `oa_device` (`dev_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_graph`
@@ -281,7 +281,7 @@ CREATE TABLE `oa_graph` (
   PRIMARY KEY  (`graph_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `oa_graph_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_group`
@@ -300,7 +300,7 @@ CREATE TABLE `oa_group` (
   `group_icon` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`group_id`),
   KEY `group_id_index` (`group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_group_column`
@@ -321,7 +321,7 @@ CREATE TABLE `oa_group_column` (
   PRIMARY KEY  (`column_id`),
   KEY `group_id` (`group_id`),
   CONSTRAINT `oa_group_column_group_id` FOREIGN KEY (`group_id`) REFERENCES `oa_group` (`group_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_group_sys`
@@ -339,7 +339,7 @@ CREATE TABLE `oa_group_sys` (
   CONSTRAINT `oa_group_sys_group_id` FOREIGN KEY (`group_id`) REFERENCES `oa_group` (`group_id`) ON DELETE CASCADE,
   CONSTRAINT `oa_group_sys_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE,
   KEY `system_id_index` (`system_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_group_user`
@@ -357,7 +357,7 @@ CREATE TABLE `oa_group_user` (
   CONSTRAINT `oa_group_user_group_id` FOREIGN KEY (`group_id`) REFERENCES `oa_group` (`group_id`) ON DELETE CASCADE,
   CONSTRAINT `oa_group_user_user_id` FOREIGN KEY (`user_id`) REFERENCES `oa_user` (`user_id`) ON DELETE CASCADE,
   KEY `user_id_index` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_location`
@@ -390,7 +390,7 @@ CREATE TABLE `oa_location` (
   `location_icon` varchar(100) NOT NULL default '',
   `location_group_id` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`location_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_location_org`
@@ -407,7 +407,7 @@ CREATE TABLE `oa_location_org` (
   KEY `id3` (`org_id`),
   CONSTRAINT `oa_loc_org_loc_id` FOREIGN KEY (`location_id`) REFERENCES `oa_location` (`location_id`) ON DELETE CASCADE,
   CONSTRAINT `oa_loc_org_org_id` FOREIGN KEY (`org_id`) REFERENCES `oa_org` (`org_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_net_nmap_ports`
@@ -427,7 +427,7 @@ CREATE TABLE `oa_net_nmap_ports` (
   KEY `id2` (`port_number`),
   KEY `id3` (`port_protocol`),
   CONSTRAINT `oa_net_nmap_ports_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_net_scan_latest`
@@ -447,7 +447,7 @@ CREATE TABLE `oa_net_scan_latest` (
   PRIMARY KEY  (`scan_latest_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `oa_net_scan_latest_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_net_scan_log`
@@ -467,7 +467,7 @@ CREATE TABLE `oa_net_scan_log` (
   PRIMARY KEY  (`scan_log_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `oa_net_scan_log_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_net_scan_type`
@@ -484,7 +484,7 @@ CREATE TABLE `oa_net_scan_type` (
   PRIMARY KEY  (`scan_type_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `oa_net_scan_type_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_org`
@@ -500,7 +500,7 @@ CREATE TABLE `oa_org` (
   `org_picture` varchar(100) NOT NULL default '',
   `org_comments` varchar(100) NOT NULL default '',
   PRIMARY KEY  (`org_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_report`
@@ -519,7 +519,7 @@ CREATE TABLE `oa_report` (
   `report_processing` text NOT NULL default '',
   `report_sort_column` int(10) unsigned NOT NULL,
   PRIMARY KEY  (`report_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_group_column`
@@ -540,7 +540,7 @@ CREATE TABLE `oa_report_column` (
   PRIMARY KEY  (`column_id`),
   KEY `report_id` (`report_id`),
   CONSTRAINT `oa_report_column_group_id` FOREIGN KEY (`report_id`) REFERENCES `oa_report` (`report_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_switch_ports`
@@ -559,7 +559,7 @@ CREATE TABLE `oa_switch_ports` (
   KEY `switch_system_id` (`switch_system_id`),
   CONSTRAINT `oa_switch_ports_switch_switch_id` FOREIGN KEY (`switch_system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE,
   CONSTRAINT `oa_switch_ports_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `oa_user`
@@ -581,7 +581,7 @@ CREATE TABLE `oa_user` (
   `user_sam` int(10) NOT NULL default '1',
   PRIMARY KEY  (`user_id`),
   KEY `user_id_index` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Definition of table `oa_user_sessions`
@@ -613,7 +613,7 @@ CREATE TABLE `sys_hw_battery` (
   PRIMARY KEY  (`bt_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_hw_battery_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_hw_bios`
@@ -634,7 +634,7 @@ CREATE TABLE `sys_hw_bios` (
   PRIMARY KEY  (`bios_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_hw_bios_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_hw_graphs_disk`
@@ -661,7 +661,7 @@ CREATE TABLE `sys_hw_graphs_disk` (
   PRIMARY KEY  (`graph_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_hw_graphs_disk_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_hw_hard_drive`
@@ -690,7 +690,7 @@ CREATE TABLE `sys_hw_hard_drive` (
   KEY `hard_drive_index` (`hard_drive_index`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_hw_hard_drive_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_hw_memory`
@@ -712,7 +712,7 @@ CREATE TABLE `sys_hw_memory` (
   PRIMARY KEY  (`memory_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_hw_memory_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_hw_modem`
@@ -732,7 +732,7 @@ CREATE TABLE `sys_hw_modem` (
   PRIMARY KEY  (`modem_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_hw_modem_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_hw_monitor`
@@ -760,7 +760,7 @@ CREATE TABLE `sys_hw_monitor` (
   PRIMARY KEY  (`monitor_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_hw_monitor_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_hw_motherboard`
@@ -781,7 +781,7 @@ CREATE TABLE `sys_hw_motherboard` (
   PRIMARY KEY  (`motherboard_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_hw_motherboard_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_hw_network_card`
@@ -819,7 +819,7 @@ CREATE TABLE `sys_hw_network_card` (
   KEY `net_mac_address` (`net_mac_address`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_hw_network_card_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_hw_network_card_ip`
@@ -839,7 +839,7 @@ CREATE TABLE `sys_hw_network_card_ip` (
   PRIMARY KEY  (`ip_id`),
   KEY `id` (`net_mac_address`),
   CONSTRAINT `sys_hw_network_card_ip_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_hw_optical_drive`
@@ -858,7 +858,7 @@ CREATE TABLE `sys_hw_optical_drive` (
   PRIMARY KEY  (`optical_drive_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_hw_optical_drive_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_hw_partition`
@@ -889,7 +889,7 @@ CREATE TABLE `sys_hw_partition` (
   PRIMARY KEY  (`partition_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_hw_partition_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_hw_processor`
@@ -909,7 +909,7 @@ CREATE TABLE `sys_hw_processor` (
   PRIMARY KEY  (`processor_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_hw_processor_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_hw_scsi_controller`
@@ -928,7 +928,7 @@ CREATE TABLE `sys_hw_scsi_controller` (
   PRIMARY KEY  (`scsi_controller_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_hw_scsi_controller_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_hw_sound`
@@ -946,7 +946,7 @@ CREATE TABLE `sys_hw_sound` (
   PRIMARY KEY  (`sound_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_hw_sound_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_hw_video`
@@ -974,7 +974,7 @@ CREATE TABLE `sys_hw_video` (
   PRIMARY KEY  (`video_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_hw_video_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_hw_warranty`
@@ -993,7 +993,7 @@ CREATE TABLE `sys_hw_warranty` (
   PRIMARY KEY  (`warranty_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_hw_warranty_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 
 --
@@ -1014,7 +1014,7 @@ CREATE TABLE `sys_man_audits` (
   PRIMARY KEY  (`system_audits_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_man_audits_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_man_additional_fields`
@@ -1034,7 +1034,7 @@ CREATE TABLE `sys_man_additional_fields` (
   PRIMARY KEY  (`field_id`),
   KEY `sys_man_additional_fields_group` (`group_id`),
   CONSTRAINT `sys_man_additional_fields_group_id` FOREIGN KEY (`group_id`) REFERENCES `oa_group` (`group_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_man_additional_fields_data`
@@ -1053,7 +1053,7 @@ CREATE TABLE `sys_man_additional_fields_data` (
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_man_additional_fields_data_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE,
   CONSTRAINT `sys_man_additional_fields_data_field_id` FOREIGN KEY (`field_id`) REFERENCES `sys_man_additional_fields` (`field_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_man_attachment`
@@ -1071,7 +1071,7 @@ CREATE TABLE `sys_man_attachment` (
   KEY `system_id` (`system_id`),
   CONSTRAINT `att_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE,
   CONSTRAINT `att_user_id` FOREIGN KEY (`user_id`) REFERENCES `oa_user` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_man_invoice`
@@ -1088,7 +1088,7 @@ CREATE TABLE `sys_man_invoice` (
   `supplier` varchar(100) NOT NULL default '',
   `filename` varchar(100) NOT NULL default '',
   PRIMARY KEY  (`invoice_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_man_invoice_line`
@@ -1105,7 +1105,7 @@ CREATE TABLE `sys_man_invoice_line` (
   `line_amount` varchar(200) NOT NULL default '',
   `notes` varchar(200) NOT NULL default '',
   PRIMARY KEY  (`line_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_man_notes`
@@ -1124,7 +1124,7 @@ CREATE TABLE `sys_man_notes` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `sys_man_notes_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE,
   CONSTRAINT `sys_man_notes_user_id` FOREIGN KEY (`user_id`) REFERENCES `oa_user` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_antivirus`
@@ -1144,7 +1144,7 @@ CREATE TABLE `sys_sw_antivirus` (
   PRIMARY KEY  (`virus_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_antivirus_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_database`
@@ -1164,7 +1164,7 @@ CREATE TABLE `sys_sw_database` (
   PRIMARY KEY  (`db_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_db_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_database_details`
@@ -1194,7 +1194,7 @@ CREATE TABLE `sys_sw_database_details` (
   PRIMARY KEY  (`details_id`),
   KEY `system_id` (`db_id`),
   CONSTRAINT `sys_sw_db_id` FOREIGN KEY (`db_id`) REFERENCES `sys_sw_database` (`db_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_database_log`
@@ -1217,7 +1217,7 @@ CREATE TABLE `sys_sw_database_log` (
   PRIMARY KEY  (`log_id`),
   KEY `system_id` (`details_id`),
   CONSTRAINT `sys_sw_db_details_id` FOREIGN KEY (`details_id`) REFERENCES `sys_sw_database_details` (`details_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_dns`
@@ -1235,7 +1235,7 @@ CREATE TABLE `sys_sw_dns` (
   PRIMARY KEY  (`dns_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_dns_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_firewall`
@@ -1256,7 +1256,7 @@ CREATE TABLE `sys_sw_firewall` (
   PRIMARY KEY  (`firewall_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_firewall_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_firewall_auth_app`
@@ -1276,7 +1276,7 @@ CREATE TABLE `sys_sw_firewall_auth_app` (
   PRIMARY KEY  (`firewall_app_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_firewall_auth_app_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_firewall_ports`
@@ -1296,7 +1296,7 @@ CREATE TABLE `sys_sw_firewall_ports` (
   PRIMARY KEY  (`port_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_firewall_ports_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_group`
@@ -1315,7 +1315,7 @@ CREATE TABLE `sys_sw_group` (
   PRIMARY KEY  (`group_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_groups_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_log`
@@ -1335,7 +1335,7 @@ CREATE TABLE `sys_sw_log` (
   PRIMARY KEY  (`log_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_log_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_route`
@@ -1356,7 +1356,7 @@ CREATE TABLE `sys_sw_route` (
   PRIMARY KEY  (`route_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_ip_route_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_pagefile`
@@ -1374,7 +1374,7 @@ CREATE TABLE `sys_sw_pagefile` (
   PRIMARY KEY  (`pagefile_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_pagefile_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_print_queue`
@@ -1403,7 +1403,7 @@ CREATE TABLE `sys_sw_print_queue` (
   PRIMARY KEY  (`queue_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_print_queue_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_scheduled_task`
@@ -1428,7 +1428,7 @@ CREATE TABLE `sys_sw_scheduled_task` (
   PRIMARY KEY  (`sched_task_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_scheduled_task_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_service`
@@ -1456,7 +1456,7 @@ CREATE TABLE `sys_sw_service` (
   KEY `service_name` (`service_name`),
   KEY `service_display_name` (`service_display_name`),
   CONSTRAINT `sys_sw_service_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_share`
@@ -1476,7 +1476,7 @@ CREATE TABLE `sys_sw_share` (
   PRIMARY KEY  (`share_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_share_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_share_perms`
@@ -1497,7 +1497,7 @@ CREATE TABLE `sys_sw_share_perms` (
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_share_perm_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE,
   CONSTRAINT `sys_sw_share_perm_share_id` FOREIGN KEY (`share_id`) REFERENCES `sys_sw_share` (`share_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_software`
@@ -1535,7 +1535,7 @@ CREATE TABLE `sys_sw_software` (
   KEY `first_timestamp` (`first_timestamp`),
   KEY `software_name` (`software_name`),
   CONSTRAINT `sys_sw_software_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_software_key`
@@ -1554,7 +1554,7 @@ CREATE TABLE `sys_sw_software_key` (
   PRIMARY KEY  (`key_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_software_key_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_startup`
@@ -1575,7 +1575,7 @@ CREATE TABLE `sys_sw_startup` (
   PRIMARY KEY  (`startup_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_startup_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_user`
@@ -1601,7 +1601,7 @@ CREATE TABLE `sys_sw_user` (
   PRIMARY KEY  (`user_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_user_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_variable`
@@ -1618,7 +1618,7 @@ CREATE TABLE `sys_sw_variable` (
   PRIMARY KEY  (`variable_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_variable_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_web_server`
@@ -1641,7 +1641,7 @@ CREATE TABLE `sys_sw_web_server` (
   PRIMARY KEY  (`webserver_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_web_server_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_web_server_extn`
@@ -1662,7 +1662,7 @@ CREATE TABLE `sys_sw_web_server_ext` (
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_web_server_extn_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE,
   CONSTRAINT `sys_sw_web_server_extn_server_id` FOREIGN KEY (`webserver_id`) REFERENCES `sys_sw_web_server` (`webserver_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_web_site`
@@ -1700,7 +1700,7 @@ CREATE TABLE `sys_sw_web_site` (
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_web_site_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE,
   CONSTRAINT `sys_sw_web_site_server_id` FOREIGN KEY (`webserver_id`) REFERENCES `sys_sw_web_server` (`webserver_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_web_site_header`
@@ -1721,7 +1721,7 @@ CREATE TABLE `sys_sw_web_site_header` (
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_web_site_header_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE,
   CONSTRAINT `sys_sw_web_site_header_site_id` FOREIGN KEY (`site_id`) REFERENCES `sys_sw_web_site` (`site_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_web_site_virtual`
@@ -1742,7 +1742,7 @@ CREATE TABLE `sys_sw_web_site_virtual` (
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_web_site_virtual_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE,
   CONSTRAINT `sys_sw_web_site_virtual_site_id` FOREIGN KEY (`site_id`) REFERENCES `sys_sw_web_site` (`site_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `sys_sw_windows`
@@ -1777,7 +1777,7 @@ CREATE TABLE `sys_sw_windows` (
   PRIMARY KEY  (`windows_id`),
   KEY `system_id` (`system_id`),
   CONSTRAINT `sys_sw_windows_system_id` FOREIGN KEY (`system_id`) REFERENCES `system` (`system_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `sw_licenses`;
 CREATE TABLE `sw_licenses` (
@@ -1790,7 +1790,7 @@ CREATE TABLE `sw_licenses` (
   `license_type` enum('OEM','Partner','Volume','Box','Others') DEFAULT NULL,
   `comments` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`package_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+)  AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `system`
@@ -1904,7 +1904,7 @@ CREATE TABLE `system` (
   KEY `hostname` (`hostname`),
   KEY `linked_sys` (`linked_sys`),
   KEY `system_key` (`system_key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 SET character_set_client = @saved_cs_client;
 
