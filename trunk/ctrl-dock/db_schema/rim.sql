@@ -1099,6 +1099,7 @@ CREATE TABLE `hosts_master` (
   `platform` varchar(10) default NULL,
   `description` varchar(255) NOT NULL,
   `alert_status`  int(1) default 1,
+  `timezone` varchar(5) NOT NULL DEFAULT '+5.5',
   PRIMARY KEY  (`host_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 

@@ -99,15 +99,23 @@ if($num_rows>0){
 									
 						$response_time=($first_response-$created)/3600;
 						$total_response_time	=$total_response_time + $response_time;
+					}else{
+						$sub_sql_1		="SELECT UNIX_TIMESTAMP(created) from isost_ticket_note where ticket_id='$ticket_id' and UNIX_TIMESTAMP(created) > $created  order by note_id LIMIT 1";
+						$sub_result_1 	= mysql_query($sub_sql_1);
+						$sub_row_1 = mysql_fetch_row($sub_result_1);
+						$first_response	=$sub_row_1[0];
+
+						$response_time=($first_response-$created)/3600;
+						$total_response_time	=$total_response_time + $response_time;
 					}
 					
 				}
 				
 				// Compute Average Closure Time
-				$avg_closure=round($total_close_time/$record_count,1);
+				$avg_closure=round($total_close_time/$record_count,2);
 								
 				// Compute Average Response Time
-				$avg_response=round($total_response_time/$record_count,1);
+				$avg_response=round($total_response_time/$record_count,2);
 				
 				$total_count = $open_count + $closed_count;
 				

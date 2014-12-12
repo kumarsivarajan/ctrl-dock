@@ -59,7 +59,7 @@ if($num_rows>0){
 					
 					// Fetch information for Response Time
 					
-					$sub_sql_1		="SELECT UNIX_TIMESTAMP(created) from isost_ticket_response where ticket_id='$ticket_id' and track_id!=999999 and UNIX_TIMESTAMP(created) > $created  order by response_id LIMIT 1";
+					$sub_sql_1		="SELECT UNIX_TIMESTAMP(created) from isost_ticket_response where ticket_id='$ticket_id' and UNIX_TIMESTAMP(created) > $created  order by response_id LIMIT 1";
 					
 					$sub_result_1 	= mysql_query($sub_sql_1);
 					if(mysql_num_rows($sub_result_1)>0){
@@ -68,8 +68,15 @@ if($num_rows>0){
 									
 						$response_time=($first_response-$created)/3600;
 						$total_response_time	=$total_response_time + $response_time;
+					}else{
+						$sub_sql_1		="SELECT UNIX_TIMESTAMP(created) from isost_ticket_note where ticket_id='$ticket_id' and UNIX_TIMESTAMP(created) > $created  order by note_id LIMIT 1";
+						$sub_result_1 	= mysql_query($sub_sql_1);
+						$sub_row_1 = mysql_fetch_row($sub_result_1);
+						$first_response	=$sub_row_1[0];
+
+						$response_time=($first_response-$created)/3600;
+						$total_response_time	=$total_response_time + $response_time;
 					}
-							
 				}
 				
 				//Fetch No. of Open Tickets
@@ -88,10 +95,10 @@ if($num_rows>0){
 				}
 				
 				// Compute Average Closure Time
-				$avg_closure=round($total_close_time/$record_count,1);	
+				$avg_closure=round($total_close_time/$record_count,2);	
 				
 				// Compute Average Response Time
-				$avg_response=round($total_response_time/$record_count,1);	
+				$avg_response=round($total_response_time/$record_count,2);	
 			
 			
 				// Fetch the recordset to calculate total time spent

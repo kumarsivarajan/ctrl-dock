@@ -53,7 +53,7 @@ if(count($terminal_list)>0){
 			echo "<td class='reportdata' width=90>".$servicetype."</td>";
 			
 			if($service!=''){
-				echo "<td class='reportdata' style='text-align:center;' width=20><a href='javascript:void(0);' onclick=\"PopupCenter('http://".$_SERVER['SERVER_NAME'].":".$TERMINALPORT."/anyterm.html?$serviceuser@$hostname $service $username', 'terminal',1080,768);\"><div class='myimg'><img border=0 src=../images/terminal.png /></div></a></td>";
+				echo "<td class='reportdata' style='text-align:center;' width=20><a target=_blank href='dash_auth_terminal.php?serviceuser=$serviceuser&hostname=$hostname&service=$service'><div class='myimg'><img border=0 src=../images/terminal.png /></div></a></td>";
 			}else{
 				echo "<td class='reportdata' style='text-align: center;'>NA</td>";
 			}
@@ -70,5 +70,5 @@ if(count($terminal_list)>0){
 }
 ?>
 </table>
-<meta http-equiv="refresh" content="20">
+<meta http-equiv="refresh" content="15">
 

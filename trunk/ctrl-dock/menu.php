@@ -35,7 +35,7 @@ include("include/version.php");
 </table>
 
 
-<table border="0" cellpadding="5" cellspacing=0  width="100%" height="100%" bgcolor=#DDDDDD>
+<table border="0" cellpadding="4" cellspacing=0  width="100%" height="100%" bgcolor=#DDDDDD>
 	<? if ($DASH==1){?>
 	<tr>
 	<td width=24><img border=0 src="images/menu_home.png"></a></td>
@@ -69,6 +69,13 @@ include("include/version.php");
 	<tr>
 	<td width=24><img border=0 src="images/menu_tickets.png"></a></td>
 	<td><a class=menulink target="rimmain" href="eztickets/scp/ezlogin.php">Ticket Management</a></td>
+	</tr>
+	<?}?>
+	
+	<? if (check_feature(29)){?>	
+	<tr>
+	<td width=24><img border=0 src="images/menu_nw.png"></a></td>
+	<td><a class=menulink target="rimmain" href="nw/index.php">Monitoring</a></td>
 	</tr>
 	<?}?>
 
