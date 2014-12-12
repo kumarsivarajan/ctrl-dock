@@ -26,8 +26,32 @@ DBNAME=$(echo ${DBNAME%\;})
 DBNAME=$(echo ${DBNAME%\"})
 DBNAME=$(echo ${DBNAME#?})
 
-mysql $DBNAME < temp/db_schema/$2.upg
-#mysql "$DBNAME"_oa < temp/db_schema/"$2"_oa.upg
+line=$(grep "DATABASE_SERVER" $1/include/config.php)
+DBSERVER=${line#*=}
+DBSERVER=$(echo ${DBSERVER%\;})
+DBSERVER=$(echo ${DBSERVER%\"})
+DBSERVER=$(echo ${DBSERVER#?})
+
+line=$(grep "DATABASE_PORT" $1/include/config.php)
+DBPORT=${line#*=}
+DBPORT=$(echo ${DBPORT%\;})
+DBPORT=$(echo ${DBPORT%\"})
+DBPORT=$(echo ${DBPORT#?})
+
+line=$(grep "DATABASE_USERNAME" $1/include/config.php)
+DBUSER=${line#*=}
+DBUSER=$(echo ${DBUSER%\;})
+DBUSER=$(echo ${DBUSER%\"})
+DBUSER=$(echo ${DBUSER#?})
+
+line=$(grep "DATABASE_PASSWORD" $1/include/config.php)
+DBPASS=${line#*=}
+DBPASS=$(echo ${DBPASS%\;})
+DBPASS=$(echo ${DBPASS%\"})
+DBPASS=$(echo ${DBPASS#?})
+
+mysql -h $DBSERVER -P $DBPORT -u $DBUSER -p$DBPASS $DBNAME < temp/db_schema/$2.upg
+mysql -h $DBSERVER -P $DBPORT -u $DBUSER -p$DBPASS "$DBNAME"_oa < temp/db_schema/"$2"_oa.upg
 
 mv $1 $1.orig
 mv temp $1
@@ -35,6 +59,3 @@ chown -R apache:apache $1
 chmod 755 $1 -R
 chmod 775 $1/terminal -R
 chmod 775 $1/termstart -R
-
-
-
